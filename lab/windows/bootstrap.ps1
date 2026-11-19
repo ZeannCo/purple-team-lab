@@ -29,6 +29,9 @@ foreach ($sub in $audit) { auditpol /set /subcategory:"$sub" /success:enable /fa
 reg add 'HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\System\Audit' /v ProcessCreationIncludeCmdLine_Enabled /t REG_DWORD /d 1 /f | Out-Null
 reg add 'HKLM\Software\Policies\Microsoft\Windows\PowerShell\ScriptBlockLogging' /v EnableScriptBlockLogging /t REG_DWORD /d 1 /f | Out-Null
 
+# Allow local scripts and modules (Windows 11 defaults to Restricted)
+Set-ExecutionPolicy RemoteSigned -Scope LocalMachine -Force
+
 # --- Sysmon (sysmon-modular config)
 & "$work\payloads\Sysmon\Sysmon64.exe" -accepteula -i "$work\payloads\sysmonconfig.xml"
 

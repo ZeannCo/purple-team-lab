@@ -1,3 +1,5 @@
 # pywinrm >= 0.5 authenticates NTLM through pyspnego, which works with OpenSSL 3
 # (Ubuntu's python3-winrm package fails with "unsupported hash type md4").
 pywinrm>=0.5
+PyYAML>=6
+requests>=2.31
