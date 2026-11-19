@@ -7,10 +7,18 @@ on a command line.
     WIN_PASSWORD=... python3 lab_winrm.py script.ps1 [--host 10.10.10.20] [--user labadmin]
 """
 import argparse
+import base64
 import os
 import sys
+import uuid
 
 import winrm
+
+# run_ps sends the script as one "powershell -EncodedCommand" argument (UTF-16, then base64: about
+# 2.7x the script length), and Windows caps a command line at 8191 characters. Longer scripts are
+# staged to a temp file in chunks small enough to survive that same encoding, then run from there.
+INLINE_LIMIT = 2500
+CHUNK = 2000
 
 
 def run(host: str, user: str, password: str, script: str):
@@ -18,7 +26,20 @@ def run(host: str, user: str, password: str, script: str):
     session = winrm.Session(f"http://{host}:5985/wsman", auth=(user, password), transport="ntlm",
                             operation_timeout_sec=120, read_timeout_sec=130)
     # Progress records come back as CLIXML noise on stderr; turn them off
-    return session.run_ps("$ProgressPreference = 'SilentlyContinue'\n" + script)
+    script = "$ProgressPreference = 'SilentlyContinue'\n" + script
+    if len(script) <= INLINE_LIMIT:
+        return session.run_ps(script)
+
+    path = rf"C:\Windows\Temp\lab-{uuid.uuid4().hex}.ps1"
+    payload = base64.b64encode(script.encode("utf-8")).decode()
+    for i in range(0, len(payload), CHUNK):
+        staged = session.run_ps(f"Add-Content -Path '{path}.b64' -Value '{payload[i:i + CHUNK]}' -NoNewline")
+        if staged.status_code != 0:
+            return staged
+    return session.run_ps(
+        f"$b = [IO.File]::ReadAllText('{path}.b64'); "
+        f"[IO.File]::WriteAllBytes('{path}', [Convert]::FromBase64String($b)); "
+        f"try {{ & '{path}' }} finally {{ Remove-Item '{path}', '{path}.b64' -Force -ErrorAction SilentlyContinue }}")
 
 
 def main() -> int:
