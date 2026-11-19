@@ -5,8 +5,9 @@ Windows endpoint, Wazuh detects them, every custom detection is automatically te
 the attack it targets, and an AI agent triages the alerts. The agent is benchmarked across
 several LLMs through OpenRouter.
 
-> **Status:** Phase 0 in progress. The Wazuh server (v4.14.10) is built from code and running;
-> the Windows endpoint is next. See [BUILD-PLAN.md](BUILD-PLAN.md).
+> **Status:** Phase 0 done. The Wazuh server (v4.14.10) and a Windows 11 endpoint with Sysmon and
+> the Wazuh agent are both built from code, and endpoint telemetry is flowing. Atomic Red Team is
+> next. See [BUILD-PLAN.md](BUILD-PLAN.md).
 
 ## Stack
 
@@ -27,6 +28,13 @@ several LLMs through OpenRouter.
 .\lab\build\new-wazuh-vm.ps1
 # then, on the VM
 bash lab/wazuh/install-wazuh.sh
+
+# Agent group config, then the Windows 11 endpoint (unattended install, Sysmon, Wazuh agent)
+.\lab\build\push-wazuh-config.ps1
+.\lab\build\new-win11-vm.ps1
 ```
+
+The Windows build expects the Windows 11 Enterprise Evaluation ISO and a `payloads` folder
+(Sysmon, the sysmon-modular config, the Wazuh agent MSI) under `D:\Labs\ISOs`.
 
 Secrets (SSH key, lab passwords) live in `D:\Labs\keys` and never enter this repo.

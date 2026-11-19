@@ -38,22 +38,9 @@ if (Test-Path $vmx) { throw "$vmx already exists. Delete the VM first if you wan
 foreach ($p in $Ova, $ovftool, $vmrun, $vdiskmanager, $pubKeyPath) {
     if (-not (Test-Path $p)) { throw "Missing: $p" }
 }
-# Windows OpenSSH ignores private keys that other users can read
-icacls ($pubKeyPath -replace '\.pub$', '') /inheritance:r /grant:r "$($env:USERNAME):(R,W)" | Out-Null
-
-# --- Console password: reuse if already generated, otherwise create and store it
-$credKey = "${Name}_labadmin"
-$creds = @{}
-if (Test-Path $credFile) {
-    Get-Content $credFile | Where-Object { $_ -match '^([^=]+)=(.*)$' } | ForEach-Object { $creds[$Matches[1]] = $Matches[2] }
-}
-if (-not $creds.ContainsKey($credKey)) {
-    $chars = [char[]]'abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789'
-    $creds[$credKey] = -join (1..20 | ForEach-Object { $chars[[System.Security.Cryptography.RandomNumberGenerator]::GetInt32($chars.Length)] })
-    Add-Content -Path $credFile -Value "$credKey=$($creds[$credKey])"
-    icacls $credFile /inheritance:r /grant:r "$($env:USERNAME):(R,W)" | Out-Null
-    Write-Host "Console password for labadmin saved to $credFile"
-}
+Import-Module (Join-Path $PSScriptRoot 'LabCommon.psm1') -Force
+Protect-LabFile ($pubKeyPath -replace '\.pub$', '')
+$password = Get-LabPassword $credFile "${Name}_labadmin"
 
 # --- Render cloud-init (LF line endings) and base64 it for guestinfo
 function ConvertTo-GuestInfo([string]$text) {
@@ -61,7 +48,7 @@ function ConvertTo-GuestInfo([string]$text) {
 }
 $userData = (Get-Content (Join-Path $cloudInitDir 'user-data.yaml') -Raw).
     Replace('${SSH_PUBLIC_KEY}', (Get-Content $pubKeyPath -Raw).Trim()).
-    Replace('${LAB_PASSWORD}', $creds[$credKey])
+    Replace('${LAB_PASSWORD}', $password)
 $metaData = Get-Content (Join-Path $cloudInitDir 'metadata.yaml') -Raw
 
 # --- 1. Import
