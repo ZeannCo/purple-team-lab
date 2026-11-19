@@ -1,0 +1,21 @@
+instance-id: wazuh01-001
+local-hostname: wazuh01
+# NICs are matched by the fixed MACs that new-wazuh-vm.ps1 writes to the .vmx
+network:
+  version: 2
+  ethernets:
+    nat0:
+      match:
+        macaddress: "00:50:56:10:00:10"
+      set-name: nat0
+      addresses: [192.168.110.10/24]
+      routes:
+        - to: default
+          via: 192.168.110.2
+      nameservers:
+        addresses: [192.168.110.2]
+    lab0:
+      match:
+        macaddress: "00:50:56:10:10:10"
+      set-name: lab0
+      addresses: [10.10.10.10/24]

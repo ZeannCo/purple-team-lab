@@ -1,0 +1,26 @@
+# Secrets and local config
+.env
+*.key
+*_ed25519
+*_ed25519.pub
+lab-credentials.txt
+
+# Rendered cloud-init (contains the lab password and SSH key)
+lab/cloud-init/**/rendered/
+
+# VM and installer artifacts live outside the repo, but just in case
+*.ova
+*.iso
+*.vmdk
+*.vmx
+*.nvram
+
+# Python
+__pycache__/
+.venv/
+*.pyc
+
+# Editor / OS
+.vscode/
+.DS_Store
+Thumbs.db

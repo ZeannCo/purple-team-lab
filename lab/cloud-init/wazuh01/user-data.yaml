@@ -1,0 +1,46 @@
+#cloud-config
+# Template: new-wazuh-vm.ps1 fills in the SSH public key and console password at build time.
+hostname: wazuh01
+fqdn: wazuh01.lab.local
+timezone: Asia/Manila
+
+users:
+  - name: labadmin
+    groups: [sudo]
+    shell: /bin/bash
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    lock_passwd: false
+    ssh_authorized_keys:
+      - ${SSH_PUBLIC_KEY}
+
+# Console password (for the VMware console only; SSH is key-only)
+chpasswd:
+  expire: false
+  users:
+    - name: labadmin
+      password: ${LAB_PASSWORD}
+      type: text
+ssh_pwauth: false
+
+growpart:
+  mode: auto
+  devices: ["/"]
+
+package_update: true
+package_upgrade: true
+packages:
+  - open-vm-tools
+  - curl
+  - jq
+  - python3-venv
+
+write_files:
+  - path: /etc/hosts
+    append: true
+    content: |
+      10.10.10.10 wazuh01.lab.local wazuh01
+      10.10.10.20 win11-ep.lab.local win11-ep
+      10.10.10.5  dc01.lab.local dc01
+
+runcmd:
+  - [systemctl, enable, --now, open-vm-tools]
