@@ -150,40 +150,34 @@ inside the lab. Live results are committed instead.
 
 ## Phase 2.5 — AI triage agent (OpenRouter)
 
-```
-Wazuh alert (level ≥ 10) ──<integration>──▶ receiver (FastAPI, wazuh01)
-                                                 │
-                                       triage agent (Python)
-                             OpenRouter model ◀──▶ Wazuh MCP server / indexer API
-                                                 │  (read-only, at most 8 tool calls)
-                                                 ▼
-             /var/log/triage/reports.json ──localfile──▶ Wazuh rule 100900 "AI triage verdict"
-                                                 ▼
-                         Verdicts appear in the Wazuh dashboard next to the original alert
-```
+Done. See [`triage/README.md`](triage/README.md) and [`triage/eval/README.md`](triage/eval/README.md).
 
-- [ ] `<integration>` block in the manager's `ossec.conf` (`custom-triage`, `level 10`, JSON format)
-- [ ] Agent: OpenAI-compatible client with `base_url=https://openrouter.ai/api/v1` and the key from `.env`
-- [ ] Tools: the community Wazuh MCP server (`gbrigandi/mcp-server-wazuh`), or a small set of read-only
-      indexer queries
-- [ ] Output as strict JSON: `verdict`, `attack_technique`, `confidence`, `evidence`, `recommended_actions`
-- [ ] Log the model, tokens, cost and latency for every alert
-- [ ] **Eval:** 40–60 labelled alerts (atomic runs = true positive with a known technique, plus harmless
-      admin activity that looks similar = benign), run against 3–4 OpenRouter models
-
-| Model | Verdict acc. | FP rate | Technique ID | $/alert | Latency |
-|---|---|---|---|---|---|
-| _fill in_ | | | | | |
-
----
+- [x] Read-only MCP server over the indexer (Python MCP SDK v2, tools annotated read-only), backed
+      by an indexer account limited to `wazuh-alerts-*`
+- [x] Agent: OpenRouter tool-calling loop (≤ 8 tool calls, strict JSON verdict, cost and latency logged)
+- [x] Wazuh integration → inbox → systemd worker → verdict log → rules `100901`-`100903` in the dashboard
+- [x] Alert-storm protection after a ~740-alert CVE burst (group skip list, dedup, hourly cap)
+- [x] Labelled eval set: 26 malicious alerts from two validation runs, 13 benign hard negatives
+- [x] 4 models compared (DeepSeek V4.1 Flash, Qwen3.8 27B, GLM 5.3 Flash, Claude Haiku 5.5):
+      all 100% recall; specificity 0-62%, best Qwen3.8 27B
+- [x] Default model: DeepSeek V4.1 Flash (chosen for cost; set in `.env`)
+- Next: spread the benign scenario over hours so it doesn't read as one intrusion chain
 
 ## Phase 3 — Detecting attacks on AI (MITRE ATLAS)
-- [ ] A deliberately vulnerable LLM chat app with risky MCP tools, in Docker on wazuh01, using an
-      OpenRouter model
-- [ ] Every prompt, response and tool call logged as JSON, then collected by Wazuh `localfile`
-- [ ] Attack it with **Promptfoo** red-team plugins (prompt injection, indirect injection, tool misuse)
-- [ ] Custom Wazuh rules mapped to **MITRE ATLAS** (e.g. AML.T0051), added to the same CI and validation flow
 
+Done. See [`atlas/README.md`](atlas/README.md).
+
+- [x] HelpBot: deliberately vulnerable helpdesk agent (FastAPI + MCP tools) in a locked-down Docker
+      container on wazuh01, using an OpenRouter model
+- [x] Every request, tool call, tool result and reply logged as JSON and collected by Wazuh
+- [x] 12 rules mapped to MITRE ATLAS 5.6.0 (checked against MITRE's `atlas-data` v2026.10):
+      attempt rules on input and retrieved data, outcome rules on tool use and replies, plus an
+      injection → tool-use correlation in the same session
+- [x] Attack suite (6 attacks, 4 benign prompts): 6/6 detected and 4/4 quiet on both a resistant
+      model (DeepSeek) and a compliant one (Qwen3-14B, where 3 attacks succeeded and were caught)
+- [x] 16 replay cases in CI for the ATLAS rules, including benign look-alikes
+- Changed from the plan: a curated, deterministic attack suite instead of Promptfoo's generator, so
+  runs are reproducible and every case maps to one technique
 ## Phase 4 (optional) — Splunk alongside Wazuh
 - [ ] Once the Splunk Developer license arrives, forward Wazuh alerts to Splunk and convert the Sigma rules to SPL
 - [ ] Compare coverage between the two SIEMs in the README

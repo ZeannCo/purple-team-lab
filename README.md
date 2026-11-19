@@ -1,32 +1,54 @@
-# Purple Team Lab: Wazuh + Atomic Red Team + AI triage
+# Purple Team Lab: Wazuh + Atomic Red Team + AI triage + AI attack detection
 
 [![detections](https://github.com/ZeannCo/purple-team-lab/actions/workflows/detections.yml/badge.svg)](https://github.com/ZeannCo/purple-team-lab/actions/workflows/detections.yml)
 
-A home lab for detection engineering. Atomic Red Team runs MITRE ATT&CK techniques on a Windows 11
-endpoint, Wazuh detects them, and every detection is proven twice:
-- **live**, by running the attack and checking the expected alert reaches the indexer
-- **in CI**, by replaying real captured events through a throwaway Wazuh manager
+A home lab for detection engineering, built entirely from code on VMware. It has three parts:
 
-An AI agent that triages the alerts through OpenRouter is next.
+1. **Endpoint detections:** Atomic Red Team runs MITRE ATT&CK techniques on a Windows 11 endpoint,
+   and Wazuh detects them. Every detection is proven live (run the attack, check the alert) and in
+   CI (replay real captured events through a throwaway Wazuh manager).
+2. **AI triage:** high-severity alerts are investigated by an LLM agent (OpenRouter) through a
+   read-only MCP server. Its verdict comes back into Wazuh, and four models are benchmarked on
+   labelled lab alerts.
+3. **Attacks on AI:** a deliberately vulnerable LLM agent is attacked with prompt injection,
+   jailbreaks and tool misuse, and the attacks are detected with rules mapped to MITRE ATLAS.
 
-> **Status:** Phases 0-2 done. The lab is built from code; 11 Atomic Red Team tests across 10
-> techniques all PASS live against custom rules, and 25 replay cases pass in CI.
-> See [BUILD-PLAN.md](BUILD-PLAN.md).
+> **Status:** all phases built and validated. See [BUILD-PLAN.md](BUILD-PLAN.md).
 
 ## Results
 
-| | Built-in Wazuh rules ([baseline](validation/results/baseline.md)) | After tuning + custom rules ([validation](validation/results/validation.md)) |
+**Endpoint detections:** [baseline](validation/results/baseline.md) vs. [validated](validation/results/validation.md)
+
+| | Built-in Wazuh rules | After tuning + custom rules |
 |---|---|---|
-| Tests with a meaningful, ATT&CK-tagged alert | 3 of 11 | **11 of 11** (level 8-14) |
+| Atomic tests with a meaningful, ATT&CK-tagged alert | 3 of 11 | **11 of 11** (level 8-14, two runs) |
 | Seen only as untagged Defender alerts | 4 | 0 |
 | Only low severity (level 3-5) | 3 | 0 |
 | Missed | 1 | 0 |
-| Harness false positives in every test window | 3 rules, up to level 15 | 0 (tuned or attributed to the harness by a control step) |
+| Harness false positives in every test window | 3 rules, up to level 15 | 0 |
 
-The raw baseline first reported 8 of 11 as "detected". Most of that came from noise the test
-harness itself caused, including a level-15 alert on a file PowerShell writes every time it starts.
-How that was found and fixed, why four attacks needed Defender-aware rules, and the Wazuh quirks hit
-along the way are written up in [docs/detection-engineering-notes.md](docs/detection-engineering-notes.md).
+The raw baseline first reported 8 of 11 as "detected"; most of that was noise caused by the test
+harness itself. See [docs/detection-engineering-notes.md](docs/detection-engineering-notes.md).
+
+**AI triage:** 39 labelled alerts, [details](triage/eval/README.md)
+
+| Model | Recall | Specificity | $/alert |
+|---|---|---|---|
+| DeepSeek V4.1 Flash (default) | 100% | 15% | $0.0026 |
+| Qwen3.8 27B | 100% | **62%** | $0.0137 |
+| GLM 5.3 Flash | 100% | 23% | $0.0020 |
+| Claude Haiku 5.5 | 100% | 0% | $0.0037 |
+
+Every model caught every attack; telling routine admin work apart from an attack was the hard
+part. The first two eval runs measured the test rig instead of the models, and the
+[eval write-up](triage/eval/README.md) covers how that was found.
+
+**Attacks on AI (MITRE ATLAS):** [details](atlas/README.md)
+
+| HelpBot model | Attacks detected | Benign prompts quiet | Attacks that succeeded (all detected) |
+|---|---|---|---|
+| DeepSeek V4.1 Flash | 6/6 | 4/4 | 0/6 |
+| Qwen3-14B | 6/6 | 4/4 | 3/6: system prompt leak, credential theft, exfiltration |
 
 ATT&CK coverage layer (import into [ATT&CK Navigator](https://mitre-attack.github.io/attack-navigator/)):
 [`validation/results/validation-navigator-layer.json`](validation/results/validation-navigator-layer.json)
@@ -39,20 +61,22 @@ ATT&CK coverage layer (import into [ATT&CK Navigator](https://mitre-attack.githu
 | SIEM / XDR | Wazuh 4.14.10 all-in-one |
 | Endpoint telemetry | Sysmon 15 (sysmon-modular), Windows Security, PowerShell script block logging, Defender |
 | Adversary emulation | Atomic Red Team (Invoke-AtomicRedTeam 2.1, ATT&CK v19) |
-| Detection-as-code | Custom Wazuh rules in [`detections/wazuh`](detections/wazuh), replayed with `logtest` in GitHub Actions |
-| Live validation | [`validation/run_validation.py`](validation/run_validation.py): runs each atomic over WinRM, checks the indexer for its expected rules |
-| AI triage (next) | Python agent, OpenRouter models, Wazuh MCP server |
-| AI attack detection (planned) | Promptfoo vs. a vulnerable LLM app, rules mapped to MITRE ATLAS |
+| Detection-as-code | Custom Wazuh rules in [`detections/wazuh`](detections/wazuh), 41 replay cases with `logtest` in GitHub Actions |
+| Live validation | [`validation/run_validation.py`](validation/run_validation.py) (endpoint), [`atlas/run_attacks.py`](atlas/run_attacks.py) (AI app) |
+| AI triage | Python agent, OpenRouter, read-only MCP server (Python SDK v2), Wazuh integration + worker ([`triage/`](triage)) |
+| AI attack detection | HelpBot (FastAPI + MCP tools in Docker), rules mapped to MITRE ATLAS 5.6.0 ([`atlas/`](atlas)) |
 
 ## Layout
 
 ```
-detections/wazuh/      9900 lab tuning, 9910 detections (each rule cites the test that proves it)
+detections/wazuh/      9900 lab tuning, 9910 endpoint detections, 9920 AI verdicts, 9930 ATLAS
 tests/logtest/         replay cases from real lab events + ci.sh (throwaway manager in Docker)
 validation/            tests.yml (atomic -> expected rules), runner, results
-lab/build/             VM builds, config/rule deployment, validation wrapper (PowerShell)
-lab/windows/           autounattend.xml, first-boot bootstrap, Atomic Red Team install
-lab/wazuh/             manager install, centralized agent config
+triage/                AI triage agent, MCP server, worker, Wazuh integration, eval
+atlas/                 HelpBot (vulnerable LLM agent), attack suite, results
+lab/build/             VM builds and deployment scripts (PowerShell)
+lab/windows/           autounattend.xml, bootstrap, Atomic Red Team install, benign activity
+lab/wazuh/             manager, triage and HelpBot installers, centralized agent config
 docs/                  detection engineering notes
 ```
 
@@ -70,8 +94,14 @@ docs/                  detection engineering notes
 Import-Module .\lab\build\LabCommon.psm1
 Invoke-LabWindows -Script (Get-Content .\lab\windows\install-atomics.ps1 -Raw)
 .\lab\build\Invoke-Validation.ps1 -Label validation
+
+# AI parts: copy .env.example to .env and add an OpenRouter key first
+.\lab\build\deploy-triage.ps1          # triage worker
+.\lab\build\deploy-atlas.ps1           # HelpBot + ATLAS rules
+.\lab\build\Invoke-AtlasAttacks.ps1    # attack suite
 ```
 
 The Windows build expects the Windows 11 Enterprise Evaluation ISO and a `payloads` folder
 (Sysmon, the sysmon-modular config, the Wazuh agent MSI) under `D:\Labs\ISOs`. Secrets (SSH key,
-lab passwords) live in `D:\Labs\keys` and never enter this repo.
+lab passwords) live in `D:\Labs\keys`; the OpenRouter key lives in the gitignored `.env`. None of
+them enter this repo.
