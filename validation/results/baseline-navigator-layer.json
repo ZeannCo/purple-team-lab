@@ -1,0 +1,106 @@
+{
+  "name": "purple-team-lab baseline",
+  "versions": {
+    "attack": "19",
+    "navigator": "5.1.0",
+    "layer": "4.5"
+  },
+  "domain": "enterprise-attack",
+  "description": "Atomic Red Team tests on win11-ep vs. Wazuh 4.14 detections",
+  "techniques": [
+    {
+      "techniqueID": "T1003.001",
+      "score": 1,
+      "color": "#fdae6b",
+      "comment": "#2 alerted: 92213 (L15), 62123 (L12), 91822 (L12), 92657 (L6)",
+      "enabled": true,
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1053.005",
+      "score": 2,
+      "color": "#31a354",
+      "comment": "#2 detected: 92213 (L15), 91822 (L12), 92657 (L6), 62154 (L5)",
+      "enabled": true,
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1059.001",
+      "score": 2,
+      "color": "#31a354",
+      "comment": "#17 detected: 92213 (L15), 91822 (L12), 92057 (L12), 92657 (L6); #18 detected: 92213 (L15), 62123 (L12), 91822 (L12), 92657 (L6)",
+      "enabled": true,
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1087.001",
+      "score": 2,
+      "color": "#31a354",
+      "comment": "#8 detected: 92213 (L15), 91822 (L12), 92657 (L6), 91816 (L4)",
+      "enabled": true,
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1105",
+      "score": 2,
+      "color": "#31a354",
+      "comment": "#7 detected: 92213 (L15), 62123 (L12), 91822 (L12), 92657 (L6)",
+      "enabled": true,
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1136.001",
+      "score": 2,
+      "color": "#31a354",
+      "comment": "#4 detected: 92213 (L15), 91822 (L12), 92040 (L12), 60109 (L8)",
+      "enabled": true,
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1218.011",
+      "score": 1,
+      "color": "#fdae6b",
+      "comment": "#2 alerted: 92213 (L15), 62123 (L12), 91822 (L12), 92657 (L6)",
+      "enabled": true,
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1547.001",
+      "score": 2,
+      "color": "#31a354",
+      "comment": "#1 detected: 92213 (L15), 91822 (L12), 92041 (L10), 92302 (L6)",
+      "enabled": true,
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1685",
+      "score": 1,
+      "color": "#fdae6b",
+      "comment": "#19 alerted: 92213 (L15), 91822 (L12), 92657 (L6), 62154 (L5)",
+      "enabled": true,
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1685.005",
+      "score": 2,
+      "color": "#31a354",
+      "comment": "#1 detected: 92213 (L15), 91822 (L12), 92657 (L6), 62154 (L5)",
+      "enabled": true,
+      "showSubtechniques": true
+    }
+  ],
+  "legendItems": [
+    {
+      "label": "Detected",
+      "color": "#31a354"
+    },
+    {
+      "label": "Alert, not technique-mapped",
+      "color": "#fdae6b"
+    },
+    {
+      "label": "Missed",
+      "color": "#e6550d"
+    }
+  ]
+}

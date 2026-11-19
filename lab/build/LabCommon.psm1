@@ -67,4 +67,24 @@ public static class LabIsoWriter {
     [GC]::WaitForPendingFinalizers()
 }
 
-Export-ModuleMember -Function Get-VmwareTool, Protect-LabFile, Get-LabPassword, New-IsoFromFolder
+# Runs a PowerShell script on win11-ep through wazuh01 (WinRM over the lab segment);
+# the password is piped over SSH stdin, never put on a command line
+function Invoke-LabWindows {
+    param(
+        [Parameter(Mandatory)][string]$Script,
+        [string]$WazuhHost = '192.168.110.10',
+        [string]$KeysDir   = 'D:\Labs\keys',
+        [string]$Target    = '10.10.10.20',
+        [string]$Account   = 'win11-ep_labadmin'
+    )
+    $key = Join-Path $KeysDir 'purplelab_ed25519'
+    $password = Get-LabPassword (Join-Path $KeysDir 'lab-credentials.txt') $Account
+    $local = Join-Path $env:TEMP "lab-$([guid]::NewGuid().ToString('N')).ps1"
+    Set-Content $local $Script -Encoding utf8NoBOM
+    $remote = "/tmp/$(Split-Path $local -Leaf)"
+    scp -q -i $key (Join-Path $PSScriptRoot '..\..\validation\lab_winrm.py') $local "labadmin@${WazuhHost}:/tmp/"
+    Remove-Item $local
+    $password | ssh -i $key "labadmin@$WazuhHost" "read -r WIN_PASSWORD; export WIN_PASSWORD; /opt/purplelab/venv/bin/python /tmp/lab_winrm.py $remote --host $Target; rc=`$?; rm -f $remote; exit `$rc"
+}
+
+Export-ModuleMember -Function Get-VmwareTool, Protect-LabFile, Get-LabPassword, New-IsoFromFolder, Invoke-LabWindows

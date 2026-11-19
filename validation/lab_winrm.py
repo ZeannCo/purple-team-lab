@@ -14,7 +14,9 @@ import winrm
 
 
 def run(host: str, user: str, password: str, script: str):
-    session = winrm.Session(f"http://{host}:5985/wsman", auth=(user, password), transport="ntlm")
+    # Long timeouts: installs and some atomics run for minutes
+    session = winrm.Session(f"http://{host}:5985/wsman", auth=(user, password), transport="ntlm",
+                            operation_timeout_sec=120, read_timeout_sec=130)
     # Progress records come back as CLIXML noise on stderr; turn them off
     return session.run_ps("$ProgressPreference = 'SilentlyContinue'\n" + script)
 

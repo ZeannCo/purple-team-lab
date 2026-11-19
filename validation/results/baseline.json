@@ -1,0 +1,1685 @@
+{
+  "label": "baseline",
+  "started": "2026-11-19T12:31:52.810Z",
+  "results": [
+    {
+      "technique": "T1059.001",
+      "legacy": null,
+      "name": "PowerShell Command Execution (encoded command)",
+      "test": 17,
+      "guid": "a538de64-1c74-46ed-aa60-b995ed302598",
+      "expect": null,
+      "result": "detected",
+      "window": [
+        "2026-11-19T12:31:50.810Z",
+        "2026-11-19T12:33:08.332Z"
+      ],
+      "rules": [
+        {
+          "id": "92213",
+          "level": 15,
+          "description": "Executable file dropped in folder commonly used by malware",
+          "mitre": [
+            "T1105"
+          ],
+          "count": 2
+        },
+        {
+          "id": "91822",
+          "level": 12,
+          "description": "Powershell script used \"Invoke-command\" cmdlet to execute sub script",
+          "mitre": [
+            "T1059.001"
+          ],
+          "count": 4
+        },
+        {
+          "id": "92057",
+          "level": 12,
+          "description": "Powershell.exe spawned a powershell process which executed a base64 encoded command",
+          "mitre": [
+            "T1059.001"
+          ],
+          "count": 1
+        },
+        {
+          "id": "92657",
+          "level": 6,
+          "description": "Successful Remote Logon Detected - User:\\labadmin - NTLM authentication, possible pass-the-hash attack - Possible RDP connection. Verify that WAZUH01 is allowed to perform RDP connections",
+          "mitre": [
+            "T1550.002",
+            "T1078.002",
+            "T1021.001"
+          ],
+          "count": 1
+        },
+        {
+          "id": "91816",
+          "level": 4,
+          "description": "Powershell script querying system environment variables",
+          "mitre": [
+            "T1082"
+          ],
+          "count": 4
+        },
+        {
+          "id": "91819",
+          "level": 4,
+          "description": "Powershell script searching filesystem",
+          "mitre": [
+            "T1083"
+          ],
+          "count": 2
+        },
+        {
+          "id": "91820",
+          "level": 4,
+          "description": "Powershell script recursively collected files from a filesystem search",
+          "mitre": [
+            "T1083",
+            "T1119"
+          ],
+          "count": 3
+        },
+        {
+          "id": "92052",
+          "level": 4,
+          "description": "Windows command prompt started by an abnormal process",
+          "mitre": [
+            "T1059.003"
+          ],
+          "count": 1
+        },
+        {
+          "id": "92110",
+          "level": 4,
+          "description": "Detected WinRM activity from 10.10.10.10 to 10.10.10.20",
+          "mitre": [
+            "T1021.006"
+          ],
+          "count": 2
+        },
+        {
+          "id": "60137",
+          "level": 3,
+          "description": "Windows User Logoff",
+          "mitre": [],
+          "count": 1
+        },
+        {
+          "id": "67027",
+          "level": 3,
+          "description": "A process was created.",
+          "mitre": [],
+          "count": 16
+        },
+        {
+          "id": "67028",
+          "level": 3,
+          "description": "Special privileges assigned to new logon.",
+          "mitre": [
+            "T1484"
+          ],
+          "count": 1
+        },
+        {
+          "id": "92032",
+          "level": 3,
+          "description": "Suspicious Windows cmd shell execution",
+          "mitre": [
+            "T1087",
+            "T1059.003"
+          ],
+          "count": 2
+        }
+      ],
+      "executed": true,
+      "output_tail": "\r\n\r\nHello, from PowerShell!\r\n#< CLIXML\r\n<Objs Version=\"1.1.0.1\" xmlns=\"http://schemas.microsoft.com/powershell/2004/04\"><Obj S=\"progress\" RefId=\"0\"><TN \r\nRefId=\"0\"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N=\"SourceId\">1</I64><PR N=\"Record\"><AV>Preparing modules for first use.</AV><AI>0</AI><Nil \r\n/><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S=\"information\" RefId=\"1\"><TN \r\nRefId=\"1\"><T>System.Management.Automation.InformationRecord</T><T>System.Object</T></TN><ToString>Hello, from PowerShell!</ToString><Props><Obj N=\"MessageData\" RefId=\"2\"><TN \r\nRefId=\"2\"><T>System.Management.Automation.HostInformationMessage</T><T>System.Object</T></TN><ToString>Hello, from PowerShell!</ToString><Props><S N=\"Message\">Hello, from PowerShell!</S><B \r\nN=\"NoNewLine\">false</B><S N=\"ForegroundColor\">Gray</S><S N=\"BackgroundColor\">Black</S></Props></Obj><S N=\"Source\">Write-Host</S><DT N=\"TimeGenerated\">2026-11-19T20:32:03.3514326+08:00</DT><Obj \r\nN=\"Tags\" RefId=\"3\"><TN RefId=\"3\"><T>System.Collections.Generic.List`1[[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, \r\nPublicKeyToken=b77a5c561934e089]]</T><T>System.Object</T></TN><LST><S>PSHOST</S></LST></Obj><S N=\"User\">WIN11-EP\\labadmin</S><S N=\"Computer\">WIN11-EP</S><U32 N=\"ProcessId\">1660</U32><U32 \r\nN=\"NativeThreadId\">5844</U32><U32 N=\"ManagedThreadId\">9</U32></Props></Obj></Objs>\r\nExit code: 0\r\nDone executing test: \r\nT1059.001-17 PowerShell Command Execution",
+      "cleanup_tail": "PathToAtomicsFolder = C:\\AtomicRedTeam\\atomics\r\n\r\nExecuting cleanup for test: \r\nT1059.001-17 PowerShell Command Execution\r\n\r\nDone executing cleanup for test: \r\nT1059.001-17 PowerShell Command Execution"
+    },
+    {
+      "technique": "T1059.001",
+      "legacy": null,
+      "name": "PowerShell Invoke Known Malicious Cmdlets",
+      "test": 18,
+      "guid": "49eb9404-5e0f-4031-a179-b40f7be385e3",
+      "expect": null,
+      "result": "detected",
+      "window": [
+        "2026-11-19T12:33:26.618Z",
+        "2026-11-19T12:34:37.121Z"
+      ],
+      "rules": [
+        {
+          "id": "92213",
+          "level": 15,
+          "description": "Executable file dropped in folder commonly used by malware",
+          "mitre": [
+            "T1105"
+          ],
+          "count": 1
+        },
+        {
+          "id": "62123",
+          "level": 12,
+          "description": "Windows Defender: Antimalware platform detected  potentially unwanted software ()",
+          "mitre": [],
+          "count": 1
+        },
+        {
+          "id": "91822",
+          "level": 12,
+          "description": "Powershell script used \"Invoke-command\" cmdlet to execute sub script",
+          "mitre": [
+            "T1059.001"
+          ],
+          "count": 4
+        },
+        {
+          "id": "92657",
+          "level": 6,
+          "description": "Successful Remote Logon Detected - User:\\labadmin - NTLM authentication, possible pass-the-hash attack - Possible RDP connection. Verify that WAZUH01 is allowed to perform RDP connections",
+          "mitre": [
+            "T1550.002",
+            "T1078.002",
+            "T1021.001"
+          ],
+          "count": 1
+        },
+        {
+          "id": "62154",
+          "level": 5,
+          "description": "Windows Defender: Antimalware platform feature configuration changed",
+          "mitre": [],
+          "count": 3
+        },
+        {
+          "id": "91816",
+          "level": 4,
+          "description": "Powershell script querying system environment variables",
+          "mitre": [
+            "T1082"
+          ],
+          "count": 4
+        },
+        {
+          "id": "91819",
+          "level": 4,
+          "description": "Powershell script searching filesystem",
+          "mitre": [
+            "T1083"
+          ],
+          "count": 2
+        },
+        {
+          "id": "91820",
+          "level": 4,
+          "description": "Powershell script recursively collected files from a filesystem search",
+          "mitre": [
+            "T1083",
+            "T1119"
+          ],
+          "count": 3
+        },
+        {
+          "id": "92052",
+          "level": 4,
+          "description": "Windows command prompt started by an abnormal process",
+          "mitre": [
+            "T1059.003"
+          ],
+          "count": 1
+        },
+        {
+          "id": "92110",
+          "level": 4,
+          "description": "Detected WinRM activity from 10.10.10.10 to 10.10.10.20",
+          "mitre": [
+            "T1021.006"
+          ],
+          "count": 6
+        },
+        {
+          "id": "92154",
+          "level": 4,
+          "description": "Process loaded taskschd.dll module. May be used to create delayed malware execution",
+          "mitre": [
+            "T1053.005"
+          ],
+          "count": 1
+        },
+        {
+          "id": "60137",
+          "level": 3,
+          "description": "Windows User Logoff",
+          "mitre": [],
+          "count": 1
+        },
+        {
+          "id": "61104",
+          "level": 3,
+          "description": "Service startup type was changed",
+          "mitre": [],
+          "count": 1
+        },
+        {
+          "id": "62124",
+          "level": 3,
+          "description": "Windows Defender: Antimalware platform performed an action to protect you from potentially unwanted software ()",
+          "mitre": [],
+          "count": 1
+        },
+        {
+          "id": "67027",
+          "level": 3,
+          "description": "A process was created.",
+          "mitre": [],
+          "count": 13
+        },
+        {
+          "id": "67028",
+          "level": 3,
+          "description": "Special privileges assigned to new logon.",
+          "mitre": [
+            "T1484"
+          ],
+          "count": 1
+        },
+        {
+          "id": "92032",
+          "level": 3,
+          "description": "Suspicious Windows cmd shell execution",
+          "mitre": [
+            "T1087",
+            "T1059.003"
+          ],
+          "count": 1
+        }
+      ],
+      "executed": true,
+      "output_tail": "PathToAtomicsFolder = C:\\AtomicRedTeam\\atomics\r\n\r\nExecuting test: \r\nT1059.001-18 PowerShell Invoke Known Malicious Cmdlets\r\n\r\nException calling \"Start\" with \"0\" argument(s): \"Access is denied\"\r\nAt C:\\AtomicRedTeam\\invoke-atomicredteam\\Private\\Invoke-Process.ps1:45 char:17\r\n+                 $process.Start() > $null\r\n+                 ~~~~~~~~~~~~~~~~~~~~~~~~\r\n    + CategoryInfo          : NotSpecified: (:) [], MethodInvocationException\r\n    + FullyQualifiedErrorId : Win32Exception\r\n \r\nExit code: \r\nDone executing test: \r\nT1059.001-18 PowerShell Invoke Known Malicious Cmdlets",
+      "cleanup_tail": "PathToAtomicsFolder = C:\\AtomicRedTeam\\atomics\r\n\r\nExecuting cleanup for test: \r\nT1059.001-18 PowerShell Invoke Known Malicious Cmdlets\r\n\r\nDone executing cleanup for test: \r\nT1059.001-18 PowerShell Invoke Known Malicious Cmdlets"
+    },
+    {
+      "technique": "T1003.001",
+      "legacy": null,
+      "name": "Dump LSASS.exe Memory using comsvcs.dll",
+      "test": 2,
+      "guid": "2536dee2-12fb-459a-8c37-971844fa73be",
+      "expect": null,
+      "result": "alerted",
+      "window": [
+        "2026-11-19T12:34:56.977Z",
+        "2026-11-19T12:36:07.138Z"
+      ],
+      "rules": [
+        {
+          "id": "92213",
+          "level": 15,
+          "description": "Executable file dropped in folder commonly used by malware",
+          "mitre": [
+            "T1105"
+          ],
+          "count": 1
+        },
+        {
+          "id": "62123",
+          "level": 12,
+          "description": "Windows Defender: Antimalware platform detected  potentially unwanted software ()",
+          "mitre": [],
+          "count": 1
+        },
+        {
+          "id": "91822",
+          "level": 12,
+          "description": "Powershell script used \"Invoke-command\" cmdlet to execute sub script",
+          "mitre": [
+            "T1059.001"
+          ],
+          "count": 4
+        },
+        {
+          "id": "92657",
+          "level": 6,
+          "description": "Successful Remote Logon Detected - User:\\labadmin - NTLM authentication, possible pass-the-hash attack - Possible RDP connection. Verify that WAZUH01 is allowed to perform RDP connections",
+          "mitre": [
+            "T1550.002",
+            "T1078.002",
+            "T1021.001"
+          ],
+          "count": 1
+        },
+        {
+          "id": "62154",
+          "level": 5,
+          "description": "Windows Defender: Antimalware platform feature configuration changed",
+          "mitre": [],
+          "count": 2
+        },
+        {
+          "id": "91816",
+          "level": 4,
+          "description": "Powershell script querying system environment variables",
+          "mitre": [
+            "T1082"
+          ],
+          "count": 4
+        },
+        {
+          "id": "91819",
+          "level": 4,
+          "description": "Powershell script searching filesystem",
+          "mitre": [
+            "T1083"
+          ],
+          "count": 3
+        },
+        {
+          "id": "91820",
+          "level": 4,
+          "description": "Powershell script recursively collected files from a filesystem search",
+          "mitre": [
+            "T1083",
+            "T1119"
+          ],
+          "count": 3
+        },
+        {
+          "id": "92052",
+          "level": 4,
+          "description": "Windows command prompt started by an abnormal process",
+          "mitre": [
+            "T1059.003"
+          ],
+          "count": 1
+        },
+        {
+          "id": "92110",
+          "level": 4,
+          "description": "Detected WinRM activity from 10.10.10.10 to 10.10.10.20",
+          "mitre": [
+            "T1021.006"
+          ],
+          "count": 2
+        },
+        {
+          "id": "60137",
+          "level": 3,
+          "description": "Windows User Logoff",
+          "mitre": [],
+          "count": 1
+        },
+        {
+          "id": "62124",
+          "level": 3,
+          "description": "Windows Defender: Antimalware platform performed an action to protect you from potentially unwanted software ()",
+          "mitre": [],
+          "count": 1
+        },
+        {
+          "id": "67027",
+          "level": 3,
+          "description": "A process was created.",
+          "mitre": [],
+          "count": 9
+        },
+        {
+          "id": "67028",
+          "level": 3,
+          "description": "Special privileges assigned to new logon.",
+          "mitre": [
+            "T1484"
+          ],
+          "count": 1
+        },
+        {
+          "id": "92032",
+          "level": 3,
+          "description": "Suspicious Windows cmd shell execution",
+          "mitre": [
+            "T1087",
+            "T1059.003"
+          ],
+          "count": 1
+        }
+      ],
+      "executed": true,
+      "output_tail": "PathToAtomicsFolder = C:\\AtomicRedTeam\\atomics\r\n\r\nExecuting test: \r\nT1003.001-2 Dump LSASS.exe Memory using comsvcs.dll\r\n\r\nException calling \"Start\" with \"0\" argument(s): \"Access is denied\"\r\nAt C:\\AtomicRedTeam\\invoke-atomicredteam\\Private\\Invoke-Process.ps1:45 char:17\r\n+                 $process.Start() > $null\r\n+                 ~~~~~~~~~~~~~~~~~~~~~~~~\r\n    + CategoryInfo          : NotSpecified: (:) [], MethodInvocationException\r\n    + FullyQualifiedErrorId : Win32Exception\r\n \r\nExit code: \r\nDone executing test: \r\nT1003.001-2 Dump LSASS.exe Memory using comsvcs.dll",
+      "cleanup_tail": "PathToAtomicsFolder = C:\\AtomicRedTeam\\atomics\r\n\r\nExecuting cleanup for test: \r\nT1003.001-2 Dump LSASS.exe Memory using comsvcs.dll\r\n\r\nDone executing cleanup for test: \r\nT1003.001-2 Dump LSASS.exe Memory using comsvcs.dll"
+    },
+    {
+      "technique": "T1053.005",
+      "legacy": null,
+      "name": "Scheduled task Local",
+      "test": 2,
+      "guid": "42f53695-ad4a-4546-abb6-7d837f644a71",
+      "expect": null,
+      "result": "detected",
+      "window": [
+        "2026-11-19T12:36:27.461Z",
+        "2026-11-19T12:37:36.333Z"
+      ],
+      "rules": [
+        {
+          "id": "92213",
+          "level": 15,
+          "description": "Executable file dropped in folder commonly used by malware",
+          "mitre": [
+            "T1105"
+          ],
+          "count": 1
+        },
+        {
+          "id": "91822",
+          "level": 12,
+          "description": "Powershell script used \"Invoke-command\" cmdlet to execute sub script",
+          "mitre": [
+            "T1059.001"
+          ],
+          "count": 4
+        },
+        {
+          "id": "92657",
+          "level": 6,
+          "description": "Successful Remote Logon Detected - User:\\labadmin - NTLM authentication, possible pass-the-hash attack - Possible RDP connection. Verify that WAZUH01 is allowed to perform RDP connections",
+          "mitre": [
+            "T1550.002",
+            "T1078.002",
+            "T1021.001"
+          ],
+          "count": 1
+        },
+        {
+          "id": "62154",
+          "level": 5,
+          "description": "Windows Defender: Antimalware platform feature configuration changed",
+          "mitre": [],
+          "count": 1
+        },
+        {
+          "id": "60228",
+          "level": 4,
+          "description": "A scheduled task was created",
+          "mitre": [
+            "T1053"
+          ],
+          "count": 1
+        },
+        {
+          "id": "91816",
+          "level": 4,
+          "description": "Powershell script querying system environment variables",
+          "mitre": [
+            "T1082"
+          ],
+          "count": 4
+        },
+        {
+          "id": "91819",
+          "level": 4,
+          "description": "Powershell script searching filesystem",
+          "mitre": [
+            "T1083"
+          ],
+          "count": 2
+        },
+        {
+          "id": "91820",
+          "level": 4,
+          "description": "Powershell script recursively collected files from a filesystem search",
+          "mitre": [
+            "T1083",
+            "T1119"
+          ],
+          "count": 3
+        },
+        {
+          "id": "92004",
+          "level": 4,
+          "description": "Powershell process spawned Windows command shell instance",
+          "mitre": [
+            "T1059.003"
+          ],
+          "count": 1
+        },
+        {
+          "id": "92052",
+          "level": 4,
+          "description": "Windows command prompt started by an abnormal process",
+          "mitre": [
+            "T1059.003"
+          ],
+          "count": 1
+        },
+        {
+          "id": "92110",
+          "level": 4,
+          "description": "Detected WinRM activity from 10.10.10.10 to 10.10.10.20",
+          "mitre": [
+            "T1021.006"
+          ],
+          "count": 2
+        },
+        {
+          "id": "92154",
+          "level": 4,
+          "description": "Process loaded taskschd.dll module. May be used to create delayed malware execution",
+          "mitre": [
+            "T1053.005"
+          ],
+          "count": 1
+        },
+        {
+          "id": "60137",
+          "level": 3,
+          "description": "Windows User Logoff",
+          "mitre": [],
+          "count": 1
+        },
+        {
+          "id": "67027",
+          "level": 3,
+          "description": "A process was created.",
+          "mitre": [],
+          "count": 11
+        },
+        {
+          "id": "67028",
+          "level": 3,
+          "description": "Special privileges assigned to new logon.",
+          "mitre": [
+            "T1484"
+          ],
+          "count": 1
+        },
+        {
+          "id": "92032",
+          "level": 3,
+          "description": "Suspicious Windows cmd shell execution",
+          "mitre": [
+            "T1087",
+            "T1059.003"
+          ],
+          "count": 2
+        }
+      ],
+      "executed": true,
+      "output_tail": "PathToAtomicsFolder = C:\\AtomicRedTeam\\atomics\r\n\r\nExecuting test: \r\nT1053.005-2 Scheduled task Local\r\n\r\nSUCCESS: The scheduled task \"spawn\" has successfully been created.\r\nWARNING: Task may not run because /ST is earlier than current time.\r\nExit code: 0\r\nDone executing test: \r\nT1053.005-2 Scheduled task Local",
+      "cleanup_tail": "PathToAtomicsFolder = C:\\AtomicRedTeam\\atomics\r\n\r\nExecuting cleanup for test: \r\nT1053.005-2 Scheduled task Local\r\n\r\nDone executing cleanup for test: \r\nT1053.005-2 Scheduled task Local"
+    },
+    {
+      "technique": "T1547.001",
+      "legacy": null,
+      "name": "Reg Key Run",
+      "test": 1,
+      "guid": "e55be3fd-3521-4610-9d1a-e210e42dcf05",
+      "expect": null,
+      "result": "detected",
+      "window": [
+        "2026-11-19T12:37:54.316Z",
+        "2026-11-19T12:39:03.615Z"
+      ],
+      "rules": [
+        {
+          "id": "92213",
+          "level": 15,
+          "description": "Executable file dropped in folder commonly used by malware",
+          "mitre": [
+            "T1105"
+          ],
+          "count": 1
+        },
+        {
+          "id": "91822",
+          "level": 12,
+          "description": "Powershell script used \"Invoke-command\" cmdlet to execute sub script",
+          "mitre": [
+            "T1059.001"
+          ],
+          "count": 4
+        },
+        {
+          "id": "92041",
+          "level": 10,
+          "description": "Value added to registry key has Base64-like pattern",
+          "mitre": [
+            "T1027",
+            "T1112"
+          ],
+          "count": 1
+        },
+        {
+          "id": "92302",
+          "level": 6,
+          "description": "Registry entry to be executed on next logon was modified using command line application reg.exe",
+          "mitre": [
+            "T1547.001"
+          ],
+          "count": 1
+        },
+        {
+          "id": "92657",
+          "level": 6,
+          "description": "Successful Remote Logon Detected - User:\\labadmin - NTLM authentication, possible pass-the-hash attack - Possible RDP connection. Verify that WAZUH01 is allowed to perform RDP connections",
+          "mitre": [
+            "T1550.002",
+            "T1078.002",
+            "T1021.001"
+          ],
+          "count": 1
+        },
+        {
+          "id": "91816",
+          "level": 4,
+          "description": "Powershell script querying system environment variables",
+          "mitre": [
+            "T1082"
+          ],
+          "count": 4
+        },
+        {
+          "id": "91819",
+          "level": 4,
+          "description": "Powershell script searching filesystem",
+          "mitre": [
+            "T1083"
+          ],
+          "count": 2
+        },
+        {
+          "id": "91820",
+          "level": 4,
+          "description": "Powershell script recursively collected files from a filesystem search",
+          "mitre": [
+            "T1083",
+            "T1119"
+          ],
+          "count": 3
+        },
+        {
+          "id": "92052",
+          "level": 4,
+          "description": "Windows command prompt started by an abnormal process",
+          "mitre": [
+            "T1059.003"
+          ],
+          "count": 2
+        },
+        {
+          "id": "92110",
+          "level": 4,
+          "description": "Detected WinRM activity from 10.10.10.10 to 10.10.10.20",
+          "mitre": [
+            "T1021.006"
+          ],
+          "count": 2
+        },
+        {
+          "id": "92154",
+          "level": 4,
+          "description": "Process loaded taskschd.dll module. May be used to create delayed malware execution",
+          "mitre": [
+            "T1053.005"
+          ],
+          "count": 1
+        },
+        {
+          "id": "60137",
+          "level": 3,
+          "description": "Windows User Logoff",
+          "mitre": [],
+          "count": 1
+        },
+        {
+          "id": "67027",
+          "level": 3,
+          "description": "A process was created.",
+          "mitre": [],
+          "count": 14
+        },
+        {
+          "id": "67028",
+          "level": 3,
+          "description": "Special privileges assigned to new logon.",
+          "mitre": [
+            "T1484"
+          ],
+          "count": 1
+        },
+        {
+          "id": "92032",
+          "level": 3,
+          "description": "Suspicious Windows cmd shell execution",
+          "mitre": [
+            "T1087",
+            "T1059.003"
+          ],
+          "count": 1
+        }
+      ],
+      "executed": true,
+      "output_tail": "PathToAtomicsFolder = C:\\AtomicRedTeam\\atomics\r\n\r\nExecuting test: \r\nT1547.001-1 Reg Key Run\r\n\r\nThe operation completed successfully.\r\nExit code: 0\r\nDone executing test: \r\nT1547.001-1 Reg Key Run",
+      "cleanup_tail": "PathToAtomicsFolder = C:\\AtomicRedTeam\\atomics\r\n\r\nExecuting cleanup for test: \r\nT1547.001-1 Reg Key Run\r\n\r\nDone executing cleanup for test: \r\nT1547.001-1 Reg Key Run"
+    },
+    {
+      "technique": "T1218.011",
+      "legacy": null,
+      "name": "Rundll32 execute VBscript command",
+      "test": 2,
+      "guid": "638730e7-7aed-43dc-bf8c-8117f805f5bb",
+      "expect": null,
+      "result": "alerted",
+      "window": [
+        "2026-11-19T12:39:21.316Z",
+        "2026-11-19T12:40:29.524Z"
+      ],
+      "rules": [
+        {
+          "id": "92213",
+          "level": 15,
+          "description": "Executable file dropped in folder commonly used by malware",
+          "mitre": [
+            "T1105"
+          ],
+          "count": 1
+        },
+        {
+          "id": "62123",
+          "level": 12,
+          "description": "Windows Defender: Antimalware platform detected  potentially unwanted software ()",
+          "mitre": [],
+          "count": 1
+        },
+        {
+          "id": "91822",
+          "level": 12,
+          "description": "Powershell script used \"Invoke-command\" cmdlet to execute sub script",
+          "mitre": [
+            "T1059.001"
+          ],
+          "count": 4
+        },
+        {
+          "id": "92657",
+          "level": 6,
+          "description": "Successful Remote Logon Detected - User:\\labadmin - NTLM authentication, possible pass-the-hash attack - Possible RDP connection. Verify that WAZUH01 is allowed to perform RDP connections",
+          "mitre": [
+            "T1550.002",
+            "T1078.002",
+            "T1021.001"
+          ],
+          "count": 1
+        },
+        {
+          "id": "62154",
+          "level": 5,
+          "description": "Windows Defender: Antimalware platform feature configuration changed",
+          "mitre": [],
+          "count": 2
+        },
+        {
+          "id": "91816",
+          "level": 4,
+          "description": "Powershell script querying system environment variables",
+          "mitre": [
+            "T1082"
+          ],
+          "count": 4
+        },
+        {
+          "id": "91819",
+          "level": 4,
+          "description": "Powershell script searching filesystem",
+          "mitre": [
+            "T1083"
+          ],
+          "count": 2
+        },
+        {
+          "id": "91820",
+          "level": 4,
+          "description": "Powershell script recursively collected files from a filesystem search",
+          "mitre": [
+            "T1083",
+            "T1119"
+          ],
+          "count": 3
+        },
+        {
+          "id": "92052",
+          "level": 4,
+          "description": "Windows command prompt started by an abnormal process",
+          "mitre": [
+            "T1059.003"
+          ],
+          "count": 1
+        },
+        {
+          "id": "92110",
+          "level": 4,
+          "description": "Detected WinRM activity from 10.10.10.10 to 10.10.10.20",
+          "mitre": [
+            "T1021.006"
+          ],
+          "count": 6
+        },
+        {
+          "id": "60137",
+          "level": 3,
+          "description": "Windows User Logoff",
+          "mitre": [],
+          "count": 1
+        },
+        {
+          "id": "61104",
+          "level": 3,
+          "description": "Service startup type was changed",
+          "mitre": [],
+          "count": 1
+        },
+        {
+          "id": "62124",
+          "level": 3,
+          "description": "Windows Defender: Antimalware platform performed an action to protect you from potentially unwanted software ()",
+          "mitre": [],
+          "count": 1
+        },
+        {
+          "id": "67027",
+          "level": 3,
+          "description": "A process was created.",
+          "mitre": [],
+          "count": 10
+        },
+        {
+          "id": "67028",
+          "level": 3,
+          "description": "Special privileges assigned to new logon.",
+          "mitre": [
+            "T1484"
+          ],
+          "count": 1
+        },
+        {
+          "id": "92032",
+          "level": 3,
+          "description": "Suspicious Windows cmd shell execution",
+          "mitre": [
+            "T1087",
+            "T1059.003"
+          ],
+          "count": 1
+        }
+      ],
+      "executed": true,
+      "output_tail": "PathToAtomicsFolder = C:\\AtomicRedTeam\\atomics\r\n\r\nExecuting test: \r\nT1218.011-2 Rundll32 execute VBscript command\r\n\r\nException calling \"Start\" with \"0\" argument(s): \"Access is denied\"\r\nAt C:\\AtomicRedTeam\\invoke-atomicredteam\\Private\\Invoke-Process.ps1:45 char:17\r\n+                 $process.Start() > $null\r\n+                 ~~~~~~~~~~~~~~~~~~~~~~~~\r\n    + CategoryInfo          : NotSpecified: (:) [], MethodInvocationException\r\n    + FullyQualifiedErrorId : Win32Exception\r\n \r\nExit code: \r\nDone executing test: \r\nT1218.011-2 Rundll32 execute VBscript command",
+      "cleanup_tail": "PathToAtomicsFolder = C:\\AtomicRedTeam\\atomics\r\n\r\nExecuting cleanup for test: \r\nT1218.011-2 Rundll32 execute VBscript command\r\n\r\nDone executing cleanup for test: \r\nT1218.011-2 Rundll32 execute VBscript command"
+    },
+    {
+      "technique": "T1105",
+      "legacy": null,
+      "name": "certutil download (urlcache)",
+      "test": 7,
+      "guid": "dd3b61dd-7bbc-48cd-ab51-49ad1a776df0",
+      "expect": null,
+      "result": "detected",
+      "window": [
+        "2026-11-19T12:40:46.689Z",
+        "2026-11-19T12:41:55.336Z"
+      ],
+      "rules": [
+        {
+          "id": "92213",
+          "level": 15,
+          "description": "Executable file dropped in folder commonly used by malware",
+          "mitre": [
+            "T1105"
+          ],
+          "count": 1
+        },
+        {
+          "id": "62123",
+          "level": 12,
+          "description": "Windows Defender: Antimalware platform detected  potentially unwanted software ()",
+          "mitre": [],
+          "count": 1
+        },
+        {
+          "id": "91822",
+          "level": 12,
+          "description": "Powershell script used \"Invoke-command\" cmdlet to execute sub script",
+          "mitre": [
+            "T1059.001"
+          ],
+          "count": 4
+        },
+        {
+          "id": "92657",
+          "level": 6,
+          "description": "Successful Remote Logon Detected - User:\\labadmin - NTLM authentication, possible pass-the-hash attack - Possible RDP connection. Verify that WAZUH01 is allowed to perform RDP connections",
+          "mitre": [
+            "T1550.002",
+            "T1078.002",
+            "T1021.001"
+          ],
+          "count": 1
+        },
+        {
+          "id": "62154",
+          "level": 5,
+          "description": "Windows Defender: Antimalware platform feature configuration changed",
+          "mitre": [],
+          "count": 2
+        },
+        {
+          "id": "91816",
+          "level": 4,
+          "description": "Powershell script querying system environment variables",
+          "mitre": [
+            "T1082"
+          ],
+          "count": 4
+        },
+        {
+          "id": "91819",
+          "level": 4,
+          "description": "Powershell script searching filesystem",
+          "mitre": [
+            "T1083"
+          ],
+          "count": 2
+        },
+        {
+          "id": "91820",
+          "level": 4,
+          "description": "Powershell script recursively collected files from a filesystem search",
+          "mitre": [
+            "T1083",
+            "T1119"
+          ],
+          "count": 3
+        },
+        {
+          "id": "92052",
+          "level": 4,
+          "description": "Windows command prompt started by an abnormal process",
+          "mitre": [
+            "T1059.003"
+          ],
+          "count": 1
+        },
+        {
+          "id": "92110",
+          "level": 4,
+          "description": "Detected WinRM activity from 10.10.10.10 to 10.10.10.20",
+          "mitre": [
+            "T1021.006"
+          ],
+          "count": 2
+        },
+        {
+          "id": "60137",
+          "level": 3,
+          "description": "Windows User Logoff",
+          "mitre": [],
+          "count": 1
+        },
+        {
+          "id": "62124",
+          "level": 3,
+          "description": "Windows Defender: Antimalware platform performed an action to protect you from potentially unwanted software ()",
+          "mitre": [],
+          "count": 1
+        },
+        {
+          "id": "67027",
+          "level": 3,
+          "description": "A process was created.",
+          "mitre": [],
+          "count": 9
+        },
+        {
+          "id": "67028",
+          "level": 3,
+          "description": "Special privileges assigned to new logon.",
+          "mitre": [
+            "T1484"
+          ],
+          "count": 1
+        },
+        {
+          "id": "92032",
+          "level": 3,
+          "description": "Suspicious Windows cmd shell execution",
+          "mitre": [
+            "T1087",
+            "T1059.003"
+          ],
+          "count": 1
+        }
+      ],
+      "executed": true,
+      "output_tail": "PathToAtomicsFolder = C:\\AtomicRedTeam\\atomics\r\n\r\nExecuting test: \r\nT1105-7 certutil download (urlcache)\r\n\r\nException calling \"Start\" with \"0\" argument(s): \"Access is denied\"\r\nAt C:\\AtomicRedTeam\\invoke-atomicredteam\\Private\\Invoke-Process.ps1:45 char:17\r\n+                 $process.Start() > $null\r\n+                 ~~~~~~~~~~~~~~~~~~~~~~~~\r\n    + CategoryInfo          : NotSpecified: (:) [], MethodInvocationException\r\n    + FullyQualifiedErrorId : Win32Exception\r\n \r\nExit code: \r\nDone executing test: \r\nT1105-7 certutil download (urlcache)",
+      "cleanup_tail": "PathToAtomicsFolder = C:\\AtomicRedTeam\\atomics\r\n\r\nExecuting cleanup for test: \r\nT1105-7 certutil download (urlcache)\r\n\r\nDone executing cleanup for test: \r\nT1105-7 certutil download (urlcache)"
+    },
+    {
+      "technique": "T1136.001",
+      "legacy": null,
+      "name": "Create a new user in a command prompt",
+      "test": 4,
+      "guid": "6657864e-0323-4206-9344-ac9cd7265a4f",
+      "expect": null,
+      "result": "detected",
+      "window": [
+        "2026-11-19T12:42:12.767Z",
+        "2026-11-19T12:43:20.237Z"
+      ],
+      "rules": [
+        {
+          "id": "92213",
+          "level": 15,
+          "description": "Executable file dropped in folder commonly used by malware",
+          "mitre": [
+            "T1105"
+          ],
+          "count": 1
+        },
+        {
+          "id": "91822",
+          "level": 12,
+          "description": "Powershell script used \"Invoke-command\" cmdlet to execute sub script",
+          "mitre": [
+            "T1059.001"
+          ],
+          "count": 4
+        },
+        {
+          "id": "92040",
+          "level": 12,
+          "description": "net1.exe executed a user creation command",
+          "mitre": [
+            "T1136.001"
+          ],
+          "count": 1
+        },
+        {
+          "id": "60109",
+          "level": 8,
+          "description": "User account enabled or created",
+          "mitre": [
+            "T1098"
+          ],
+          "count": 2
+        },
+        {
+          "id": "60110",
+          "level": 8,
+          "description": "User account changed",
+          "mitre": [
+            "T1098"
+          ],
+          "count": 1
+        },
+        {
+          "id": "92657",
+          "level": 6,
+          "description": "Successful Remote Logon Detected - User:\\labadmin - NTLM authentication, possible pass-the-hash attack - Possible RDP connection. Verify that WAZUH01 is allowed to perform RDP connections",
+          "mitre": [
+            "T1550.002",
+            "T1078.002",
+            "T1021.001"
+          ],
+          "count": 1
+        },
+        {
+          "id": "60160",
+          "level": 5,
+          "description": "Domain Users Group Changed",
+          "mitre": [
+            "T1484"
+          ],
+          "count": 1
+        },
+        {
+          "id": "60170",
+          "level": 5,
+          "description": "Users Group Changed",
+          "mitre": [
+            "T1484"
+          ],
+          "count": 1
+        },
+        {
+          "id": "91816",
+          "level": 4,
+          "description": "Powershell script querying system environment variables",
+          "mitre": [
+            "T1082"
+          ],
+          "count": 4
+        },
+        {
+          "id": "91819",
+          "level": 4,
+          "description": "Powershell script searching filesystem",
+          "mitre": [
+            "T1083"
+          ],
+          "count": 2
+        },
+        {
+          "id": "91820",
+          "level": 4,
+          "description": "Powershell script recursively collected files from a filesystem search",
+          "mitre": [
+            "T1083",
+            "T1119"
+          ],
+          "count": 3
+        },
+        {
+          "id": "92052",
+          "level": 4,
+          "description": "Windows command prompt started by an abnormal process",
+          "mitre": [
+            "T1059.003"
+          ],
+          "count": 2
+        },
+        {
+          "id": "92110",
+          "level": 4,
+          "description": "Detected WinRM activity from 10.10.10.10 to 10.10.10.20",
+          "mitre": [
+            "T1021.006"
+          ],
+          "count": 2
+        },
+        {
+          "id": "60137",
+          "level": 3,
+          "description": "Windows User Logoff",
+          "mitre": [],
+          "count": 1
+        },
+        {
+          "id": "67027",
+          "level": 3,
+          "description": "A process was created.",
+          "mitre": [],
+          "count": 12
+        },
+        {
+          "id": "67028",
+          "level": 3,
+          "description": "Special privileges assigned to new logon.",
+          "mitre": [
+            "T1484"
+          ],
+          "count": 1
+        },
+        {
+          "id": "92032",
+          "level": 3,
+          "description": "Suspicious Windows cmd shell execution",
+          "mitre": [
+            "T1087",
+            "T1059.003"
+          ],
+          "count": 1
+        },
+        {
+          "id": "92036",
+          "level": 3,
+          "description": "A C:\\\\Windows\\\\System32\\\\net.exe binary was started by a Windows cmd shell",
+          "mitre": [
+            "T1059.003",
+            "T1574.001"
+          ],
+          "count": 1
+        }
+      ],
+      "executed": true,
+      "output_tail": "PathToAtomicsFolder = C:\\AtomicRedTeam\\atomics\r\n\r\nExecuting test: \r\nT1136.001-4 Create a new user in a command prompt\r\n\r\nThe command completed successfully.\r\nExit code: 0\r\nDone executing test: \r\nT1136.001-4 Create a new user in a command prompt",
+      "cleanup_tail": "PathToAtomicsFolder = C:\\AtomicRedTeam\\atomics\r\n\r\nExecuting cleanup for test: \r\nT1136.001-4 Create a new user in a command prompt\r\n\r\nDone executing cleanup for test: \r\nT1136.001-4 Create a new user in a command prompt"
+    },
+    {
+      "technique": "T1087.001",
+      "legacy": null,
+      "name": "Enumerate all accounts on Windows (Local)",
+      "test": 8,
+      "guid": "80887bec-5a9b-4efc-a81d-f83eb2eb32ab",
+      "expect": null,
+      "result": "detected",
+      "window": [
+        "2026-11-19T12:43:37.121Z",
+        "2026-11-19T12:44:44.046Z"
+      ],
+      "rules": [
+        {
+          "id": "92213",
+          "level": 15,
+          "description": "Executable file dropped in folder commonly used by malware",
+          "mitre": [
+            "T1105"
+          ],
+          "count": 1
+        },
+        {
+          "id": "91822",
+          "level": 12,
+          "description": "Powershell script used \"Invoke-command\" cmdlet to execute sub script",
+          "mitre": [
+            "T1059.001"
+          ],
+          "count": 4
+        },
+        {
+          "id": "92657",
+          "level": 6,
+          "description": "Successful Remote Logon Detected - User:\\labadmin - NTLM authentication, possible pass-the-hash attack - Possible RDP connection. Verify that WAZUH01 is allowed to perform RDP connections",
+          "mitre": [
+            "T1550.002",
+            "T1078.002",
+            "T1021.001"
+          ],
+          "count": 1
+        },
+        {
+          "id": "91816",
+          "level": 4,
+          "description": "Powershell script querying system environment variables",
+          "mitre": [
+            "T1082"
+          ],
+          "count": 4
+        },
+        {
+          "id": "91819",
+          "level": 4,
+          "description": "Powershell script searching filesystem",
+          "mitre": [
+            "T1083"
+          ],
+          "count": 2
+        },
+        {
+          "id": "91820",
+          "level": 4,
+          "description": "Powershell script recursively collected files from a filesystem search",
+          "mitre": [
+            "T1083",
+            "T1119"
+          ],
+          "count": 3
+        },
+        {
+          "id": "92052",
+          "level": 4,
+          "description": "Windows command prompt started by an abnormal process",
+          "mitre": [
+            "T1059.003"
+          ],
+          "count": 2
+        },
+        {
+          "id": "92110",
+          "level": 4,
+          "description": "Detected WinRM activity from 10.10.10.10 to 10.10.10.20",
+          "mitre": [
+            "T1021.006"
+          ],
+          "count": 2
+        },
+        {
+          "id": "92154",
+          "level": 4,
+          "description": "Process loaded taskschd.dll module. May be used to create delayed malware execution",
+          "mitre": [
+            "T1053.005"
+          ],
+          "count": 1
+        },
+        {
+          "id": "60137",
+          "level": 3,
+          "description": "Windows User Logoff",
+          "mitre": [],
+          "count": 1
+        },
+        {
+          "id": "67027",
+          "level": 3,
+          "description": "A process was created.",
+          "mitre": [],
+          "count": 17
+        },
+        {
+          "id": "67028",
+          "level": 3,
+          "description": "Special privileges assigned to new logon.",
+          "mitre": [
+            "T1484"
+          ],
+          "count": 1
+        },
+        {
+          "id": "92031",
+          "level": 3,
+          "description": "Discovery activity executed",
+          "mitre": [
+            "T1087"
+          ],
+          "count": 3
+        },
+        {
+          "id": "92032",
+          "level": 3,
+          "description": "Suspicious Windows cmd shell execution",
+          "mitre": [
+            "T1087",
+            "T1059.003"
+          ],
+          "count": 2
+        },
+        {
+          "id": "92036",
+          "level": 3,
+          "description": "A C:\\\\Windows\\\\System32\\\\net.exe binary was started by a Windows cmd shell",
+          "mitre": [
+            "T1059.003",
+            "T1574.001"
+          ],
+          "count": 3
+        }
+      ],
+      "executed": true,
+      "output_tail": "\nlabadmin                 WDAGUtilityAccount       \r\nThe command completed with one or more errors.\r\n Volume in drive C is Windows\r\n Volume Serial Number is 5622-38AC\r\n Directory of c:\\Users\r\n11/19/2026  07:43 PM    <DIR>          .\r\n11/19/2026  07:32 PM    <DIR>          labadmin\r\n11/19/2026  07:32 PM    <DIR>          Public\r\n               0 File(s)              0 bytes\r\n               3 Dir(s)  45,384,806,400 bytes free\r\nCurrently stored credentials:\r\n* NONE *\r\nAlias name     Users\r\nComment        Users are prevented from making accidental or intentional system-wide changes and can run most applications\r\nMembers\r\n-------------------------------------------------------------------------------\r\nlabadmin\r\nNT AUTHORITY\\Authenticated Users\r\nNT AUTHORITY\\INTERACTIVE\r\nThe command completed successfully.\r\nAliases for \\\\WIN11-EP\r\n-------------------------------------------------------------------------------\r\n*Access Control Assistance Operators\r\n*Administrators\r\n*Backup Operators\r\n*Cryptographic Operators\r\n*Device Owners\r\n*Distributed COM Users\r\n*Event Log Readers\r\n*Guests\r\n*Hyper-V Administrators\r\n*IIS_IUSRS\r\n*Network Configuration Operators\r\n*OpenSSH Users\r\n*Performance Log Users\r\n*Performance Monitor Users\r\n*Power Users\r\n*Remote Desktop Users\r\n*Remote Management Users\r\n*Replicator\r\n*System Managed Accounts Group\r\n*User Mode Hardware Operators\r\n*Users\r\nThe command completed successfully.\r\nExit code: 0\r\nDone executing test: \r\nT1087.001-8 Enumerate all accounts on Windows (Local)",
+      "cleanup_tail": "PathToAtomicsFolder = C:\\AtomicRedTeam\\atomics\r\n\r\nExecuting cleanup for test: \r\nT1087.001-8 Enumerate all accounts on Windows (Local)\r\n\r\nDone executing cleanup for test: \r\nT1087.001-8 Enumerate all accounts on Windows (Local)"
+    },
+    {
+      "technique": "T1685.005",
+      "legacy": "T1070.001",
+      "name": "Clear Logs (Security)",
+      "test": 1,
+      "guid": "e6abb60e-26b8-41da-8aae-0c35174b0967",
+      "expect": null,
+      "result": "detected",
+      "window": [
+        "2026-11-19T12:45:00.785Z",
+        "2026-11-19T12:46:07.690Z"
+      ],
+      "rules": [
+        {
+          "id": "92213",
+          "level": 15,
+          "description": "Executable file dropped in folder commonly used by malware",
+          "mitre": [
+            "T1105"
+          ],
+          "count": 1
+        },
+        {
+          "id": "91822",
+          "level": 12,
+          "description": "Powershell script used \"Invoke-command\" cmdlet to execute sub script",
+          "mitre": [
+            "T1059.001"
+          ],
+          "count": 4
+        },
+        {
+          "id": "92657",
+          "level": 6,
+          "description": "Successful Remote Logon Detected - User:\\labadmin - NTLM authentication, possible pass-the-hash attack - Possible RDP connection. Verify that WAZUH01 is allowed to perform RDP connections",
+          "mitre": [
+            "T1550.002",
+            "T1078.002",
+            "T1021.001"
+          ],
+          "count": 1
+        },
+        {
+          "id": "62154",
+          "level": 5,
+          "description": "Windows Defender: Antimalware platform feature configuration changed",
+          "mitre": [],
+          "count": 2
+        },
+        {
+          "id": "63103",
+          "level": 5,
+          "description": "The audit log was cleared",
+          "mitre": [
+            "T1070"
+          ],
+          "count": 1
+        },
+        {
+          "id": "91816",
+          "level": 4,
+          "description": "Powershell script querying system environment variables",
+          "mitre": [
+            "T1082"
+          ],
+          "count": 4
+        },
+        {
+          "id": "91819",
+          "level": 4,
+          "description": "Powershell script searching filesystem",
+          "mitre": [
+            "T1083"
+          ],
+          "count": 2
+        },
+        {
+          "id": "91820",
+          "level": 4,
+          "description": "Powershell script recursively collected files from a filesystem search",
+          "mitre": [
+            "T1083",
+            "T1119"
+          ],
+          "count": 3
+        },
+        {
+          "id": "92052",
+          "level": 4,
+          "description": "Windows command prompt started by an abnormal process",
+          "mitre": [
+            "T1059.003"
+          ],
+          "count": 2
+        },
+        {
+          "id": "92110",
+          "level": 4,
+          "description": "Detected WinRM activity from 10.10.10.10 to 10.10.10.20",
+          "mitre": [
+            "T1021.006"
+          ],
+          "count": 2
+        },
+        {
+          "id": "60137",
+          "level": 3,
+          "description": "Windows User Logoff",
+          "mitre": [],
+          "count": 1
+        },
+        {
+          "id": "67027",
+          "level": 3,
+          "description": "A process was created.",
+          "mitre": [],
+          "count": 11
+        },
+        {
+          "id": "67028",
+          "level": 3,
+          "description": "Special privileges assigned to new logon.",
+          "mitre": [
+            "T1484"
+          ],
+          "count": 1
+        },
+        {
+          "id": "92032",
+          "level": 3,
+          "description": "Suspicious Windows cmd shell execution",
+          "mitre": [
+            "T1087",
+            "T1059.003"
+          ],
+          "count": 2
+        }
+      ],
+      "executed": true,
+      "output_tail": "PathToAtomicsFolder = C:\\AtomicRedTeam\\atomics\r\n\r\nExecuting test: \r\nT1685.005-1 Clear Logs\r\n\r\nExit code: 0\r\nDone executing test: \r\nT1685.005-1 Clear Logs",
+      "cleanup_tail": "PathToAtomicsFolder = C:\\AtomicRedTeam\\atomics\r\n\r\nExecuting cleanup for test: \r\nT1685.005-1 Clear Logs\r\n\r\nDone executing cleanup for test: \r\nT1685.005-1 Clear Logs"
+    },
+    {
+      "technique": "T1685",
+      "legacy": "T1562.001",
+      "name": "Tamper with Windows Defender ATP PowerShell",
+      "test": 19,
+      "guid": "6b8df440-51ec-4d53-bf83-899591c9b5d7",
+      "expect": null,
+      "result": "alerted",
+      "window": [
+        "2026-11-19T12:46:24.525Z",
+        "2026-11-19T12:47:35.177Z"
+      ],
+      "rules": [
+        {
+          "id": "92213",
+          "level": 15,
+          "description": "Executable file dropped in folder commonly used by malware",
+          "mitre": [
+            "T1105"
+          ],
+          "count": 2
+        },
+        {
+          "id": "91822",
+          "level": 12,
+          "description": "Powershell script used \"Invoke-command\" cmdlet to execute sub script",
+          "mitre": [
+            "T1059.001"
+          ],
+          "count": 4
+        },
+        {
+          "id": "92657",
+          "level": 6,
+          "description": "Successful Remote Logon Detected - User:\\labadmin - NTLM authentication, possible pass-the-hash attack - Possible RDP connection. Verify that WAZUH01 is allowed to perform RDP connections",
+          "mitre": [
+            "T1550.002",
+            "T1078.002",
+            "T1021.001"
+          ],
+          "count": 1
+        },
+        {
+          "id": "62154",
+          "level": 5,
+          "description": "Windows Defender: Antimalware platform feature configuration changed",
+          "mitre": [],
+          "count": 1
+        },
+        {
+          "id": "91816",
+          "level": 4,
+          "description": "Powershell script querying system environment variables",
+          "mitre": [
+            "T1082"
+          ],
+          "count": 4
+        },
+        {
+          "id": "91819",
+          "level": 4,
+          "description": "Powershell script searching filesystem",
+          "mitre": [
+            "T1083"
+          ],
+          "count": 2
+        },
+        {
+          "id": "91820",
+          "level": 4,
+          "description": "Powershell script recursively collected files from a filesystem search",
+          "mitre": [
+            "T1083",
+            "T1119"
+          ],
+          "count": 3
+        },
+        {
+          "id": "92027",
+          "level": 4,
+          "description": "Powershell process spawned powershell instance",
+          "mitre": [
+            "T1059.001"
+          ],
+          "count": 1
+        },
+        {
+          "id": "92052",
+          "level": 4,
+          "description": "Windows command prompt started by an abnormal process",
+          "mitre": [
+            "T1059.003"
+          ],
+          "count": 1
+        },
+        {
+          "id": "92110",
+          "level": 4,
+          "description": "Detected WinRM activity from 10.10.10.10 to 10.10.10.20",
+          "mitre": [
+            "T1021.006"
+          ],
+          "count": 2
+        },
+        {
+          "id": "60137",
+          "level": 3,
+          "description": "Windows User Logoff",
+          "mitre": [],
+          "count": 1
+        },
+        {
+          "id": "67027",
+          "level": 3,
+          "description": "A process was created.",
+          "mitre": [],
+          "count": 11
+        },
+        {
+          "id": "67028",
+          "level": 3,
+          "description": "Special privileges assigned to new logon.",
+          "mitre": [
+            "T1484"
+          ],
+          "count": 1
+        },
+        {
+          "id": "92032",
+          "level": 3,
+          "description": "Suspicious Windows cmd shell execution",
+          "mitre": [
+            "T1087",
+            "T1059.003"
+          ],
+          "count": 1
+        }
+      ],
+      "executed": true,
+      "output_tail": "PathToAtomicsFolder = C:\\AtomicRedTeam\\atomics\r\n\r\nExecuting test: \r\nT1685-19 Tamper with Windows Defender ATP PowerShell\r\n\r\nExit code: 0\r\nDone executing test: \r\nT1685-19 Tamper with Windows Defender ATP PowerShell",
+      "cleanup_tail": "PathToAtomicsFolder = C:\\AtomicRedTeam\\atomics\r\n\r\nExecuting cleanup for test: \r\nT1685-19 Tamper with Windows Defender ATP PowerShell\r\n\r\nDone executing cleanup for test: \r\nT1685-19 Tamper with Windows Defender ATP PowerShell"
+    }
+  ]
+}
