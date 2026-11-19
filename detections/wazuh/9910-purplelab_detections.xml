@@ -1,0 +1,206 @@
+<!--
+  Custom detections for the gaps found in the baseline run (validation/results/baseline.md).
+  Each rule is proven by the atomic test listed above it (validation/tests.yml) and by the
+  captured events in tests/logtest/cases/.
+  ATT&CK: the v19 ID is used where Atomic Red Team moved the technique; the pre-v19 ID is kept
+  alongside it so the rule lines up with Wazuh 4.14's built-in tagging.
+  IDs 100110-100299.
+-->
+<group name="purplelab,attack,">
+
+  <!-- T1003.001 (atomic #2): rundll32 C:\windows\System32\comsvcs.dll, MiniDump <lsass pid> <file> full
+       Baseline: only Windows Defender reacted (62123, no ATT&CK tag). -->
+  <rule id="100110" level="14">
+    <if_group>sysmon_event1</if_group>
+    <field name="win.eventdata.originalFileName" type="pcre2">(?i)^RUNDLL32\.EXE$</field>
+    <field name="win.eventdata.commandLine" type="pcre2">(?i)comsvcs(\.dll)?["']?\s*,?\s*(MiniDump|#\+?24)\b</field>
+    <description>LSASS memory dump attempt: rundll32 calling comsvcs.dll MiniDump</description>
+    <mitre>
+      <id>T1003.001</id>
+    </mitre>
+  </rule>
+
+  <rule id="100111" level="12">
+    <if_sid>91802</if_sid>
+    <field name="win.eventdata.scriptBlockText" type="pcre2">(?i)comsvcs(\.dll)?["']?\s*,?\s*(MiniDump|#\+?24)\b</field>
+    <description>PowerShell script calls comsvcs.dll MiniDump (LSASS dump technique)</description>
+    <mitre>
+      <id>T1003.001</id>
+    </mitre>
+  </rule>
+
+  <!-- T1218.011 (atomic #2): rundll32 vbscript:"\..\mshtml,RunHTMLApplication "+String(...)
+       Baseline: Defender only. -->
+  <rule id="100120" level="13">
+    <if_group>sysmon_event1</if_group>
+    <field name="win.eventdata.originalFileName" type="pcre2">(?i)^RUNDLL32\.EXE$</field>
+    <field name="win.eventdata.commandLine" type="pcre2">(?i)((java|vb)script:.*RunHTMLApplication|mshtml.*RunHTMLApplication)</field>
+    <description>Rundll32 running script code through mshtml RunHTMLApplication</description>
+    <mitre>
+      <id>T1218.011</id>
+    </mitre>
+  </rule>
+
+  <!-- T1105 (atomic #7): certutil -urlcache -split -f http://... file
+       Baseline: the only T1105-tagged alert was harness noise (92213), so this was false credit. -->
+  <rule id="100130" level="12">
+    <if_group>sysmon_event1</if_group>
+    <field name="win.eventdata.originalFileName" type="pcre2">(?i)^CertUtil\.exe$</field>
+    <field name="win.eventdata.commandLine" type="pcre2">(?i)[-/](urlcache|verifyctl)\b.*\b(https?|ftp)://</field>
+    <description>Certutil used to download a file: $(win.eventdata.commandLine)</description>
+    <mitre>
+      <id>T1105</id>
+    </mitre>
+  </rule>
+
+  <!-- T1053.005 (atomic #2): SCHTASKS /Create /SC ONCE /TN spawn /TR C:\windows\system32\cmd.exe
+       Baseline: only level 4 (60228 task created, 92154 taskschd.dll loaded). -->
+  <rule id="100140" level="10">
+    <if_group>sysmon_event1</if_group>
+    <field name="win.eventdata.originalFileName" type="pcre2">(?i)^schtasks\.exe$</field>
+    <field name="win.eventdata.commandLine" type="pcre2">(?i)/create\b.*/tr\s+.*\b(cmd|powershell|pwsh|wscript|cscript|mshta|rundll32|regsvr32)(\.exe)?\b</field>
+    <description>Scheduled task created that launches a script host or LOLBin: $(win.eventdata.commandLine)</description>
+    <mitre>
+      <id>T1053.005</id>
+    </mitre>
+  </rule>
+
+  <!-- T1547.001 (atomic #1): REG ADD HKCU\...\CurrentVersion\Run /V "Atomic Red Team"
+       Baseline: 92302 at level 6; raised because Run-key persistence set by a shell tool is rarely benign. -->
+  <rule id="100150" level="10">
+    <if_group>sysmon_event_13</if_group>
+    <field name="win.eventdata.targetObject" type="pcre2">(?i)\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Run(Once)?(Ex)?\\\\</field>
+    <field name="win.eventdata.image" type="pcre2">(?i)\\\\(reg|powershell|pwsh|cmd|wscript|cscript|mshta|rundll32)\.exe$</field>
+    <description>Run key persistence set by $(win.eventdata.image): $(win.eventdata.targetObject)</description>
+    <mitre>
+      <id>T1547.001</id>
+    </mitre>
+  </rule>
+
+  <!-- Validation run: the reg.exe event matched built-in sibling 92302 first, so 100150 never saw it.
+       Same logic attached under 92302 so the event still ends at level 10. -->
+  <rule id="100151" level="10">
+    <if_sid>92302</if_sid>
+    <field name="win.eventdata.targetObject" type="pcre2">(?i)\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Run(Once)?(Ex)?\\\\</field>
+    <description>Run key persistence set by $(win.eventdata.image): $(win.eventdata.targetObject)</description>
+    <mitre>
+      <id>T1547.001</id>
+    </mitre>
+  </rule>
+
+  <!-- T1685.005 / legacy T1070.001 (atomic #1, log_name=Security): wevtutil cl Security
+       Baseline: 63103 "audit log was cleared" at level 5. Clearing the Security log is high severity. -->
+  <rule id="100160" level="12">
+    <if_sid>63103</if_sid>
+    <description>Security audit log was cleared by $(win.logFileCleared.subjectDomainName)\$(win.logFileCleared.subjectUserName)</description>
+    <mitre>
+      <id>T1685.005</id>
+      <id>T1070.001</id>
+    </mitre>
+  </rule>
+
+  <rule id="100161" level="12">
+    <if_group>sysmon_event1</if_group>
+    <field name="win.eventdata.originalFileName" type="pcre2">(?i)^wevtutil\.exe$</field>
+    <field name="win.eventdata.commandLine" type="pcre2">(?i)\s(cl|clear-log)\s</field>
+    <description>Event log cleared with wevtutil: $(win.eventdata.commandLine)</description>
+    <mitre>
+      <id>T1685.005</id>
+      <id>T1070.001</id>
+    </mitre>
+  </rule>
+
+  <!-- T1685 / legacy T1562.001 (atomic #19): Set-MpPreference -DisableRealtimeMonitoring 1 ...
+       Baseline: missed (only 62154 "feature configuration changed", level 5, untagged). -->
+  <rule id="100170" level="13">
+    <if_sid>91802</if_sid>
+    <field name="win.eventdata.scriptBlockText" type="pcre2">(?i)Set-MpPreference\b.*-Disable(RealtimeMonitoring|BehaviorMonitoring|ScriptScanning|BlockAtFirstSeen|IOAVProtection|IntrusionPreventionSystem|ArchiveScanning)\s+(1|\$true)</field>
+    <description>PowerShell attempted to disable Microsoft Defender protections</description>
+    <mitre>
+      <id>T1685</id>
+      <id>T1562.001</id>
+    </mitre>
+  </rule>
+
+  <!-- T1059.001 (atomic #18): script block defines well-known offensive PowerShell function names.
+       Baseline: only Defender (62123). -->
+  <rule id="100180" level="12">
+    <if_sid>91802</if_sid>
+    <field name="win.eventdata.scriptBlockText" type="pcre2">(?i)\b(Invoke-Mimikatz|Invoke-Shellcode|Invoke-ReflectivePEInjection|Invoke-DllInjection|Invoke-TokenManipulation|Invoke-CredentialInjection|Get-GPPPassword|Get-GPPAutologon|Get-VaultCredential|Get-Keystrokes|Invoke-NinjaCopy|Out-Minidump|Install-SSP)\b</field>
+    <description>PowerShell script references known offensive tooling functions</description>
+    <mitre>
+      <id>T1059.001</id>
+    </mitre>
+  </rule>
+
+  <!-- T1087.001 (atomic #8): net user, net localgroup ... in quick succession.
+       Baseline: individual commands only at level 3 (92031). A burst is more telling.
+       Validation run: the Wazuh agent itself runs "net user" for its inventory, which tripped a
+       first version of this rule; agent-spawned commands are dropped before counting. -->
+  <rule id="100188" level="0">
+    <if_sid>92031</if_sid>
+    <field name="win.eventdata.parentImage" type="pcre2">(?i)\\\\ossec-agent\\\\wazuh-agent\.exe$</field>
+    <description>Wazuh agent inventory command (benign)</description>
+  </rule>
+
+  <rule id="100189" level="3">
+    <if_sid>92031</if_sid>
+    <field name="win.eventdata.commandLine" type="pcre2">(?i)\bnet1?(\.exe)?\s+(user|localgroup|group|accounts)\b(?!.*\s/(add|del|delete)\b)</field>
+    <description>Local account or group enumeration: $(win.eventdata.commandLine)</description>
+    <mitre>
+      <id>T1087.001</id>
+    </mitre>
+  </rule>
+
+  <rule id="100190" level="8" frequency="3" timeframe="60">
+    <if_matched_sid>100189</if_matched_sid>
+    <same_field>win.system.computer</same_field>
+    <different_field>win.eventdata.commandLine</different_field>
+    <description>Burst of local account and group discovery commands on $(win.system.computer)</description>
+    <mitre>
+      <id>T1087.001</id>
+    </mitre>
+  </rule>
+
+  <!-- Microsoft Defender prevention (event 1116 -> built-in 62123, level 12, no ATT&CK tag, and an
+       empty threat name in its description because the real field is "threat Name").
+       In the validation run Defender blocked 4 atomics before the child process started, so these
+       alerts are the only evidence. Mapped to the technique by what was blocked. -->
+  <rule id="100201" level="14">
+    <if_sid>62123</if_sid>
+    <field name="win.eventdata.path" type="pcre2">(?i)comsvcs(\.dll)?["']?\s*,?\s*(MiniDump|#\+?24)\b</field>
+    <description>Microsoft Defender blocked an LSASS dump via comsvcs.dll MiniDump</description>
+    <mitre>
+      <id>T1003.001</id>
+    </mitre>
+  </rule>
+
+  <rule id="100202" level="13">
+    <if_sid>62123</if_sid>
+    <field name="win.eventdata.path" type="pcre2">(?i)rundll32.*RunHTMLApplication</field>
+    <description>Microsoft Defender blocked rundll32 script execution through mshtml</description>
+    <mitre>
+      <id>T1218.011</id>
+    </mitre>
+  </rule>
+
+  <rule id="100203" level="12">
+    <if_sid>62123</if_sid>
+    <field name="win.eventdata.path" type="pcre2">(?i)certutil.*[-/](urlcache|verifyctl)\b</field>
+    <description>Microsoft Defender blocked a certutil download</description>
+    <mitre>
+      <id>T1105</id>
+    </mitre>
+  </rule>
+
+  <rule id="100204" level="13">
+    <if_sid>62123</if_sid>
+    <field name="win.eventdata.threat Name" type="pcre2">(?i)Mimikatz</field>
+    <description>Microsoft Defender blocked PowerShell carrying Mimikatz-family tooling</description>
+    <mitre>
+      <id>T1059.001</id>
+      <id>T1003</id>
+    </mitre>
+  </rule>
+
+</group>

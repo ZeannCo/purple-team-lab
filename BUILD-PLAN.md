@@ -82,31 +82,29 @@ sits on VMnet2 alone. Never run atomics on the laptop itself.
 - [x] Agent config kept in `lab/wazuh/shared/`; the Sysmon config comes from a pinned sysmon-modular release
 
 ### 1.2 Atomic Red Team
-- [ ] On win11-ep (with internet), add a Defender exclusion for `C:\AtomicRedTeam` inside the VM only, then:
-  ```powershell
-  IEX (IWR 'https://raw.githubusercontent.com/redcanaryco/invoke-atomicredteam/master/install-atomicredteam.ps1' -UseBasicParsing)
-  Install-AtomicRedTeam -getAtomics
-  Import-Module "C:\AtomicRedTeam\invoke-atomicredteam\Invoke-AtomicRedTeam.psd1" -Force
-  ```
-- [ ] For each technique: `-ShowDetails`, then `-CheckPrereqs`, then `-GetPrereqs`. **Read each test before running it.**
-- [ ] Cut internet (VMnet2 only). Snapshot: **`atomics-ready`**
-- [ ] For each technique: run the test, note which built-in Wazuh rules fired and which didn't, then clean up
+- [x] `lab\windows\install-atomics.ps1` (run over WinRM): execution policy `RemoteSigned` (Windows 11
+      defaults to `Restricted`, which blocks the `powershell-yaml` module), Defender exclusion for
+      `C:\AtomicRedTeam` only, Invoke-AtomicRedTeam 2.1 + 353 techniques
+- [x] Tests chosen to run offline (`validation/tests.yml`, pinned by GUID); the certutil download
+      fetches from wazuh01 instead of GitHub
+- [x] Internet cut (NAT NIC disconnected with `vmrun`). Snapshot: **`atomics-ready`**
+- [x] Baseline with built-in rules only: [`validation/results/baseline.md`](validation/results/baseline.md)
 
-**Starter technique set (10, single host):**
+**Technique set (10 techniques, 11 tests).** Atomic Red Team moved to ATT&CK v19 in May 2026, which
+renumbered two of them:
 
-| ATT&CK ID | Technique | Main telemetry |
-|---|---|---|
-| T1059.001 | PowerShell | 4104 script block |
-| T1003.001 | LSASS memory dump | Sysmon EID 10 |
-| T1053.005 | Scheduled task | Sysmon EID 1 / Security 4698 |
-| T1547.001 | Registry Run keys | Sysmon EID 13 |
-| T1218.011 | Rundll32 | Sysmon EID 1 |
-| T1105 | Ingress tool transfer (certutil) | Sysmon EID 1 / 3 |
-| T1136.001 | Create local account | Security 4720 |
-| T1087.001 | Local account discovery | Sysmon EID 1 |
-| T1070.001 | Clear Windows event logs | Security 1102 |
-| T1562.001 | Impair defenses (Defender) | Sysmon EID 1 / 13 |
-
+| ATT&CK v19 | Pre-v19 | Technique | Test |
+|---|---|---|---|
+| T1059.001 | | PowerShell | #17 encoded command, #18 known offensive cmdlets |
+| T1003.001 | | LSASS memory dump | #2 comsvcs.dll MiniDump |
+| T1053.005 | | Scheduled task | #2 schtasks /create |
+| T1547.001 | | Registry Run keys | #1 reg add HKCU Run |
+| T1218.011 | | Rundll32 | #2 vbscript via mshtml |
+| T1105 | | Ingress tool transfer | #7 certutil -urlcache |
+| T1136.001 | | Create local account | #4 net user /add |
+| T1087.001 | | Local account discovery | #8 net user / localgroup |
+| T1685.005 | T1070.001 | Clear Windows event logs | #1 wevtutil cl Security |
+| T1685 | T1562.001 | Disable or modify tools (Defender) | #19 Set-MpPreference |
 ### 1.3 Phase 1b — Active Directory
 - [ ] dc01 on VMnet2 at `10.10.10.5`, new forest `lab.local`, join win11-ep, add a Wazuh agent
 - [ ] AD techniques: **T1558.003** Kerberoasting, **T1087.002** domain account discovery, **T1078** valid accounts
@@ -115,54 +113,38 @@ sits on VMnet2 alone. Never run atomics on the laptop itself.
 
 ## Phase 2 — Detection-as-code pipeline
 
-### 2.1 Repository layout
-```
-purple-team-lab/
-├── README.md
-├── BUILD-PLAN.md
-├── lab/
-│   ├── build/            # VM build scripts (PowerShell + vmrun/ovftool)
-│   ├── cloud-init/       # Linux VM templates (secrets filled in at build time, never committed)
-│   ├── wazuh/            # install script, ossec.conf snippets
-│   └── windows/          # autounattend.xml, Sysmon config, agent config
-├── detections/
-│   ├── wazuh/            # custom rules (XML, IDs 100100–100999): the deployed source of truth
-│   └── sigma/            # Sigma version of each rule, so it can run on other SIEMs (Splunk, Wazuh 5.0)
-├── tests/
-│   └── logtest/          # sample events + expected rule ID for each detection
-├── validation/
-│   ├── tests.yml         # rule ID → atomic technique + test number
-│   ├── run_validation.py
-│   └── results/          # results.json, results.md, navigator_layer.json
-├── triage/               # AI agent + eval (Phase 2.5)
-├── atlas/                # Phase 3
-└── .github/workflows/ci.yml
-```
+Done. Write-up: [`docs/detection-engineering-notes.md`](docs/detection-engineering-notes.md).
 
-### 2.2 Write the rules
-- [ ] One XML file per technique in `detections/wazuh/`. Each rule has `<mitre><id>T…</id></mitre>`,
-      a clear description and a level (12+ for high confidence).
-- [ ] Start with gaps: for each atomic where the built-in ruleset was silent or too noisy, write a
-      custom rule (often a child rule with `<if_sid>` on the built-in Sysmon rule).
-- [ ] `lab/wazuh/deploy-rules.sh` copies the rules to `/var/ossec/etc/rules/`, checks the config,
-      and restarts the manager.
+### 2.1 Rules
+- [x] [`9900-purplelab_tuning.xml`](detections/wazuh/9900-purplelab_tuning.xml): harness false positives
+      found in the baseline (PowerShell policy-probe file at level 15, WinRM NTLM logon from wazuh01,
+      Atomic Red Team module source)
+- [x] [`9910-purplelab_detections.xml`](detections/wazuh/9910-purplelab_detections.xml): Sysmon/PowerShell
+      detections per gap, Defender-prevention enrichment (`100201`-`100204`), discovery burst (`100190`)
+- [x] Files are named `99xx-` so they load after the built-in ruleset (`if_sid` parents must exist)
+- [x] `lab\build\push-wazuh-config.ps1` deploys rules + agent config, checks with `wazuh-analysisd -t`
+      and restores the previous rules if the check fails
+- Not done: a Sigma copy of each rule. Wazuh 4.14 has no Sigma support; revisit with Wazuh 5.0 or
+  the Splunk phase
 
-### 2.3 CI on every push (GitHub-hosted runner, no access to the lab)
-- [ ] Start the `wazuh/wazuh-manager:4.14.x` container, mount `detections/wazuh/`
-- [ ] For each file in `tests/logtest/`: feed the sample event to `wazuh-logtest` and check that the
-      expected rule ID and level fire
-- [ ] Fail the build on XML errors or wrong matches. Add a badge.
+### 2.2 CI: replay real events (GitHub-hosted runner, no access to the lab)
+- [x] [`tests/logtest/ci.sh`](tests/logtest/ci.sh): throwaway `wazuh/wazuh-manager:4.14.10`, rules
+      compiled with `wazuh-analysisd -t`, 25 cases replayed through the logtest API
+- [x] Cases are `data.win` from real lab alerts ([`harvest.py`](tests/logtest/harvest.py)); the four
+      processes Defender blocked are synthesized from real events of the same type and labelled
+- [x] Benign look-alikes for the rules most likely to false-positive
+- [x] logtest can't run the eventchannel decoder; CI patches base rule `60000` inside the container
+      (`decoded_as json`, no `category`) and never touches the lab manager
+- [x] Badge in the README
 
-### 2.4 Live validation, run locally from wazuh01
-`validation/run_validation.py`:
-1. Check win11-ep is reachable over WinRM
-2. For each entry in `tests.yml`: note the time, run `Invoke-AtomicTest <id> -TestNumbers <n>` remotely
-3. Wait about 60 seconds, then query the Wazuh indexer (`wazuh-alerts-*`) for that `rule.id` after that time
-4. **PASS** if the alert exists, otherwise **FAIL**, then run `-Cleanup`
-5. Write `results.json`, a `results.md` table and an **ATT&CK Navigator layer** (green = detected, red = missed)
+### 2.3 Live validation from wazuh01
+- [x] [`validation/run_validation.py`](validation/run_validation.py) via `lab\build\Invoke-Validation.ps1`:
+      control step (harness only) → each atomic over WinRM → indexer query for the expected rules →
+      cleanup; writes `.json`, `.md` and an ATT&CK Navigator layer
+- [x] Result: **11/11 PASS** ([`validation/results/validation.md`](validation/results/validation.md))
 
 Never attach a self-hosted runner to this public repo: a pull request from a fork could run code
-inside your lab. Commit the live results instead.
+inside the lab. Live results are committed instead.
 
 ---
 

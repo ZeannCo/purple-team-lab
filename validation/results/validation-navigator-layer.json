@@ -1,0 +1,106 @@
+{
+  "name": "purple-team-lab validation",
+  "versions": {
+    "attack": "19",
+    "navigator": "5.1.0",
+    "layer": "4.5"
+  },
+  "domain": "enterprise-attack",
+  "description": "Atomic Red Team tests on win11-ep vs. Wazuh 4.14 detections",
+  "techniques": [
+    {
+      "techniqueID": "T1003.001",
+      "score": 2,
+      "color": "#31a354",
+      "comment": "#2 PASS: 100201 (L14), 62154 (L5)",
+      "enabled": true,
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1053.005",
+      "score": 2,
+      "color": "#31a354",
+      "comment": "#2 PASS: 100140 (L10), 62154 (L5), 60228 (L4), 92004 (L4)",
+      "enabled": true,
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1059.001",
+      "score": 2,
+      "color": "#31a354",
+      "comment": "#17 PASS: 92057 (L12); #18 PASS: 100204 (L13), 62154 (L5)",
+      "enabled": true,
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1087.001",
+      "score": 2,
+      "color": "#31a354",
+      "comment": "#8 PASS: 100190 (L8), 100189 (L3)",
+      "enabled": true,
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1105",
+      "score": 2,
+      "color": "#31a354",
+      "comment": "#7 PASS: 100203 (L12), 62154 (L5)",
+      "enabled": true,
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1136.001",
+      "score": 2,
+      "color": "#31a354",
+      "comment": "#4 PASS: 92040 (L12), 60109 (L8), 60110 (L8), 60160 (L5)",
+      "enabled": true,
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1218.011",
+      "score": 2,
+      "color": "#31a354",
+      "comment": "#2 PASS: 100202 (L13), 62154 (L5)",
+      "enabled": true,
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1547.001",
+      "score": 2,
+      "color": "#31a354",
+      "comment": "#1 PASS: 100151 (L10), 92041 (L10)",
+      "enabled": true,
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1685",
+      "score": 2,
+      "color": "#31a354",
+      "comment": "#19 PASS: 100170 (L13), 62154 (L5), 92027 (L4), 61104 (L3)",
+      "enabled": true,
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1685.005",
+      "score": 2,
+      "color": "#31a354",
+      "comment": "#1 PASS: 100160 (L12), 100161 (L12), 62154 (L5)",
+      "enabled": true,
+      "showSubtechniques": true
+    }
+  ],
+  "legendItems": [
+    {
+      "label": "Detected",
+      "color": "#31a354"
+    },
+    {
+      "label": "Alert, not technique-mapped",
+      "color": "#fdae6b"
+    },
+    {
+      "label": "Missed",
+      "color": "#e6550d"
+    }
+  ]
+}

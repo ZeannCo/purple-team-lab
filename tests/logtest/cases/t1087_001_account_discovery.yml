@@ -1,0 +1,178 @@
+- name: net1 user, net1 localgroup Users, net1 localgroup within a minute (real events)
+  events:
+  - win:
+      eventdata:
+        originalFileName: net1.exe
+        image: C:\\Windows\\System32\\net1.exe
+        product: Microsoft® Windows® Operating System
+        parentProcessGuid: '{d81e223c-f635-6afe-a103-000000000500}'
+        description: Net Command
+        logonGuid: '{d81e223c-f632-6afe-1f8a-c20000000000}'
+        parentCommandLine: net  user
+        processGuid: '{d81e223c-f635-6afe-a203-000000000500}'
+        logonId: '0xc28a1f'
+        parentProcessId: '4284'
+        processId: '1268'
+        currentDirectory: C:\\Users\\labadmin\\AppData\\Local\\Temp\\
+        utcTime: '2026-11-19 13:14:29.932'
+        hashes: SHA1=86168820522623D98038E48820529755755BC847,MD5=158DB954503C803C0840DD424FB608F8,SHA256=8489DB35375D890314EB8F7CD9E0CBD3866475F4E252865F00F649B0A02FD757,IMPHASH=98A56655C7E54BCE7F55B3F01AB5B07E
+        parentImage: C:\\Windows\\System32\\net.exe
+        ruleName: technique_id=T1018,technique_name=Remote System Discovery
+        company: Microsoft Corporation
+        commandLine: C:\\WINDOWS\\system32\\net1  user
+        integrityLevel: High
+        fileVersion: 10.0.26100.7019 (WinBuild.160101.0800)
+        user: WIN11-EP\\labadmin
+        terminalSessionId: '0'
+        parentUser: WIN11-EP\\labadmin
+      system:
+        eventID: '1'
+        keywords: '0x8000000000000000'
+        providerGuid: '{5770385f-c22a-43e0-bf4c-06f5698ffbd9}'
+        level: '4'
+        channel: Microsoft-Windows-Sysmon/Operational
+        opcode: '0'
+        message: "\"Process Create:\r\nRuleName: technique_id=T1018,technique_name=Remote System Discovery\r\nUtcTime: 2026-11-19 13:14:29.932\r\nProcessGuid: {d81e223c-f635-6afe-a203-000000000500}\r\nProcessId: 1268\r\nImage: C:\\Windows\\System32\\net1.exe\r\nFileVersion: 10.0.26100.7019 (WinBuild.160101.0800)\r\nDescription: Net Command\r\nProduct: Microsoft® Windows® Operating System\r\nCompany: Microsoft Corporation\r\nOriginalFileName: net1.exe\r\nCommandLine: C:\\WINDOWS\\system32\\net1  user \r\nCurrentDirectory: C:\\Users\\labadmin\\AppData\\Local\\Temp\\\r\nUser: WIN11-EP\\labadmin\r\nLogonGuid: {d81e223c-f632-6afe-1f8a-c20000000000}\r\nLogonId: 0xC28A1F\r\nTerminalSessionId: 0\r\nIntegrityLevel: High\r\nHashes: SHA1=86168820522623D98038E48820529755755BC847,MD5=158DB954503C803C0840DD424FB608F8,SHA256=8489DB35375D890314EB8F7CD9E0CBD3866475F4E252865F00F649B0A02FD757,IMPHASH=98A56655C7E54BCE7F55B3F01AB5B07E\r\nParentProcessGuid: {d81e223c-f635-6afe-a103-000000000500}\r\nParentProcessId:\
+          \ 4284\r\nParentImage: C:\\Windows\\System32\\net.exe\r\nParentCommandLine: net  user \r\nParentUser: WIN11-EP\\labadmin\""
+        version: '5'
+        systemTime: '2026-11-19T13:14:29.9374574Z'
+        eventRecordID: '14996'
+        threadID: '4616'
+        computer: WIN11-EP
+        task: '1'
+        processID: '3444'
+        severityValue: INFORMATION
+        providerName: Microsoft-Windows-Sysmon
+  - win:
+      eventdata:
+        originalFileName: net1.exe
+        image: C:\\Windows\\System32\\net1.exe
+        product: Microsoft® Windows® Operating System
+        parentProcessGuid: '{d81e223c-f636-6afe-a403-000000000500}'
+        description: Net Command
+        logonGuid: '{d81e223c-f632-6afe-1f8a-c20000000000}'
+        parentCommandLine: net  localgroup \"Users\"
+        processGuid: '{d81e223c-f636-6afe-a503-000000000500}'
+        logonId: '0xc28a1f'
+        parentProcessId: '5196'
+        processId: '1312'
+        currentDirectory: C:\\Users\\labadmin\\AppData\\Local\\Temp\\
+        utcTime: '2026-11-19 13:14:30.082'
+        hashes: SHA1=86168820522623D98038E48820529755755BC847,MD5=158DB954503C803C0840DD424FB608F8,SHA256=8489DB35375D890314EB8F7CD9E0CBD3866475F4E252865F00F649B0A02FD757,IMPHASH=98A56655C7E54BCE7F55B3F01AB5B07E
+        parentImage: C:\\Windows\\System32\\net.exe
+        ruleName: technique_id=T1018,technique_name=Remote System Discovery
+        company: Microsoft Corporation
+        commandLine: C:\\WINDOWS\\system32\\net1  localgroup \"Users\"
+        integrityLevel: High
+        fileVersion: 10.0.26100.7019 (WinBuild.160101.0800)
+        user: WIN11-EP\\labadmin
+        terminalSessionId: '0'
+        parentUser: WIN11-EP\\labadmin
+      system:
+        eventID: '1'
+        keywords: '0x8000000000000000'
+        providerGuid: '{5770385f-c22a-43e0-bf4c-06f5698ffbd9}'
+        level: '4'
+        channel: Microsoft-Windows-Sysmon/Operational
+        opcode: '0'
+        message: "\"Process Create:\r\nRuleName: technique_id=T1018,technique_name=Remote System Discovery\r\nUtcTime: 2026-11-19 13:14:30.082\r\nProcessGuid: {d81e223c-f636-6afe-a503-000000000500}\r\nProcessId: 1312\r\nImage: C:\\Windows\\System32\\net1.exe\r\nFileVersion: 10.0.26100.7019 (WinBuild.160101.0800)\r\nDescription: Net Command\r\nProduct: Microsoft® Windows® Operating System\r\nCompany: Microsoft Corporation\r\nOriginalFileName: net1.exe\r\nCommandLine: C:\\WINDOWS\\system32\\net1  localgroup \"Users\" \r\nCurrentDirectory: C:\\Users\\labadmin\\AppData\\Local\\Temp\\\r\nUser: WIN11-EP\\labadmin\r\nLogonGuid: {d81e223c-f632-6afe-1f8a-c20000000000}\r\nLogonId: 0xC28A1F\r\nTerminalSessionId: 0\r\nIntegrityLevel: High\r\nHashes: SHA1=86168820522623D98038E48820529755755BC847,MD5=158DB954503C803C0840DD424FB608F8,SHA256=8489DB35375D890314EB8F7CD9E0CBD3866475F4E252865F00F649B0A02FD757,IMPHASH=98A56655C7E54BCE7F55B3F01AB5B07E\r\nParentProcessGuid: {d81e223c-f636-6afe-a403-000000000500}\r\
+          \nParentProcessId: 5196\r\nParentImage: C:\\Windows\\System32\\net.exe\r\nParentCommandLine: net  localgroup \"Users\" \r\nParentUser: WIN11-EP\\labadmin\""
+        version: '5'
+        systemTime: '2026-11-19T13:14:30.1324447Z'
+        eventRecordID: '14999'
+        threadID: '4616'
+        computer: WIN11-EP
+        task: '1'
+        processID: '3444'
+        severityValue: INFORMATION
+        providerName: Microsoft-Windows-Sysmon
+  - win:
+      eventdata:
+        originalFileName: net1.exe
+        image: C:\\Windows\\System32\\net1.exe
+        product: Microsoft® Windows® Operating System
+        parentProcessGuid: '{d81e223c-f636-6afe-a603-000000000500}'
+        description: Net Command
+        logonGuid: '{d81e223c-f632-6afe-1f8a-c20000000000}'
+        parentCommandLine: net  localgroup
+        processGuid: '{d81e223c-f636-6afe-a703-000000000500}'
+        logonId: '0xc28a1f'
+        parentProcessId: '4732'
+        processId: '1468'
+        currentDirectory: C:\\Users\\labadmin\\AppData\\Local\\Temp\\
+        utcTime: '2026-11-19 13:14:30.174'
+        hashes: SHA1=86168820522623D98038E48820529755755BC847,MD5=158DB954503C803C0840DD424FB608F8,SHA256=8489DB35375D890314EB8F7CD9E0CBD3866475F4E252865F00F649B0A02FD757,IMPHASH=98A56655C7E54BCE7F55B3F01AB5B07E
+        parentImage: C:\\Windows\\System32\\net.exe
+        ruleName: technique_id=T1018,technique_name=Remote System Discovery
+        company: Microsoft Corporation
+        commandLine: C:\\WINDOWS\\system32\\net1  localgroup
+        integrityLevel: High
+        fileVersion: 10.0.26100.7019 (WinBuild.160101.0800)
+        user: WIN11-EP\\labadmin
+        terminalSessionId: '0'
+        parentUser: WIN11-EP\\labadmin
+      system:
+        eventID: '1'
+        keywords: '0x8000000000000000'
+        providerGuid: '{5770385f-c22a-43e0-bf4c-06f5698ffbd9}'
+        level: '4'
+        channel: Microsoft-Windows-Sysmon/Operational
+        opcode: '0'
+        message: "\"Process Create:\r\nRuleName: technique_id=T1018,technique_name=Remote System Discovery\r\nUtcTime: 2026-11-19 13:14:30.174\r\nProcessGuid: {d81e223c-f636-6afe-a703-000000000500}\r\nProcessId: 1468\r\nImage: C:\\Windows\\System32\\net1.exe\r\nFileVersion: 10.0.26100.7019 (WinBuild.160101.0800)\r\nDescription: Net Command\r\nProduct: Microsoft® Windows® Operating System\r\nCompany: Microsoft Corporation\r\nOriginalFileName: net1.exe\r\nCommandLine: C:\\WINDOWS\\system32\\net1  localgroup\r\nCurrentDirectory: C:\\Users\\labadmin\\AppData\\Local\\Temp\\\r\nUser: WIN11-EP\\labadmin\r\nLogonGuid: {d81e223c-f632-6afe-1f8a-c20000000000}\r\nLogonId: 0xC28A1F\r\nTerminalSessionId: 0\r\nIntegrityLevel: High\r\nHashes: SHA1=86168820522623D98038E48820529755755BC847,MD5=158DB954503C803C0840DD424FB608F8,SHA256=8489DB35375D890314EB8F7CD9E0CBD3866475F4E252865F00F649B0A02FD757,IMPHASH=98A56655C7E54BCE7F55B3F01AB5B07E\r\nParentProcessGuid: {d81e223c-f636-6afe-a603-000000000500}\r\nParentProcessId:\
+          \ 4732\r\nParentImage: C:\\Windows\\System32\\net.exe\r\nParentCommandLine: net  localgroup\r\nParentUser: WIN11-EP\\labadmin\""
+        version: '5'
+        systemTime: '2026-11-19T13:14:30.1795161Z'
+        eventRecordID: '15001'
+        threadID: '4616'
+        computer: WIN11-EP
+        task: '1'
+        processID: '3444'
+        severityValue: INFORMATION
+        providerName: Microsoft-Windows-Sysmon
+  expect_rule: '100190'
+- name: 'benign: the Wazuh agent''s own inventory ''net user'' (real event)'
+  event:
+    win:
+      eventdata:
+        originalFileName: net.exe
+        image: C:\\Windows\\SysWOW64\\net.exe
+        product: Microsoft® Windows® Operating System
+        parentProcessGuid: '{d81e223c-f3bb-6afe-8002-000000000500}'
+        description: Net Command
+        logonGuid: '{d81e223c-e260-6afe-e703-000000000000}'
+        parentCommandLine: \"C:\\Program Files (x86)\\ossec-agent\\wazuh-agent.exe\"
+        processGuid: '{d81e223c-f3e4-6afe-aa02-000000000500}'
+        logonId: '0x3e7'
+        parentProcessId: '2740'
+        processId: '6044'
+        currentDirectory: C:\\Program Files (x86)\\ossec-agent\\
+        utcTime: '2026-11-19 13:04:36.721'
+        hashes: SHA1=898EA6CF28BAA8E35FD604A218CB4AC1DB63CF9A,MD5=D4E7A009D386934803364C2D69ED465B,SHA256=E7A3A04DB13F7D5E65DB45DBED99B80C9AD9907BEEBA3416E2E5428E1EFB791E,IMPHASH=559D4014B9861D37E317DED7FD6BC691
+        parentImage: C:\\Program Files (x86)\\ossec-agent\\wazuh-agent.exe
+        ruleName: technique_id=T1087.001,technique_name=Local Account
+        company: Microsoft Corporation
+        commandLine: net user
+        integrityLevel: System
+        fileVersion: 10.0.26100.7019 (WinBuild.160101.0800)
+        user: NT AUTHORITY\\SYSTEM
+        terminalSessionId: '0'
+        parentUser: NT AUTHORITY\\SYSTEM
+      system:
+        eventID: '1'
+        keywords: '0x8000000000000000'
+        providerGuid: '{5770385f-c22a-43e0-bf4c-06f5698ffbd9}'
+        level: '4'
+        channel: Microsoft-Windows-Sysmon/Operational
+        opcode: '0'
+        message: "\"Process Create:\r\nRuleName: technique_id=T1087.001,technique_name=Local Account\r\nUtcTime: 2026-11-19 13:04:36.721\r\nProcessGuid: {d81e223c-f3e4-6afe-aa02-000000000500}\r\nProcessId: 6044\r\nImage: C:\\Windows\\SysWOW64\\net.exe\r\nFileVersion: 10.0.26100.7019 (WinBuild.160101.0800)\r\nDescription: Net Command\r\nProduct: Microsoft® Windows® Operating System\r\nCompany: Microsoft Corporation\r\nOriginalFileName: net.exe\r\nCommandLine: net user\r\nCurrentDirectory: C:\\Program Files (x86)\\ossec-agent\\\r\nUser: NT AUTHORITY\\SYSTEM\r\nLogonGuid: {d81e223c-e260-6afe-e703-000000000000}\r\nLogonId: 0x3E7\r\nTerminalSessionId: 0\r\nIntegrityLevel: System\r\nHashes: SHA1=898EA6CF28BAA8E35FD604A218CB4AC1DB63CF9A,MD5=D4E7A009D386934803364C2D69ED465B,SHA256=E7A3A04DB13F7D5E65DB45DBED99B80C9AD9907BEEBA3416E2E5428E1EFB791E,IMPHASH=559D4014B9861D37E317DED7FD6BC691\r\nParentProcessGuid: {d81e223c-f3bb-6afe-8002-000000000500}\r\nParentProcessId: 2740\r\nParentImage: C:\\Program\
+          \ Files (x86)\\ossec-agent\\wazuh-agent.exe\r\nParentCommandLine: \"C:\\Program Files (x86)\\ossec-agent\\wazuh-agent.exe\"\r\nParentUser: NT AUTHORITY\\SYSTEM\""
+        version: '5'
+        systemTime: '2026-11-19T13:04:36.7239744Z'
+        eventRecordID: '14432'
+        threadID: '4616'
+        computer: WIN11-EP
+        task: '1'
+        processID: '3444'
+        severityValue: INFORMATION
+        providerName: Microsoft-Windows-Sysmon
+  expect_rule: '100188'

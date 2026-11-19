@@ -1,0 +1,94 @@
+- name: schtasks /create running cmd.exe (real event)
+  event:
+    win:
+      eventdata:
+        originalFileName: schtasks.exe
+        image: C:\\Windows\\System32\\schtasks.exe
+        product: Microsoft® Windows® Operating System
+        parentProcessGuid: '{d81e223c-f4f1-6afe-3103-000000000500}'
+        description: Task Scheduler Configuration Tool
+        logonGuid: '{d81e223c-f4ed-6afe-a4c8-b20000000000}'
+        parentCommandLine: \"cmd.exe\" /c SCHTASKS /Create /SC ONCE /TN spawn /TR C:\\windows\\system32\\cmd.exe /ST 20:10
+        processGuid: '{d81e223c-f4f1-6afe-3303-000000000500}'
+        logonId: '0xb2c8a4'
+        parentProcessId: '240'
+        processId: '3412'
+        currentDirectory: C:\\Users\\labadmin\\AppData\\Local\\Temp\\
+        utcTime: '2026-11-19 13:09:05.279'
+        hashes: SHA1=DEE1B9222DA8463EA02CFD76EFD4371FEA3F88E3,MD5=0EB0E5987DADDBBCFAB61F46FC44ABE0,SHA256=B96AF3066F0B9DE8A460F77BAAE006C5372A266BE18C561DAA7C7AE8635D399D,IMPHASH=A7B2338D5533AE221C0EB231BBEC0787
+        parentImage: C:\\Windows\\System32\\cmd.exe
+        ruleName: technique_id=T1053.005,technique_name=Scheduled Task
+        company: Microsoft Corporation
+        commandLine: SCHTASKS  /Create /SC ONCE /TN spawn /TR C:\\windows\\system32\\cmd.exe /ST 20:10
+        integrityLevel: High
+        fileVersion: 10.0.26100.6725 (WinBuild.160101.0800)
+        user: WIN11-EP\\labadmin
+        terminalSessionId: '0'
+        parentUser: WIN11-EP\\labadmin
+      system:
+        eventID: '1'
+        keywords: '0x8000000000000000'
+        providerGuid: '{5770385f-c22a-43e0-bf4c-06f5698ffbd9}'
+        level: '4'
+        channel: Microsoft-Windows-Sysmon/Operational
+        opcode: '0'
+        message: "\"Process Create:\r\nRuleName: technique_id=T1053.005,technique_name=Scheduled Task\r\nUtcTime: 2026-11-19 13:09:05.279\r\nProcessGuid: {d81e223c-f4f1-6afe-3303-000000000500}\r\nProcessId: 3412\r\nImage: C:\\Windows\\System32\\schtasks.exe\r\nFileVersion: 10.0.26100.6725 (WinBuild.160101.0800)\r\nDescription: Task Scheduler Configuration Tool\r\nProduct: Microsoft® Windows® Operating System\r\nCompany: Microsoft Corporation\r\nOriginalFileName: schtasks.exe\r\nCommandLine: SCHTASKS  /Create /SC ONCE /TN spawn /TR C:\\windows\\system32\\cmd.exe /ST 20:10\r\nCurrentDirectory: C:\\Users\\labadmin\\AppData\\Local\\Temp\\\r\nUser: WIN11-EP\\labadmin\r\nLogonGuid: {d81e223c-f4ed-6afe-a4c8-b20000000000}\r\nLogonId: 0xB2C8A4\r\nTerminalSessionId: 0\r\nIntegrityLevel: High\r\nHashes: SHA1=DEE1B9222DA8463EA02CFD76EFD4371FEA3F88E3,MD5=0EB0E5987DADDBBCFAB61F46FC44ABE0,SHA256=B96AF3066F0B9DE8A460F77BAAE006C5372A266BE18C561DAA7C7AE8635D399D,IMPHASH=A7B2338D5533AE221C0EB231BBEC0787\r\n\
+          ParentProcessGuid: {d81e223c-f4f1-6afe-3103-000000000500}\r\nParentProcessId: 240\r\nParentImage: C:\\Windows\\System32\\cmd.exe\r\nParentCommandLine: \"cmd.exe\" /c SCHTASKS /Create /SC ONCE /TN spawn /TR C:\\windows\\system32\\cmd.exe /ST 20:10\r\nParentUser: WIN11-EP\\labadmin\""
+        version: '5'
+        systemTime: '2026-11-19T13:09:05.4200317Z'
+        eventRecordID: '14699'
+        threadID: '4616'
+        computer: WIN11-EP
+        task: '1'
+        processID: '3444'
+        severityValue: INFORMATION
+        providerName: Microsoft-Windows-Sysmon
+  expect_rule: '100140'
+  expect_level: 10
+- name: 'benign: schtasks /create for an installed updater'
+  event:
+    win:
+      eventdata:
+        originalFileName: schtasks.exe
+        image: C:\\Windows\\System32\\schtasks.exe
+        product: Microsoft® Windows® Operating System
+        parentProcessGuid: '{d81e223c-f4f1-6afe-3103-000000000500}'
+        description: Task Scheduler Configuration Tool
+        logonGuid: '{d81e223c-f4ed-6afe-a4c8-b20000000000}'
+        parentCommandLine: \"cmd.exe\" /c SCHTASKS /Create /SC ONCE /TN spawn /TR C:\\windows\\system32\\cmd.exe /ST 20:10
+        processGuid: '{d81e223c-f4f1-6afe-3303-000000000500}'
+        logonId: '0xb2c8a4'
+        parentProcessId: '240'
+        processId: '3412'
+        currentDirectory: C:\\Users\\labadmin\\AppData\\Local\\Temp\\
+        utcTime: '2026-11-19 13:09:05.279'
+        hashes: SHA1=DEE1B9222DA8463EA02CFD76EFD4371FEA3F88E3,MD5=0EB0E5987DADDBBCFAB61F46FC44ABE0,SHA256=B96AF3066F0B9DE8A460F77BAAE006C5372A266BE18C561DAA7C7AE8635D399D,IMPHASH=A7B2338D5533AE221C0EB231BBEC0787
+        parentImage: C:\\Windows\\System32\\cmd.exe
+        ruleName: technique_id=T1053.005,technique_name=Scheduled Task
+        company: Microsoft Corporation
+        commandLine: schtasks /Create /SC DAILY /TN "ContosoUpdate" /TR "C:\Program Files\Contoso\updater.exe" /ST 03:00
+        integrityLevel: High
+        fileVersion: 10.0.26100.6725 (WinBuild.160101.0800)
+        user: WIN11-EP\\labadmin
+        terminalSessionId: '0'
+        parentUser: WIN11-EP\\labadmin
+      system:
+        eventID: '1'
+        keywords: '0x8000000000000000'
+        providerGuid: '{5770385f-c22a-43e0-bf4c-06f5698ffbd9}'
+        level: '4'
+        channel: Microsoft-Windows-Sysmon/Operational
+        opcode: '0'
+        message: "\"Process Create:\r\nRuleName: technique_id=T1053.005,technique_name=Scheduled Task\r\nUtcTime: 2026-11-19 13:09:05.279\r\nProcessGuid: {d81e223c-f4f1-6afe-3303-000000000500}\r\nProcessId: 3412\r\nImage: C:\\Windows\\System32\\schtasks.exe\r\nFileVersion: 10.0.26100.6725 (WinBuild.160101.0800)\r\nDescription: Task Scheduler Configuration Tool\r\nProduct: Microsoft® Windows® Operating System\r\nCompany: Microsoft Corporation\r\nOriginalFileName: schtasks.exe\r\nCommandLine: SCHTASKS  /Create /SC ONCE /TN spawn /TR C:\\windows\\system32\\cmd.exe /ST 20:10\r\nCurrentDirectory: C:\\Users\\labadmin\\AppData\\Local\\Temp\\\r\nUser: WIN11-EP\\labadmin\r\nLogonGuid: {d81e223c-f4ed-6afe-a4c8-b20000000000}\r\nLogonId: 0xB2C8A4\r\nTerminalSessionId: 0\r\nIntegrityLevel: High\r\nHashes: SHA1=DEE1B9222DA8463EA02CFD76EFD4371FEA3F88E3,MD5=0EB0E5987DADDBBCFAB61F46FC44ABE0,SHA256=B96AF3066F0B9DE8A460F77BAAE006C5372A266BE18C561DAA7C7AE8635D399D,IMPHASH=A7B2338D5533AE221C0EB231BBEC0787\r\n\
+          ParentProcessGuid: {d81e223c-f4f1-6afe-3103-000000000500}\r\nParentProcessId: 240\r\nParentImage: C:\\Windows\\System32\\cmd.exe\r\nParentCommandLine: \"cmd.exe\" /c SCHTASKS /Create /SC ONCE /TN spawn /TR C:\\windows\\system32\\cmd.exe /ST 20:10\r\nParentUser: WIN11-EP\\labadmin\""
+        version: '5'
+        systemTime: '2026-11-19T13:09:05.4200317Z'
+        eventRecordID: '14699'
+        threadID: '4616'
+        computer: WIN11-EP
+        task: '1'
+        processID: '3444'
+        severityValue: INFORMATION
+        providerName: Microsoft-Windows-Sysmon
+  not_rules:
+  - '100140'

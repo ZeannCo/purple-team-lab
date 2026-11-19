@@ -1,0 +1,54 @@
+- name: Set-MpPreference disabling protections (real event)
+  event:
+    win:
+      eventdata:
+        messageNumber: '1'
+        messageTotal: '1'
+        scriptBlockText: '{Set-MpPreference -DisableRealtimeMonitoring 1 Set-MpPreference -DisableBehaviorMonitoring 1 Set-MpPreference -DisableScriptScanning 1 Set-MpPreference -DisableBlockAtFirstSeen 1}'
+        scriptBlockId: e3490387-aa6f-4411-bf9d-571a506c78ec
+      system:
+        eventID: '4104'
+        keywords: '0x0'
+        providerGuid: '{a0c1853b-5c40-4b15-8766-3cf1c58f985a}'
+        level: '5'
+        channel: Microsoft-Windows-PowerShell/Operational
+        opcode: '15'
+        message: "\"Creating Scriptblock text (1 of 1):\r\n{Set-MpPreference -DisableRealtimeMonitoring 1\nSet-MpPreference -DisableBehaviorMonitoring 1\nSet-MpPreference -DisableScriptScanning 1\nSet-MpPreference -DisableBlockAtFirstSeen 1}\r\n\r\nScriptBlock ID: e3490387-aa6f-4411-bf9d-571a506c78ec\r\nPath: \""
+        version: '1'
+        systemTime: '2026-11-19T13:15:41.8881010Z'
+        eventRecordID: '3171'
+        threadID: '4588'
+        computer: WIN11-EP
+        task: '2'
+        processID: '6088'
+        severityValue: VERBOSE
+        providerName: Microsoft-Windows-PowerShell
+  expect_rule: '100170'
+  expect_level: 13
+- name: 'benign: Set-MpPreference re-enabling real-time monitoring'
+  event:
+    win:
+      eventdata:
+        messageNumber: '1'
+        messageTotal: '1'
+        scriptBlockText: Set-MpPreference -DisableRealtimeMonitoring 0
+        scriptBlockId: e3490387-aa6f-4411-bf9d-571a506c78ec
+      system:
+        eventID: '4104'
+        keywords: '0x0'
+        providerGuid: '{a0c1853b-5c40-4b15-8766-3cf1c58f985a}'
+        level: '5'
+        channel: Microsoft-Windows-PowerShell/Operational
+        opcode: '15'
+        message: "\"Creating Scriptblock text (1 of 1):\r\n{Set-MpPreference -DisableRealtimeMonitoring 1\nSet-MpPreference -DisableBehaviorMonitoring 1\nSet-MpPreference -DisableScriptScanning 1\nSet-MpPreference -DisableBlockAtFirstSeen 1}\r\n\r\nScriptBlock ID: e3490387-aa6f-4411-bf9d-571a506c78ec\r\nPath: \""
+        version: '1'
+        systemTime: '2026-11-19T13:15:41.8881010Z'
+        eventRecordID: '3171'
+        threadID: '4588'
+        computer: WIN11-EP
+        task: '2'
+        processID: '6088'
+        severityValue: VERBOSE
+        providerName: Microsoft-Windows-PowerShell
+  not_rules:
+  - '100170'

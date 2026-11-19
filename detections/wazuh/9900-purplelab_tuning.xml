@@ -1,0 +1,43 @@
+<!--
+  Lab tuning: false positives found in the baseline run (validation/results/baseline.md).
+  Rules in the lab_harness group are expected activity from the lab's own tooling; the
+  validation runner ignores them when attributing alerts to an atomic test.
+  IDs 100100-100109.
+-->
+<group name="purplelab,lab_harness,">
+
+  <!-- 92213 (level 15) fired in all 11 baseline windows. Cause: PowerShell writes
+       %TEMP%\__PSScriptPolicyTest_<random>.ps1 on every non-interactive start to probe
+       AppLocker/WDAC policy. Suppressed only for that exact file pattern written by powershell.exe. -->
+  <rule id="100100" level="0">
+    <if_sid>92213</if_sid>
+    <field name="win.eventdata.image" type="pcre2">(?i)\\\\WindowsPowerShell\\\\v1\.0\\\\powershell\.exe$</field>
+    <field name="win.eventdata.targetFilename" type="pcre2">(?i)\\\\__PSScriptPolicyTest_[a-z0-9]+\.[a-z0-9]+\.ps1$</field>
+    <description>PowerShell execution-policy probe file written to Temp (benign)</description>
+  </rule>
+
+  <!-- 92657 calls every NTLM network logon a possible pass-the-hash. The validation runner on
+       wazuh01 (10.10.10.10) logs on over WinRM with NTLM for every test. -->
+  <rule id="100101" level="3">
+    <if_sid>92657</if_sid>
+    <field name="win.eventdata.ipAddress">^10.10.10.10$</field>
+    <field name="win.eventdata.logonType">^3$</field>
+    <description>Expected NTLM network logon from lab management host wazuh01 (WinRM)</description>
+  </rule>
+
+  <rule id="100102" level="3">
+    <if_sid>92110</if_sid>
+    <field name="win.eventdata.sourceIp">^10.10.10.10$</field>
+    <description>Expected WinRM connection from lab management host wazuh01</description>
+  </rule>
+
+  <!-- 91822 (level 12, "Invoke-Command") fired on Invoke-AtomicRedTeam's own module source
+       captured by script block logging. Kept visible at level 3: outside a lab, Atomic Red Team
+       showing up on a host is itself worth knowing about. -->
+  <rule id="100103" level="3">
+    <if_sid>91822</if_sid>
+    <field name="win.eventdata.scriptBlockText" type="pcre2">function (Invoke-ExecuteCommand|Get-TargetInfo|Invoke-AtomicTest)\b</field>
+    <description>Atomic Red Team framework code loaded (authorized adversary emulation)</description>
+  </rule>
+
+</group>

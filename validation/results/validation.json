@@ -1,0 +1,625 @@
+{
+  "label": "validation",
+  "started": "2026-11-19T13:37:41.739Z",
+  "harness_rules": [
+    "60137",
+    "60608",
+    "60642",
+    "67027",
+    "67028",
+    "91816",
+    "91819",
+    "91820",
+    "92021",
+    "92031",
+    "92032",
+    "92036",
+    "92052",
+    "92154",
+    "92205"
+  ],
+  "results": [
+    {
+      "technique": "T1059.001",
+      "legacy": null,
+      "name": "PowerShell Command Execution (encoded command)",
+      "test": 17,
+      "guid": "a538de64-1c74-46ed-aa60-b995ed302598",
+      "expect": [
+        "92057"
+      ],
+      "replay": null,
+      "result": "PASS",
+      "window": [
+        "2026-11-19T13:39:25.323Z",
+        "2026-11-19T13:39:46.977Z"
+      ],
+      "rules": [
+        {
+          "id": "92057",
+          "level": 12,
+          "description": "Powershell.exe spawned a powershell process which executed a base64 encoded command",
+          "mitre": [
+            "T1059.001"
+          ],
+          "count": 1
+        }
+      ],
+      "harness_rules": [
+        "60137",
+        "67027",
+        "67028",
+        "91816",
+        "91819",
+        "91820",
+        "92032",
+        "92052"
+      ],
+      "executed": true,
+      "output_tail": "\r\n\r\nHello, from PowerShell!\r\n#< CLIXML\r\n<Objs Version=\"1.1.0.1\" xmlns=\"http://schemas.microsoft.com/powershell/2004/04\"><Obj S=\"progress\" RefId=\"0\"><TN \r\nRefId=\"0\"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N=\"SourceId\">1</I64><PR N=\"Record\"><AV>Preparing modules for first use.</AV><AI>0</AI><Nil \r\n/><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S=\"information\" RefId=\"1\"><TN \r\nRefId=\"1\"><T>System.Management.Automation.InformationRecord</T><T>System.Object</T></TN><ToString>Hello, from PowerShell!</ToString><Props><Obj N=\"MessageData\" RefId=\"2\"><TN \r\nRefId=\"2\"><T>System.Management.Automation.HostInformationMessage</T><T>System.Object</T></TN><ToString>Hello, from PowerShell!</ToString><Props><S N=\"Message\">Hello, from PowerShell!</S><B \r\nN=\"NoNewLine\">false</B><S N=\"ForegroundColor\">Gray</S><S N=\"BackgroundColor\">Black</S></Props></Obj><S N=\"Source\">Write-Host</S><DT N=\"TimeGenerated\">2026-11-19T21:39:35.0958361+08:00</DT><Obj \r\nN=\"Tags\" RefId=\"3\"><TN RefId=\"3\"><T>System.Collections.Generic.List`1[[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, \r\nPublicKeyToken=b77a5c561934e089]]</T><T>System.Object</T></TN><LST><S>PSHOST</S></LST></Obj><S N=\"User\">WIN11-EP\\labadmin</S><S N=\"Computer\">WIN11-EP</S><U32 N=\"ProcessId\">3744</U32><U32 \r\nN=\"NativeThreadId\">1548</U32><U32 N=\"ManagedThreadId\">9</U32></Props></Obj></Objs>\r\nExit code: 0\r\nDone executing test: \r\nT1059.001-17 PowerShell Command Execution",
+      "cleanup_tail": "PathToAtomicsFolder = C:\\AtomicRedTeam\\atomics\r\n\r\nExecuting cleanup for test: \r\nT1059.001-17 PowerShell Command Execution\r\n\r\nDone executing cleanup for test: \r\nT1059.001-17 PowerShell Command Execution"
+    },
+    {
+      "technique": "T1059.001",
+      "legacy": null,
+      "name": "PowerShell Invoke Known Malicious Cmdlets",
+      "test": 18,
+      "guid": "49eb9404-5e0f-4031-a179-b40f7be385e3",
+      "expect": [
+        "100204"
+      ],
+      "replay": [
+        "100180"
+      ],
+      "result": "PASS",
+      "window": [
+        "2026-11-19T13:40:04.790Z",
+        "2026-11-19T13:40:23.486Z"
+      ],
+      "rules": [
+        {
+          "id": "100204",
+          "level": 13,
+          "description": "Microsoft Defender blocked PowerShell carrying Mimikatz-family tooling",
+          "mitre": [
+            "T1059.001",
+            "T1003"
+          ],
+          "count": 1
+        },
+        {
+          "id": "62154",
+          "level": 5,
+          "description": "Windows Defender: Antimalware platform feature configuration changed",
+          "mitre": [],
+          "count": 2
+        }
+      ],
+      "harness_rules": [
+        "60137",
+        "67027",
+        "67028",
+        "91816",
+        "91819",
+        "91820",
+        "92032",
+        "92052"
+      ],
+      "executed": true,
+      "output_tail": "PathToAtomicsFolder = C:\\AtomicRedTeam\\atomics\r\n\r\nExecuting test: \r\nT1059.001-18 PowerShell Invoke Known Malicious Cmdlets\r\n\r\nException calling \"Start\" with \"0\" argument(s): \"Access is denied\"\r\nAt C:\\AtomicRedTeam\\invoke-atomicredteam\\Private\\Invoke-Process.ps1:45 char:17\r\n+                 $process.Start() > $null\r\n+                 ~~~~~~~~~~~~~~~~~~~~~~~~\r\n    + CategoryInfo          : NotSpecified: (:) [], MethodInvocationException\r\n    + FullyQualifiedErrorId : Win32Exception\r\n \r\nExit code: \r\nDone executing test: \r\nT1059.001-18 PowerShell Invoke Known Malicious Cmdlets",
+      "cleanup_tail": "PathToAtomicsFolder = C:\\AtomicRedTeam\\atomics\r\n\r\nExecuting cleanup for test: \r\nT1059.001-18 PowerShell Invoke Known Malicious Cmdlets\r\n\r\nDone executing cleanup for test: \r\nT1059.001-18 PowerShell Invoke Known Malicious Cmdlets"
+    },
+    {
+      "technique": "T1003.001",
+      "legacy": null,
+      "name": "Dump LSASS.exe Memory using comsvcs.dll",
+      "test": 2,
+      "guid": "2536dee2-12fb-459a-8c37-971844fa73be",
+      "expect": [
+        "100201"
+      ],
+      "replay": [
+        "100110",
+        "100111"
+      ],
+      "result": "PASS",
+      "window": [
+        "2026-11-19T13:40:42.898Z",
+        "2026-11-19T13:41:02.008Z"
+      ],
+      "rules": [
+        {
+          "id": "100201",
+          "level": 14,
+          "description": "Microsoft Defender blocked an LSASS dump via comsvcs.dll MiniDump",
+          "mitre": [
+            "T1003.001"
+          ],
+          "count": 1
+        },
+        {
+          "id": "62154",
+          "level": 5,
+          "description": "Windows Defender: Antimalware platform feature configuration changed",
+          "mitre": [],
+          "count": 1
+        }
+      ],
+      "harness_rules": [
+        "60137",
+        "67027",
+        "67028",
+        "91816",
+        "91819",
+        "91820",
+        "92032",
+        "92052"
+      ],
+      "executed": true,
+      "output_tail": "PathToAtomicsFolder = C:\\AtomicRedTeam\\atomics\r\n\r\nExecuting test: \r\nT1003.001-2 Dump LSASS.exe Memory using comsvcs.dll\r\n\r\nException calling \"Start\" with \"0\" argument(s): \"Access is denied\"\r\nAt C:\\AtomicRedTeam\\invoke-atomicredteam\\Private\\Invoke-Process.ps1:45 char:17\r\n+                 $process.Start() > $null\r\n+                 ~~~~~~~~~~~~~~~~~~~~~~~~\r\n    + CategoryInfo          : NotSpecified: (:) [], MethodInvocationException\r\n    + FullyQualifiedErrorId : Win32Exception\r\n \r\nExit code: \r\nDone executing test: \r\nT1003.001-2 Dump LSASS.exe Memory using comsvcs.dll",
+      "cleanup_tail": "PathToAtomicsFolder = C:\\AtomicRedTeam\\atomics\r\n\r\nExecuting cleanup for test: \r\nT1003.001-2 Dump LSASS.exe Memory using comsvcs.dll\r\n\r\nDone executing cleanup for test: \r\nT1003.001-2 Dump LSASS.exe Memory using comsvcs.dll"
+    },
+    {
+      "technique": "T1053.005",
+      "legacy": null,
+      "name": "Scheduled task Local",
+      "test": 2,
+      "guid": "42f53695-ad4a-4546-abb6-7d837f644a71",
+      "expect": [
+        "100140"
+      ],
+      "replay": null,
+      "result": "PASS",
+      "window": [
+        "2026-11-19T13:41:21.203Z",
+        "2026-11-19T13:41:39.263Z"
+      ],
+      "rules": [
+        {
+          "id": "100140",
+          "level": 10,
+          "description": "Scheduled task created that launches a script host or LOLBin: SCHTASKS  /Create /SC ONCE /TN spawn /TR C:\\\\windows\\\\system32\\\\cmd.exe /ST 20:10",
+          "mitre": [
+            "T1053.005"
+          ],
+          "count": 1
+        },
+        {
+          "id": "62154",
+          "level": 5,
+          "description": "Windows Defender: Antimalware platform feature configuration changed",
+          "mitre": [],
+          "count": 1
+        },
+        {
+          "id": "60228",
+          "level": 4,
+          "description": "A scheduled task was created",
+          "mitre": [
+            "T1053"
+          ],
+          "count": 1
+        },
+        {
+          "id": "92004",
+          "level": 4,
+          "description": "Powershell process spawned Windows command shell instance",
+          "mitre": [
+            "T1059.003"
+          ],
+          "count": 1
+        }
+      ],
+      "harness_rules": [
+        "60137",
+        "67027",
+        "67028",
+        "91816",
+        "91819",
+        "91820",
+        "92032",
+        "92052",
+        "92154"
+      ],
+      "executed": true,
+      "output_tail": "PathToAtomicsFolder = C:\\AtomicRedTeam\\atomics\r\n\r\nExecuting test: \r\nT1053.005-2 Scheduled task Local\r\n\r\nSUCCESS: The scheduled task \"spawn\" has successfully been created.\r\nWARNING: Task may not run because /ST is earlier than current time.\r\nExit code: 0\r\nDone executing test: \r\nT1053.005-2 Scheduled task Local",
+      "cleanup_tail": "PathToAtomicsFolder = C:\\AtomicRedTeam\\atomics\r\n\r\nExecuting cleanup for test: \r\nT1053.005-2 Scheduled task Local\r\n\r\nDone executing cleanup for test: \r\nT1053.005-2 Scheduled task Local"
+    },
+    {
+      "technique": "T1547.001",
+      "legacy": null,
+      "name": "Reg Key Run",
+      "test": 1,
+      "guid": "e55be3fd-3521-4610-9d1a-e210e42dcf05",
+      "expect": [
+        "100151"
+      ],
+      "replay": null,
+      "result": "PASS",
+      "window": [
+        "2026-11-19T13:41:57.928Z",
+        "2026-11-19T13:42:15.926Z"
+      ],
+      "rules": [
+        {
+          "id": "100151",
+          "level": 10,
+          "description": "Run key persistence set by C:\\\\WINDOWS\\\\system32\\\\reg.exe: HKU\\\\S-1-5-21-1820488127-2641986668-2134518055-1000\\\\Software\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Run\\\\Atomic Red Team",
+          "mitre": [
+            "T1547.001"
+          ],
+          "count": 1
+        },
+        {
+          "id": "92041",
+          "level": 10,
+          "description": "Value added to registry key has Base64-like pattern",
+          "mitre": [
+            "T1027",
+            "T1112"
+          ],
+          "count": 1
+        }
+      ],
+      "harness_rules": [
+        "60137",
+        "67027",
+        "67028",
+        "91816",
+        "91819",
+        "91820",
+        "92032",
+        "92052"
+      ],
+      "executed": true,
+      "output_tail": "PathToAtomicsFolder = C:\\AtomicRedTeam\\atomics\r\n\r\nExecuting test: \r\nT1547.001-1 Reg Key Run\r\n\r\nThe operation completed successfully.\r\nExit code: 0\r\nDone executing test: \r\nT1547.001-1 Reg Key Run",
+      "cleanup_tail": "PathToAtomicsFolder = C:\\AtomicRedTeam\\atomics\r\n\r\nExecuting cleanup for test: \r\nT1547.001-1 Reg Key Run\r\n\r\nDone executing cleanup for test: \r\nT1547.001-1 Reg Key Run"
+    },
+    {
+      "technique": "T1218.011",
+      "legacy": null,
+      "name": "Rundll32 execute VBscript command",
+      "test": 2,
+      "guid": "638730e7-7aed-43dc-bf8c-8117f805f5bb",
+      "expect": [
+        "100202"
+      ],
+      "replay": [
+        "100120"
+      ],
+      "result": "PASS",
+      "window": [
+        "2026-11-19T13:42:33.554Z",
+        "2026-11-19T13:42:51.675Z"
+      ],
+      "rules": [
+        {
+          "id": "100202",
+          "level": 13,
+          "description": "Microsoft Defender blocked rundll32 script execution through mshtml",
+          "mitre": [
+            "T1218.011"
+          ],
+          "count": 1
+        },
+        {
+          "id": "62154",
+          "level": 5,
+          "description": "Windows Defender: Antimalware platform feature configuration changed",
+          "mitre": [],
+          "count": 1
+        }
+      ],
+      "harness_rules": [
+        "67027",
+        "67028",
+        "91816",
+        "91819",
+        "91820",
+        "92032",
+        "92052"
+      ],
+      "executed": true,
+      "output_tail": "PathToAtomicsFolder = C:\\AtomicRedTeam\\atomics\r\n\r\nExecuting test: \r\nT1218.011-2 Rundll32 execute VBscript command\r\n\r\nException calling \"Start\" with \"0\" argument(s): \"Access is denied\"\r\nAt C:\\AtomicRedTeam\\invoke-atomicredteam\\Private\\Invoke-Process.ps1:45 char:17\r\n+                 $process.Start() > $null\r\n+                 ~~~~~~~~~~~~~~~~~~~~~~~~\r\n    + CategoryInfo          : NotSpecified: (:) [], MethodInvocationException\r\n    + FullyQualifiedErrorId : Win32Exception\r\n \r\nExit code: \r\nDone executing test: \r\nT1218.011-2 Rundll32 execute VBscript command",
+      "cleanup_tail": "PathToAtomicsFolder = C:\\AtomicRedTeam\\atomics\r\n\r\nExecuting cleanup for test: \r\nT1218.011-2 Rundll32 execute VBscript command\r\n\r\nDone executing cleanup for test: \r\nT1218.011-2 Rundll32 execute VBscript command"
+    },
+    {
+      "technique": "T1105",
+      "legacy": null,
+      "name": "certutil download (urlcache)",
+      "test": 7,
+      "guid": "dd3b61dd-7bbc-48cd-ab51-49ad1a776df0",
+      "expect": [
+        "100203"
+      ],
+      "replay": [
+        "100130"
+      ],
+      "result": "PASS",
+      "window": [
+        "2026-11-19T13:43:09.017Z",
+        "2026-11-19T13:43:27.906Z"
+      ],
+      "rules": [
+        {
+          "id": "100203",
+          "level": 12,
+          "description": "Microsoft Defender blocked a certutil download",
+          "mitre": [
+            "T1105"
+          ],
+          "count": 1
+        },
+        {
+          "id": "62154",
+          "level": 5,
+          "description": "Windows Defender: Antimalware platform feature configuration changed",
+          "mitre": [],
+          "count": 1
+        }
+      ],
+      "harness_rules": [
+        "60137",
+        "67027",
+        "67028",
+        "91816",
+        "91819",
+        "91820",
+        "92032",
+        "92052"
+      ],
+      "executed": true,
+      "output_tail": "PathToAtomicsFolder = C:\\AtomicRedTeam\\atomics\r\n\r\nExecuting test: \r\nT1105-7 certutil download (urlcache)\r\n\r\nException calling \"Start\" with \"0\" argument(s): \"Access is denied\"\r\nAt C:\\AtomicRedTeam\\invoke-atomicredteam\\Private\\Invoke-Process.ps1:45 char:17\r\n+                 $process.Start() > $null\r\n+                 ~~~~~~~~~~~~~~~~~~~~~~~~\r\n    + CategoryInfo          : NotSpecified: (:) [], MethodInvocationException\r\n    + FullyQualifiedErrorId : Win32Exception\r\n \r\nExit code: \r\nDone executing test: \r\nT1105-7 certutil download (urlcache)",
+      "cleanup_tail": "PathToAtomicsFolder = C:\\AtomicRedTeam\\atomics\r\n\r\nExecuting cleanup for test: \r\nT1105-7 certutil download (urlcache)\r\n\r\nDone executing cleanup for test: \r\nT1105-7 certutil download (urlcache)"
+    },
+    {
+      "technique": "T1136.001",
+      "legacy": null,
+      "name": "Create a new user in a command prompt",
+      "test": 4,
+      "guid": "6657864e-0323-4206-9344-ac9cd7265a4f",
+      "expect": [
+        "92040"
+      ],
+      "replay": null,
+      "result": "PASS",
+      "window": [
+        "2026-11-19T13:43:45.687Z",
+        "2026-11-19T13:44:04.067Z"
+      ],
+      "rules": [
+        {
+          "id": "92040",
+          "level": 12,
+          "description": "net1.exe executed a user creation command",
+          "mitre": [
+            "T1136.001"
+          ],
+          "count": 1
+        },
+        {
+          "id": "60109",
+          "level": 8,
+          "description": "User account enabled or created",
+          "mitre": [
+            "T1098"
+          ],
+          "count": 2
+        },
+        {
+          "id": "60110",
+          "level": 8,
+          "description": "User account changed",
+          "mitre": [
+            "T1098"
+          ],
+          "count": 1
+        },
+        {
+          "id": "60160",
+          "level": 5,
+          "description": "Domain Users Group Changed",
+          "mitre": [
+            "T1484"
+          ],
+          "count": 1
+        },
+        {
+          "id": "60170",
+          "level": 5,
+          "description": "Users Group Changed",
+          "mitre": [
+            "T1484"
+          ],
+          "count": 1
+        }
+      ],
+      "harness_rules": [
+        "60137",
+        "67027",
+        "67028",
+        "91816",
+        "91819",
+        "91820",
+        "92032",
+        "92036",
+        "92052"
+      ],
+      "executed": true,
+      "output_tail": "PathToAtomicsFolder = C:\\AtomicRedTeam\\atomics\r\n\r\nExecuting test: \r\nT1136.001-4 Create a new user in a command prompt\r\n\r\nThe command completed successfully.\r\nExit code: 0\r\nDone executing test: \r\nT1136.001-4 Create a new user in a command prompt",
+      "cleanup_tail": "PathToAtomicsFolder = C:\\AtomicRedTeam\\atomics\r\n\r\nExecuting cleanup for test: \r\nT1136.001-4 Create a new user in a command prompt\r\n\r\nDone executing cleanup for test: \r\nT1136.001-4 Create a new user in a command prompt"
+    },
+    {
+      "technique": "T1087.001",
+      "legacy": null,
+      "name": "Enumerate all accounts on Windows (Local)",
+      "test": 8,
+      "guid": "80887bec-5a9b-4efc-a81d-f83eb2eb32ab",
+      "expect": [
+        "100190"
+      ],
+      "replay": null,
+      "result": "PASS",
+      "window": [
+        "2026-11-19T13:44:20.938Z",
+        "2026-11-19T13:44:38.565Z"
+      ],
+      "rules": [
+        {
+          "id": "100190",
+          "level": 8,
+          "description": "Burst of local account and group discovery commands on WIN11-EP",
+          "mitre": [
+            "T1087.001"
+          ],
+          "count": 1
+        },
+        {
+          "id": "100189",
+          "level": 3,
+          "description": "Local account or group enumeration: C:\\\\WINDOWS\\\\system32\\\\net1  user",
+          "mitre": [
+            "T1087.001"
+          ],
+          "count": 2
+        }
+      ],
+      "harness_rules": [
+        "60137",
+        "67027",
+        "67028",
+        "91816",
+        "91819",
+        "91820",
+        "92032",
+        "92036",
+        "92052"
+      ],
+      "executed": true,
+      "output_tail": "\nlabadmin                 WDAGUtilityAccount       \r\nThe command completed with one or more errors.\r\n Volume in drive C is Windows\r\n Volume Serial Number is 5622-38AC\r\n Directory of c:\\Users\r\n11/19/2026  07:43 PM    <DIR>          .\r\n11/19/2026  07:32 PM    <DIR>          labadmin\r\n11/19/2026  07:32 PM    <DIR>          Public\r\n               0 File(s)              0 bytes\r\n               3 Dir(s)  45,380,988,928 bytes free\r\nCurrently stored credentials:\r\n* NONE *\r\nAlias name     Users\r\nComment        Users are prevented from making accidental or intentional system-wide changes and can run most applications\r\nMembers\r\n-------------------------------------------------------------------------------\r\nlabadmin\r\nNT AUTHORITY\\Authenticated Users\r\nNT AUTHORITY\\INTERACTIVE\r\nThe command completed successfully.\r\nAliases for \\\\WIN11-EP\r\n-------------------------------------------------------------------------------\r\n*Access Control Assistance Operators\r\n*Administrators\r\n*Backup Operators\r\n*Cryptographic Operators\r\n*Device Owners\r\n*Distributed COM Users\r\n*Event Log Readers\r\n*Guests\r\n*Hyper-V Administrators\r\n*IIS_IUSRS\r\n*Network Configuration Operators\r\n*OpenSSH Users\r\n*Performance Log Users\r\n*Performance Monitor Users\r\n*Power Users\r\n*Remote Desktop Users\r\n*Remote Management Users\r\n*Replicator\r\n*System Managed Accounts Group\r\n*User Mode Hardware Operators\r\n*Users\r\nThe command completed successfully.\r\nExit code: 0\r\nDone executing test: \r\nT1087.001-8 Enumerate all accounts on Windows (Local)",
+      "cleanup_tail": "PathToAtomicsFolder = C:\\AtomicRedTeam\\atomics\r\n\r\nExecuting cleanup for test: \r\nT1087.001-8 Enumerate all accounts on Windows (Local)\r\n\r\nDone executing cleanup for test: \r\nT1087.001-8 Enumerate all accounts on Windows (Local)"
+    },
+    {
+      "technique": "T1685.005",
+      "legacy": "T1070.001",
+      "name": "Clear Logs (Security)",
+      "test": 1,
+      "guid": "e6abb60e-26b8-41da-8aae-0c35174b0967",
+      "expect": [
+        "100160",
+        "100161"
+      ],
+      "replay": null,
+      "result": "PASS",
+      "window": [
+        "2026-11-19T13:44:55.400Z",
+        "2026-11-19T13:45:13.199Z"
+      ],
+      "rules": [
+        {
+          "id": "100160",
+          "level": 12,
+          "description": "Security audit log was cleared by ",
+          "mitre": [
+            "T1685.005",
+            "T1070.001"
+          ],
+          "count": 1
+        },
+        {
+          "id": "100161",
+          "level": 12,
+          "description": "Event log cleared with wevtutil: wevtutil  cl Security",
+          "mitre": [
+            "T1685.005",
+            "T1070.001"
+          ],
+          "count": 1
+        },
+        {
+          "id": "62154",
+          "level": 5,
+          "description": "Windows Defender: Antimalware platform feature configuration changed",
+          "mitre": [],
+          "count": 2
+        }
+      ],
+      "harness_rules": [
+        "67027",
+        "67028",
+        "91816",
+        "91819",
+        "91820",
+        "92032",
+        "92052"
+      ],
+      "executed": true,
+      "output_tail": "PathToAtomicsFolder = C:\\AtomicRedTeam\\atomics\r\n\r\nExecuting test: \r\nT1685.005-1 Clear Logs\r\n\r\nExit code: 0\r\nDone executing test: \r\nT1685.005-1 Clear Logs",
+      "cleanup_tail": "PathToAtomicsFolder = C:\\AtomicRedTeam\\atomics\r\n\r\nExecuting cleanup for test: \r\nT1685.005-1 Clear Logs\r\n\r\nDone executing cleanup for test: \r\nT1685.005-1 Clear Logs"
+    },
+    {
+      "technique": "T1685",
+      "legacy": "T1562.001",
+      "name": "Tamper with Windows Defender ATP PowerShell",
+      "test": 19,
+      "guid": "6b8df440-51ec-4d53-bf83-899591c9b5d7",
+      "expect": [
+        "100170"
+      ],
+      "replay": null,
+      "result": "PASS",
+      "window": [
+        "2026-11-19T13:45:29.971Z",
+        "2026-11-19T13:45:51.287Z"
+      ],
+      "rules": [
+        {
+          "id": "100170",
+          "level": 13,
+          "description": "PowerShell attempted to disable Microsoft Defender protections",
+          "mitre": [
+            "T1685",
+            "T1562.001"
+          ],
+          "count": 2
+        },
+        {
+          "id": "62154",
+          "level": 5,
+          "description": "Windows Defender: Antimalware platform feature configuration changed",
+          "mitre": [],
+          "count": 1
+        },
+        {
+          "id": "92027",
+          "level": 4,
+          "description": "Powershell process spawned powershell instance",
+          "mitre": [
+            "T1059.001"
+          ],
+          "count": 1
+        },
+        {
+          "id": "61104",
+          "level": 3,
+          "description": "Service startup type was changed",
+          "mitre": [],
+          "count": 1
+        }
+      ],
+      "harness_rules": [
+        "60137",
+        "67027",
+        "67028",
+        "91816",
+        "91819",
+        "91820",
+        "92032",
+        "92052"
+      ],
+      "executed": true,
+      "output_tail": "PathToAtomicsFolder = C:\\AtomicRedTeam\\atomics\r\n\r\nExecuting test: \r\nT1685-19 Tamper with Windows Defender ATP PowerShell\r\n\r\nExit code: 0\r\nDone executing test: \r\nT1685-19 Tamper with Windows Defender ATP PowerShell",
+      "cleanup_tail": "PathToAtomicsFolder = C:\\AtomicRedTeam\\atomics\r\n\r\nExecuting cleanup for test: \r\nT1685-19 Tamper with Windows Defender ATP PowerShell\r\n\r\nDone executing cleanup for test: \r\nT1685-19 Tamper with Windows Defender ATP PowerShell"
+    }
+  ]
+}

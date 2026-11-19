@@ -1,0 +1,103 @@
+- name: 'rundll32 vbscript RunHTMLApplication (synthesized from a real Sysmon event: Defender blocked the parent before this process started)'
+  event:
+    win:
+      eventdata:
+        originalFileName: RUNDLL32.EXE
+        image: C:\\Windows\\System32\\rundll32.exe
+        product: Microsoft® Windows® Operating System
+        parentProcessGuid: '{d81e223c-f4f1-6afe-3103-000000000500}'
+        description: Task Scheduler Configuration Tool
+        logonGuid: '{d81e223c-f4ed-6afe-a4c8-b20000000000}'
+        parentCommandLine: \"cmd.exe\" /c SCHTASKS /Create /SC ONCE /TN spawn /TR C:\\windows\\system32\\cmd.exe /ST 20:10
+        processGuid: '{d81e223c-f4f1-6afe-3303-000000000500}'
+        logonId: '0xb2c8a4'
+        parentProcessId: '240'
+        processId: '3412'
+        currentDirectory: C:\\Users\\labadmin\\AppData\\Local\\Temp\\
+        utcTime: '2026-11-19 13:09:05.279'
+        hashes: SHA1=DEE1B9222DA8463EA02CFD76EFD4371FEA3F88E3,MD5=0EB0E5987DADDBBCFAB61F46FC44ABE0,SHA256=B96AF3066F0B9DE8A460F77BAAE006C5372A266BE18C561DAA7C7AE8635D399D,IMPHASH=A7B2338D5533AE221C0EB231BBEC0787
+        parentImage: C:\\Windows\\System32\\cmd.exe
+        ruleName: technique_id=T1053.005,technique_name=Scheduled Task
+        company: Microsoft Corporation
+        commandLine: rundll32  vbscript:"\..\mshtml,RunHTMLApplication "+String(CreateObject("WScript.Shell").Run("calc.exe"),0)
+        integrityLevel: High
+        fileVersion: 10.0.26100.6725 (WinBuild.160101.0800)
+        user: WIN11-EP\\labadmin
+        terminalSessionId: '0'
+        parentUser: WIN11-EP\\labadmin
+      system:
+        eventID: '1'
+        keywords: '0x8000000000000000'
+        providerGuid: '{5770385f-c22a-43e0-bf4c-06f5698ffbd9}'
+        level: '4'
+        channel: Microsoft-Windows-Sysmon/Operational
+        opcode: '0'
+        message: "\"Process Create:\r\nRuleName: technique_id=T1053.005,technique_name=Scheduled Task\r\nUtcTime: 2026-11-19 13:09:05.279\r\nProcessGuid: {d81e223c-f4f1-6afe-3303-000000000500}\r\nProcessId: 3412\r\nImage: C:\\Windows\\System32\\schtasks.exe\r\nFileVersion: 10.0.26100.6725 (WinBuild.160101.0800)\r\nDescription: Task Scheduler Configuration Tool\r\nProduct: Microsoft® Windows® Operating System\r\nCompany: Microsoft Corporation\r\nOriginalFileName: schtasks.exe\r\nCommandLine: SCHTASKS  /Create /SC ONCE /TN spawn /TR C:\\windows\\system32\\cmd.exe /ST 20:10\r\nCurrentDirectory: C:\\Users\\labadmin\\AppData\\Local\\Temp\\\r\nUser: WIN11-EP\\labadmin\r\nLogonGuid: {d81e223c-f4ed-6afe-a4c8-b20000000000}\r\nLogonId: 0xB2C8A4\r\nTerminalSessionId: 0\r\nIntegrityLevel: High\r\nHashes: SHA1=DEE1B9222DA8463EA02CFD76EFD4371FEA3F88E3,MD5=0EB0E5987DADDBBCFAB61F46FC44ABE0,SHA256=B96AF3066F0B9DE8A460F77BAAE006C5372A266BE18C561DAA7C7AE8635D399D,IMPHASH=A7B2338D5533AE221C0EB231BBEC0787\r\n\
+          ParentProcessGuid: {d81e223c-f4f1-6afe-3103-000000000500}\r\nParentProcessId: 240\r\nParentImage: C:\\Windows\\System32\\cmd.exe\r\nParentCommandLine: \"cmd.exe\" /c SCHTASKS /Create /SC ONCE /TN spawn /TR C:\\windows\\system32\\cmd.exe /ST 20:10\r\nParentUser: WIN11-EP\\labadmin\""
+        version: '5'
+        systemTime: '2026-11-19T13:09:05.4200317Z'
+        eventRecordID: '14699'
+        threadID: '4616'
+        computer: WIN11-EP
+        task: '1'
+        processID: '3444'
+        severityValue: INFORMATION
+        providerName: Microsoft-Windows-Sysmon
+  expect_rule: '100120'
+  expect_level: 13
+- name: Defender blocks rundll32 vbscript (real event 1116)
+  event:
+    win:
+      eventdata:
+        error Description: The operation completed successfully.
+        source ID: '2'
+        origin ID: '0'
+        threat ID: '2147725444'
+        action Name: Not Applicable
+        additional Actions String: No additional actions required
+        severity Name: Severe
+        path: CmdLine:_C:\\Windows\\System32\\cmd.exe /c rundll32 vbscript:\\..\\mshtml,RunHTMLApplication +String(CreateObject(WScript.Shell).Run(calc.exe),0)
+        execution ID: '0'
+        product Name: Microsoft Defender Antivirus
+        action ID: '9'
+        category ID: '8'
+        state: '1'
+        error Code: '0x00000000'
+        detection ID: '{1AB4FCEB-0DEC-4AA4-A6AC-39AE0C557F2A}'
+        detection User: NT AUTHORITY\\SYSTEM
+        execution Name: Unknown
+        category Name: Trojan
+        type ID: '0'
+        status Code: '1'
+        threat Name: Trojan:Win32/Powessere.G
+        detection Time: '2026-11-19T12:39:27.567Z'
+        additional Actions ID: '0'
+        engine Version: 'AM: 1.1.25080.5, NIS: 1.1.25080.5'
+        pre Execution Status: '0'
+        origin Name: Unknown
+        fWLink: https://go.microsoft.com/fwlink/?linkid=37020&amp;name=Trojan:Win32/Powessere.G&amp;threatid=2147725444&amp;enterprise=0
+        post Clean Status: '0'
+        security intelligence Version: 'AV: 1.437.1.0, AS: 1.437.1.0, NIS: 1.437.1.0'
+        type Name: Concrete
+        severity ID: '5'
+        source Name: System
+        process Name: Unknown
+        product Version: 4.18.25080.5
+      system:
+        eventID: '1116'
+        keywords: '0x8000000000000000'
+        providerGuid: '{11cd958a-c507-4ef3-b3f2-5fd9dfbd2c78}'
+        level: '3'
+        channel: Microsoft-Windows-Windows Defender/Operational
+        opcode: '0'
+        message: "\"Microsoft Defender Antivirus has detected malware or other potentially unwanted software.\r\n For more information please see the following:\r\nhttps://go.microsoft.com/fwlink/?linkid=37020&name=Trojan:Win32/Powessere.G&threatid=2147725444&enterprise=0\r\n \tName: Trojan:Win32/Powessere.G\r\n \tID: 2147725444\r\n \tSeverity: Severe\r\n \tCategory: Trojan\r\n \tPath: CmdLine:_C:\\Windows\\System32\\cmd.exe /c rundll32 vbscript:\\..\\mshtml,RunHTMLApplication +String(CreateObject(WScript.Shell).Run(calc.exe),0)\r\n \tDetection Origin: Unknown\r\n \tDetection Type: Concrete\r\n \tDetection Source: System\r\n \tUser: NT AUTHORITY\\SYSTEM\r\n \tProcess Name: Unknown\r\n \tSecurity intelligence Version: AV: 1.437.1.0, AS: 1.437.1.0, NIS: 1.437.1.0\r\n \tEngine Version: AM: 1.1.25080.5, NIS: 1.1.25080.5\""
+        version: '0'
+        systemTime: '2026-11-19T12:39:27.5720854Z'
+        eventRecordID: '312'
+        threadID: '2200'
+        computer: WIN11-EP
+        task: '0'
+        processID: '3500'
+        severityValue: WARNING
+        providerName: Microsoft-Windows-Windows Defender
+  expect_rule: '100202'
