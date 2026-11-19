@@ -5,7 +5,7 @@
 .DESCRIPTION
   -GenerateBenign  runs lab\windows\benign-activity.ps1 on win11-ep and records the time window
   -BuildDataset    labels alerts from validation runs (malicious) and the benign window
-  -Model           runs the eval for these OpenRouter models (needs D:\Labs\keys\openrouter.key)
+  -Model           runs the eval for these OpenRouter models (needs OPENROUTER_API_KEY in the repo's .env)
   Results are copied back into triage\eval\.
 #>
 [CmdletBinding()]
@@ -32,12 +32,12 @@ scp -q -i $key (Join-Path $repo 'triage\agent.py') (Join-Path $repo 'triage\wazu
 scp -q -i $key (Join-Path $evalDir 'build_dataset.py') (Join-Path $evalDir 'run_eval.py') "${target}:$remote/eval/"
 
 if ($GenerateBenign) {
-    $start = ssh -i $key $target 'date -u +%Y-%m-%dT%H:%M:%S.000Z'
-    Invoke-LabWindows -Script (Get-Content (Join-Path $repo 'lab\windows\benign-activity.ps1') -Raw)
-    Start-Sleep -Seconds 60   # let the last events reach the indexer
-    $end = ssh -i $key $target 'date -u +%Y-%m-%dT%H:%M:%S.000Z'
-    @{ start = $start.Trim(); end = $end.Trim() } | ConvertTo-Json | Set-Content (Join-Path $evalDir 'benign-window.json') -Encoding utf8NoBOM
-    Write-Host "benign window: $start -> $end"
+    # Plain WinRS commands (no PowerShell encoding or staging) so the benign activity looks like what it is
+    scp -q -i $key (Join-Path $repo 'lab\windows\benign_activity.py') "${target}:$remote/"
+    $win = Get-LabPassword (Join-Path $KeysDir 'lab-credentials.txt') 'win11-ep_labadmin'
+    $win | ssh -i $key $target ("read -r WIN_PASSWORD; export WIN_PASSWORD; cd $remote && " +
+        "/opt/purplelab/venv/bin/python benign_activity.py --window-out $remote/results/benign-window.json")
+    scp -q -i $key "${target}:$remote/results/benign-window.json" (Join-Path $evalDir 'benign-window.json')
 }
 
 if ($BuildDataset) {
@@ -51,15 +51,15 @@ if ($BuildDataset) {
 }
 
 if ($Model) {
-    $keyFile = Join-Path $KeysDir 'openrouter.key'
-    if (-not (Test-Path $keyFile)) { throw "Put your OpenRouter API key in $keyFile first." }
+    $openrouter = (Get-LabEnv)['OPENROUTER_API_KEY']
+    if (-not $openrouter) { throw "Put your OpenRouter API key in the repo's .env (OPENROUTER_API_KEY=...) first." }
+    foreach ($m in $Model) { if ($m -notmatch '^[\w.\-/:]+$') { throw "Unexpected characters in model ID: $m" } }
     scp -q -i $key (Join-Path $evalDir 'dataset.jsonl') "${target}:$remote/eval/"
     $mArgs = ($Model | ForEach-Object { "--model $_" }) -join ' '
     $lArg  = if ($Limit) { "--limit $Limit" } else { '' }
     $run   = (Get-Date).ToUniversalTime().ToString('yyyyMMdd-HHmm')
     # Key and the triage account's password go over stdin; the eval reads alerts with the read-only account
-    $secrets = (Get-Content $keyFile -Raw).Trim()
-    $secrets | ssh -i $key $target ("read -r OPENROUTER_API_KEY; OPENROUTER_API_KEY=`${OPENROUTER_API_KEY%`$'\r'}; export OPENROUTER_API_KEY; " +
+    $openrouter | ssh -i $key $target ("read -r OPENROUTER_API_KEY; OPENROUTER_API_KEY=`${OPENROUTER_API_KEY%`$'\r'}; export OPENROUTER_API_KEY; " +
         "export INDEXER_USER=purplelab_triage INDEXER_PASSWORD=`$(sudo grep ^INDEXER_PASSWORD= /etc/purplelab/triage.env | cut -d= -f2-); " +
         "cd $remote/eval && /opt/purplelab/triage-venv/bin/python run_eval.py $mArgs $lArg --run $run")
     New-Item -ItemType Directory -Force (Join-Path $evalDir "results\$run") | Out-Null

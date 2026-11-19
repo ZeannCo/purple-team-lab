@@ -87,4 +87,15 @@ function Invoke-LabWindows {
     $password | ssh -i $key "labadmin@$WazuhHost" "read -r WIN_PASSWORD; export WIN_PASSWORD; /opt/purplelab/venv/bin/python /tmp/lab_winrm.py $remote --host $Target; rc=`$?; rm -f $remote; exit `$rc"
 }
 
-Export-ModuleMember -Function Get-VmwareTool, Protect-LabFile, Get-LabPassword, New-IsoFromFolder, Invoke-LabWindows
+# Reads KEY=value pairs from the repo's gitignored .env (comments and blank lines skipped)
+function Get-LabEnv {
+    param([string]$Path = (Join-Path $PSScriptRoot '..\..\.env'))
+    $values = @{}
+    if (Test-Path $Path) {
+        Get-Content $Path | Where-Object { $_ -match '^\s*([A-Za-z_][A-Za-z0-9_]*)\s*=\s*(.*?)\s*$' } |
+            ForEach-Object { $values[$Matches[1]] = $Matches[2].Trim('"', "'") }
+    }
+    $values
+}
+
+Export-ModuleMember -Function Get-VmwareTool, Protect-LabFile, Get-LabPassword, New-IsoFromFolder, Invoke-LabWindows, Get-LabEnv

@@ -43,7 +43,7 @@ if ! sudo test -f "$ENVFILE" || ! sudo grep -q '^INDEXER_PASSWORD=' "$ENVFILE"; 
   api roles/purplelab_alerts_read '{"cluster_permissions":["cluster_composite_ops_ro"],"index_permissions":[{"index_patterns":["wazuh-alerts-*"],"allowed_actions":["read"]}]}'
   api internalusers/purplelab_triage "{\"password\":\"$TRIAGE_PW\",\"backend_roles\":[]}"
   api rolesmapping/purplelab_alerts_read '{"users":["purplelab_triage"]}'
-  printf 'INDEXER_USER=purplelab_triage\nINDEXER_PASSWORD=%s\nTRIAGE_MODEL=anthropic/claude-haiku-5.5\n' "$TRIAGE_PW" | sudo tee "$ENVFILE" >/dev/null
+  printf 'INDEXER_USER=purplelab_triage\nINDEXER_PASSWORD=%s\nTRIAGE_MODEL=deepseek/deepseek-v4.1-flash\n' "$TRIAGE_PW" | sudo tee "$ENVFILE" >/dev/null
 fi
 sudo chown root:"$SVC_USER" "$ENVFILE"
 sudo chmod 640 "$ENVFILE"

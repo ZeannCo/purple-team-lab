@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Run the triage agent over the labelled dataset with several OpenRouter models and score them.
 
-    OPENROUTER_API_KEY=... INDEXER_PASSWORD=... python3 run_eval.py --model anthropic/claude-haiku-5.5 \
-        --model deepseek/deepseek-v4.1-flash-1017 [--limit 5]
+    OPENROUTER_API_KEY=... INDEXER_PASSWORD=... python3 run_eval.py --model deepseek/deepseek-v4.1-flash \
+        --model qwen/qwen3.8-27b [--limit 5]
 
 Scoring (per model):
   recall       malicious alerts called true_positive or needs_escalation (the alert reaches a human)
