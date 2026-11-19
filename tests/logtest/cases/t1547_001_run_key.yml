@@ -1,0 +1,32 @@
+- name: reg.exe adds an HKCU Run value (real event)
+  event:
+    win:
+      eventdata:
+        image: C:\\WINDOWS\\system32\\reg.exe
+        targetObject: HKU\\S-1-5-21-1820488127-2641986668-2134518055-1000\\Software\\Microsoft\\Windows\\CurrentVersion\\Run\\Atomic Red Team
+        processGuid: '{d81e223c-f513-6afe-4903-000000000500}'
+        processId: '1988'
+        utcTime: '2026-11-19 13:09:39.327'
+        ruleName: technique_id=T1547.001,technique_name=Registry Run Keys / Startup Folder
+        details: C:\\Path\\AtomicRedTeam.exe
+        eventType: SetValue
+        user: WIN11-EP\\labadmin
+      system:
+        eventID: '13'
+        keywords: '0x8000000000000000'
+        providerGuid: '{5770385f-c22a-43e0-bf4c-06f5698ffbd9}'
+        level: '4'
+        channel: Microsoft-Windows-Sysmon/Operational
+        opcode: '0'
+        message: "\"Registry value set:\r\nRuleName: technique_id=T1547.001,technique_name=Registry Run Keys / Startup Folder\r\nEventType: SetValue\r\nUtcTime: 2026-11-19 13:09:39.327\r\nProcessGuid: {d81e223c-f513-6afe-4903-000000000500}\r\nProcessId: 1988\r\nImage: C:\\WINDOWS\\system32\\reg.exe\r\nTargetObject: HKU\\S-1-5-21-1820488127-2641986668-2134518055-1000\\Software\\Microsoft\\Windows\\CurrentVersion\\Run\\Atomic Red Team\r\nDetails: C:\\Path\\AtomicRedTeam.exe\r\nUser: WIN11-EP\\labadmin\""
+        version: '2'
+        systemTime: '2026-11-19T13:09:39.3284220Z'
+        eventRecordID: '14760'
+        threadID: '4616'
+        computer: WIN11-EP
+        task: '13'
+        processID: '3444'
+        severityValue: INFORMATION
+        providerName: Microsoft-Windows-Sysmon
+  expect_rule: '100151'
+  expect_level: 10

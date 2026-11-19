@@ -1,0 +1,29 @@
+name: detections
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  logtest:
+    name: Wazuh rules load and fire on captured events
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install test dependencies
+        run: pip install -r tests/logtest/requirements.txt
+
+      # Starts wazuh/wazuh-manager (same version as the lab), loads detections/wazuh/*.xml,
+      # checks they compile and replays every case in tests/logtest/cases
+      - name: Replay captured lab events through logtest
+        run: bash tests/logtest/ci.sh

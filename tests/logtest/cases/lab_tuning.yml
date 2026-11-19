@@ -1,0 +1,108 @@
+- name: PowerShell __PSScriptPolicyTest probe file (real event)
+  event:
+    win:
+      eventdata:
+        image: C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe
+        processGuid: '{d81e223c-efea-6afe-6a03-000000000500}'
+        processId: '2588'
+        utcTime: '2026-11-19 12:47:39.036'
+        targetFilename: C:\\Users\\labadmin\\AppData\\Local\\Temp\\__PSScriptPolicyTest_zrivft0d.e1j.ps1
+        ruleName: technique_id=T1059.001,technique_name=PowerShell
+        creationUtcTime: '2026-11-19 12:47:39.036'
+        user: WIN11-EP\\labadmin
+      system:
+        eventID: '11'
+        keywords: '0x8000000000000000'
+        providerGuid: '{5770385f-c22a-43e0-bf4c-06f5698ffbd9}'
+        level: '4'
+        channel: Microsoft-Windows-Sysmon/Operational
+        opcode: '0'
+        message: "\"File created:\r\nRuleName: technique_id=T1059.001,technique_name=PowerShell\r\nUtcTime: 2026-11-19 12:47:39.036\r\nProcessGuid: {d81e223c-efea-6afe-6a03-000000000500}\r\nProcessId: 2588\r\nImage: C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\r\nTargetFilename: C:\\Users\\labadmin\\AppData\\Local\\Temp\\__PSScriptPolicyTest_zrivft0d.e1j.ps1\r\nCreationUtcTime: 2026-11-19 12:47:39.036\r\nUser: WIN11-EP\\labadmin\""
+        version: '2'
+        systemTime: '2026-11-19T12:47:39.0465329Z'
+        eventRecordID: '14842'
+        threadID: '4616'
+        computer: WIN11-EP
+        task: '11'
+        processID: '3444'
+        severityValue: INFORMATION
+        providerName: Microsoft-Windows-Sysmon
+  not_rules:
+  - '92213'
+- name: NTLM network logon from wazuh01 (real event)
+  event:
+    win:
+      eventdata:
+        subjectLogonId: '0x0'
+        targetLinkedLogonId: '0x0'
+        impersonationLevel: '%%1833'
+        ipAddress: 10.10.10.10
+        authenticationPackageName: NTLM
+        workstationName: WAZUH01
+        lmPackageName: NTLM V2
+        targetLogonId: '0xbeb5a2'
+        logonProcessName: NtLmSsp
+        logonGuid: '{00000000-0000-0000-0000-000000000000}'
+        targetUserName: labadmin
+        keyLength: '128'
+        elevatedToken: '%%1842'
+        subjectUserSid: S-1-0-0
+        processId: '0x0'
+        ipPort: '40098'
+        targetDomainName: WIN11-EP
+        targetUserSid: S-1-5-21-1820488127-2641986668-2134518055-1000
+        virtualAccount: '%%1843'
+        logonType: '3'
+      system:
+        eventID: '4624'
+        keywords: '0x8020000000000000'
+        providerGuid: '{54849625-5478-4994-a5ba-3e3b0328c30d}'
+        level: '0'
+        channel: Security
+        opcode: '0'
+        message: "\"An account was successfully logged on.\r\n\r\nSubject:\r\n\tSecurity ID:\t\tS-1-0-0\r\n\tAccount Name:\t\t-\r\n\tAccount Domain:\t\t-\r\n\tLogon ID:\t\t0x0\r\n\r\nLogon Information:\r\n\tLogon Type:\t\t3\r\n\tRestricted Admin Mode:\t-\r\n\tRemote Credential Guard:\t-\r\n\tVirtual Account:\t\tNo\r\n\tElevated Token:\t\tYes\r\n\r\nImpersonation Level:\t\tImpersonation\r\n\r\nNew Logon:\r\n\tSecurity ID:\t\tS-1-5-21-1820488127-2641986668-2134518055-1000\r\n\tAccount Name:\t\tlabadmin\r\n\tAccount Domain:\t\tWIN11-EP\r\n\tLogon ID:\t\t0xBEB5A2\r\n\tLinked Logon ID:\t\t0x0\r\n\tNetwork Account Name:\t-\r\n\tNetwork Account Domain:\t-\r\n\tLogon GUID:\t\t{00000000-0000-0000-0000-000000000000}\r\n\r\nProcess Information:\r\n\tProcess ID:\t\t0x0\r\n\tProcess Name:\t\t-\r\n\r\nNetwork Information:\r\n\tWorkstation Name:\tWAZUH01\r\n\tSource Network Address:\t10.10.10.10\r\n\tSource Port:\t\t40098\r\n\r\nDetailed Authentication Information:\r\n\tLogon Process:\t\tNtLmSsp \r\n\t\
+          Authentication Package:\tNTLM\r\n\tTransited Services:\t-\r\n\tPackage Name (NTLM only):\tNTLM V2\r\n\tKey Length:\t\t128\r\n\r\nThis event is generated when a logon session is created. It is generated on the computer that was accessed.\r\n\r\nThe subject fields indicate the account on the local system which requested the logon. This is most commonly a service such as the Server service, or a local process such as Winlogon.exe or Services.exe.\r\n\r\nThe logon type field indicates the kind of logon that occurred. The most common types are 2 (interactive) and 3 (network).\r\n\r\nThe New Logon fields indicate the account for whom the new logon was created, i.e. the account that was logged on.\r\n\r\nThe network fields indicate where a remote logon request originated. Workstation name is not always available and may be left blank in some cases.\r\n\r\nThe impersonation level field indicates the extent to which a process in the logon session can impersonate.\r\n\r\nThe authentication\
+          \ information fields provide detailed information about this specific logon request.\r\n\t- Logon GUID is a unique identifier that can be used to correlate this event with a KDC event.\r\n\t- Transited services indicate which intermediate services have participated in this logon request.\r\n\t- Package name indicates which sub-protocol was used among the NTLM protocols.\r\n\t- Key length indicates the length of the generated session key. This will be 0 if no session key was requested.\""
+        version: '3'
+        systemTime: '2026-11-19T12:47:34.7101579Z'
+        eventRecordID: '3320'
+        threadID: '4852'
+        computer: WIN11-EP
+        task: '12544'
+        processID: '856'
+        severityValue: AUDIT_SUCCESS
+        providerName: Microsoft-Windows-Security-Auditing
+  expect_rule: '100101'
+- name: Invoke-AtomicRedTeam module source in a script block (real event)
+  event:
+    win:
+      eventdata:
+        path: C:\\AtomicRedTeam\\invoke-atomicredteam\\Private\\Invoke-ExecuteCommand.ps1
+        messageNumber: '1'
+        messageTotal: '1'
+        scriptBlockText: 'function Invoke-ExecuteCommand ($finalCommand, $executor, $executionPlatform, $TimeoutSeconds, $session = $null, $interactive) {     $null = @(         if ($null -eq $finalCommand) { return 0 }         $finalCommand = $finalCommand.trim()         Write-Verbose -Message ''Invoking Atomic Tests using defined executor''         if ($executor -eq \"command_prompt\" -or $executor -eq \"sh\" -or $executor -eq \"bash\") {             $execPrefix = \"-c\"             $execExe = $executor             if ($executor -eq \"command_prompt\") {                 $execPrefix = \"/c\";                 $execExe = \"cmd.exe\";                 $execCommand = $finalCommand -replace \"`n\", \" &amp; \"                 $arguments = $execPrefix, \"$execCommand\"             }             else {                 $finalCommand = $finalCommand -replace \"[\\\\](?!;)\", \"`\\$&amp;\"                 $finalCommand = $finalCommand -replace \"[`\"]\", \"`\\$&amp;\"                 $execCommand
+          = $finalCommand -replace \"(?&lt;!;)\\n\", \"; \"                 $arguments = \"$execPrefix `\"$execCommand`\"\"              }         }         elseif ($executor -eq \"powershell\") {             $execCommand = $finalCommand -replace \"`\"\", \"`\\`\"`\"\"             if ($session) {                 if ($executionPlatform -eq \"windows\") {                     $execExe = \"powershell.exe\"                 }                 else {                     $execExe = \"pwsh\"                 }             }             else {                 $execExe = \"powershell.exe\"; if ($IsLinux -or $IsMacOS) { $execExe = \"pwsh\" }             }             if ($execExe -eq \"pwsh\") {                 $arguments = \"-Command $execCommand\"             }             else {                 $arguments = \"&amp; {$execCommand}\"             }         }         else {             Write-Warning -Message \"Unable to generate or execute the command line properly. Unknown executor\"             return
+          [PSCustomObject]@{                 StandardOutput = \"\"                 ErrorOutput    = \"\"                 ExitCode       = -1                 IsTimeOut      = $false             }         }          # Write-Host -ForegroundColor Magenta \"$execExe $arguments\"         if ($session) {             $scriptParentPath = Split-Path $import -Parent             $publicPath = Join-Path (Split-Path $scriptParentPath -Parent) \"Public\"             $fp = Join-Path $scriptParentPath \"Invoke-Process.ps1\"             $fp2 = Join-Path $publicPath \"Invoke-KillProcessTree.ps1\"             invoke-command -Session $session -FilePath $fp             invoke-command -Session $session -FilePath $fp2             $res = invoke-command -Session $session -ScriptBlock { Invoke-Process -filename $Using:execExe -Arguments $Using:arguments -TimeoutSeconds $Using:TimeoutSeconds -stdoutFile \"art-out.txt\" -stderrFile \"art-err.txt\" }         }         else {             if ($interactive) {                 #
+          This use case is: Local execution of tests that contain interactive prompts                 #   In this situation, let the stdout/stderr flow to the console                 $res = Invoke-Process -filename $execExe -Arguments $arguments -TimeoutSeconds $TimeoutSeconds             }             else {                 # Local execution that DO NOT contain interactive prompts                 #   In this situation, capture the stdout/stderr for Invoke-AtomicTest to send to the caller                 $res = Invoke-Process -filename $execExe -Arguments $arguments -TimeoutSeconds $TimeoutSeconds -stdoutFile \"art-out.txt\" -stderrFile \"art-err.txt\"             }         }     )     $res }'
+        scriptBlockId: b26b9aba-3cb9-445f-8fd6-6c7890b31040
+      system:
+        eventID: '4104'
+        keywords: '0x0'
+        providerGuid: '{a0c1853b-5c40-4b15-8766-3cf1c58f985a}'
+        level: '5'
+        channel: Microsoft-Windows-PowerShell/Operational
+        opcode: '15'
+        message: "\"Creating Scriptblock text (1 of 1):\r\nfunction Invoke-ExecuteCommand ($finalCommand, $executor, $executionPlatform, $TimeoutSeconds, $session = $null, $interactive) {\n    $null = @(\n        if ($null -eq $finalCommand) { return 0 }\n        $finalCommand = $finalCommand.trim()\n        Write-Verbose -Message 'Invoking Atomic Tests using defined executor'\n        if ($executor -eq \"command_prompt\" -or $executor -eq \"sh\" -or $executor -eq \"bash\") {\n            $execPrefix = \"-c\"\n            $execExe = $executor\n            if ($executor -eq \"command_prompt\") {\n                $execPrefix = \"/c\";\n                $execExe = \"cmd.exe\";\n                $execCommand = $finalCommand -replace \"`n\", \" & \"\n                $arguments = $execPrefix, \"$execCommand\"\n            }\n            else {\n                $finalCommand = $finalCommand -replace \"[\\\\](?!;)\", \"`\\$&\"\n                $finalCommand = $finalCommand -replace \"[`\"]\", \"`\\\
+          $&\"\n                $execCommand = $finalCommand -replace \"(?<!;)\\n\", \"; \"\n                $arguments = \"$execPrefix `\"$execCommand`\"\"\n\n            }\n        }\n        elseif ($executor -eq \"powershell\") {\n            $execCommand = $finalCommand -replace \"`\"\", \"`\\`\"`\"\"\n            if ($session) {\n                if ($executionPlatform -eq \"windows\") {\n                    $execExe = \"powershell.exe\"\n                }\n                else {\n                    $execExe = \"pwsh\"\n                }\n            }\n            else {\n                $execExe = \"powershell.exe\"; if ($IsLinux -or $IsMacOS) { $execExe = \"pwsh\" }\n            }\n            if ($execExe -eq \"pwsh\") {\n                $arguments = \"-Command $execCommand\"\n            }\n            else {\n                $arguments = \"& {$execCommand}\"\n            }\n        }\n        else {\n            Write-Warning -Message \"Unable to generate or execute the command\
+          \ line properly. Unknown executor\"\n            return [PSCustomObject]@{\n                StandardOutput = \"\"\n                ErrorOutput    = \"\"\n                ExitCode       = -1\n                IsTimeOut      = $false\n            }\n        }\n\n        # Write-Host -ForegroundColor Magenta \"$execExe $arguments\"\n        if ($session) {\n            $scriptParentPath = Split-Path $import -Parent\n            $publicPath = Join-Path (Split-Path $scriptParentPath -Parent) \"Public\"\n            $fp = Join-Path $scriptParentPath \"Invoke-Process.ps1\"\n            $fp2 = Join-Path $publicPath \"Invoke-KillProcessTree.ps1\"\n            invoke-command -Session $session -FilePath $fp\n            invoke-command -Session $session -FilePath $fp2\n            $res = invoke-command -Session $session -ScriptBlock { Invoke-Process -filename $Using:execExe -Arguments $Using:arguments -TimeoutSeconds $Using:TimeoutSeconds -stdoutFile \"art-out.txt\" -stderrFile \"art-err.txt\"\
+          \ }\n        }\n        else {\n            if ($interactive) {\n                # This use case is: Local execution of tests that contain interactive prompts\n                #   In this situation, let the stdout/stderr flow to the console\n                $res = Invoke-Process -filename $execExe -Arguments $arguments -TimeoutSeconds $TimeoutSeconds\n            }\n            else {\n                # Local execution that DO NOT contain interactive prompts\n                #   In this situation, capture the stdout/stderr for Invoke-AtomicTest to send to the caller\n                $res = Invoke-Process -filename $execExe -Arguments $arguments -TimeoutSeconds $TimeoutSeconds -stdoutFile \"art-out.txt\" -stderrFile \"art-err.txt\"\n            }\n        }\n    )\n    $res\n}\r\n\r\nScriptBlock ID: b26b9aba-3cb9-445f-8fd6-6c7890b31040\r\nPath: C:\\AtomicRedTeam\\invoke-atomicredteam\\Private\\Invoke-ExecuteCommand.ps1\""
+        version: '1'
+        systemTime: '2026-11-19T12:47:38.6497991Z'
+        eventRecordID: '3171'
+        threadID: '300'
+        computer: WIN11-EP
+        task: '2'
+        processID: '5588'
+        severityValue: VERBOSE
+        providerName: Microsoft-Windows-PowerShell
+  expect_rule: '100103'

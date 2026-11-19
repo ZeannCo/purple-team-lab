@@ -1,0 +1,75 @@
+- name: Security log cleared, event 1102 (real event)
+  event:
+    win:
+      system:
+        eventID: '1102'
+        keywords: '0x4020000000000000'
+        providerGuid: '{fc65ddd8-d6ef-4962-83d5-6e5cfe9ce148}'
+        level: '4'
+        channel: Security
+        opcode: '0'
+        message: "\"The audit log was cleared.\r\nSubject:\r\n\tSecurity ID:\tS-1-5-21-1820488127-2641986668-2134518055-1000\r\n\tAccount Name:\tlabadmin\r\n\tDomain Name:\tWIN11-EP\r\n\tLogon ID:\t0xC3C03C\""
+        version: '1'
+        systemTime: '2026-11-19T13:15:05.1004174Z'
+        eventRecordID: '3424'
+        threadID: '1308'
+        computer: WIN11-EP
+        task: '104'
+        processID: '1976'
+        severityValue: INFORMATION
+        providerName: Microsoft-Windows-Eventlog
+      logFileCleared:
+        subjectLogonId: '0xc3c03c'
+        clientProcessId: '3604'
+        subjectUserSid: S-1-5-21-1820488127-2641986668-2134518055-1000
+        subjectDomainName: WIN11-EP
+        clientProcessStartKey: '1407374883554236'
+        subjectUserName: labadmin
+  expect_rule: '100160'
+  expect_level: 12
+- name: wevtutil cl Security (real event)
+  event:
+    win:
+      eventdata:
+        originalFileName: wevtutil.exe
+        image: C:\\Windows\\System32\\wevtutil.exe
+        product: Microsoft® Windows® Operating System
+        parentProcessGuid: '{d81e223c-f658-6afe-ba03-000000000500}'
+        description: Windows Event Log Utility
+        logonGuid: '{d81e223c-f654-6afe-3cc0-c30000000000}'
+        parentCommandLine: \"cmd.exe\" /c wevtutil cl Security
+        processGuid: '{d81e223c-f659-6afe-bc03-000000000500}'
+        logonId: '0xc3c03c'
+        parentProcessId: '3608'
+        processId: '3604'
+        currentDirectory: C:\\Users\\labadmin\\AppData\\Local\\Temp\\
+        utcTime: '2026-11-19 13:15:05.026'
+        hashes: SHA1=BC1EE765998DEC1B5AAC99954DF9C904AFE04963,MD5=F8DF0C7532F536B3683F29EFD9272E10,SHA256=C3D9616F7224BF8E9EFEA95780632DC5229D51C16C1DA74CEB37F7C125C9FAAC,IMPHASH=D0C77550F931D496F0A0F8F1F12495AE
+        parentImage: C:\\Windows\\System32\\cmd.exe
+        ruleName: technique_id=T1685.005,technique_name=Clear Windows Event Logs
+        company: Microsoft Corporation
+        commandLine: wevtutil  cl Security
+        integrityLevel: High
+        fileVersion: 10.0.26100.9444 (WinBuild.160101.0800)
+        user: WIN11-EP\\labadmin
+        terminalSessionId: '0'
+        parentUser: WIN11-EP\\labadmin
+      system:
+        eventID: '1'
+        keywords: '0x8000000000000000'
+        providerGuid: '{5770385f-c22a-43e0-bf4c-06f5698ffbd9}'
+        level: '4'
+        channel: Microsoft-Windows-Sysmon/Operational
+        opcode: '0'
+        message: "\"Process Create:\r\nRuleName: technique_id=T1685.005,technique_name=Clear Windows Event Logs\r\nUtcTime: 2026-11-19 13:15:05.026\r\nProcessGuid: {d81e223c-f659-6afe-bc03-000000000500}\r\nProcessId: 3604\r\nImage: C:\\Windows\\System32\\wevtutil.exe\r\nFileVersion: 10.0.26100.9444 (WinBuild.160101.0800)\r\nDescription: Windows Event Log Utility\r\nProduct: Microsoft® Windows® Operating System\r\nCompany: Microsoft Corporation\r\nOriginalFileName: wevtutil.exe\r\nCommandLine: wevtutil  cl Security\r\nCurrentDirectory: C:\\Users\\labadmin\\AppData\\Local\\Temp\\\r\nUser: WIN11-EP\\labadmin\r\nLogonGuid: {d81e223c-f654-6afe-3cc0-c30000000000}\r\nLogonId: 0xC3C03C\r\nTerminalSessionId: 0\r\nIntegrityLevel: High\r\nHashes: SHA1=BC1EE765998DEC1B5AAC99954DF9C904AFE04963,MD5=F8DF0C7532F536B3683F29EFD9272E10,SHA256=C3D9616F7224BF8E9EFEA95780632DC5229D51C16C1DA74CEB37F7C125C9FAAC,IMPHASH=D0C77550F931D496F0A0F8F1F12495AE\r\nParentProcessGuid: {d81e223c-f658-6afe-ba03-000000000500}\r\
+          \nParentProcessId: 3608\r\nParentImage: C:\\Windows\\System32\\cmd.exe\r\nParentCommandLine: \"cmd.exe\" /c wevtutil cl Security\r\nParentUser: WIN11-EP\\labadmin\""
+        version: '5'
+        systemTime: '2026-11-19T13:15:05.0382527Z'
+        eventRecordID: '15053'
+        threadID: '4616'
+        computer: WIN11-EP
+        task: '1'
+        processID: '3444'
+        severityValue: INFORMATION
+        providerName: Microsoft-Windows-Sysmon
+  expect_rule: '100161'
