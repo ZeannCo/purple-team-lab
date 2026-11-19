@@ -1,0 +1,4 @@
+openai>=1.50
+mcp>=2.3,<3
+requests>=2.31
+PyYAML>=6

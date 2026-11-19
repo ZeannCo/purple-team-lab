@@ -1,0 +1,3 @@
+#!/bin/sh
+# Wazuh runs integrations by name; this wrapper hands off to the Python script next to it.
+exec /usr/bin/python3 "$(dirname "$0")/custom-purplelab-triage.py" "$@"

@@ -1,0 +1,33 @@
+<!--
+  AI triage verdicts written by triage/worker.py to /var/log/purplelab/triage.json and read back by
+  the manager (localfile, json). They show up as alerts next to the alert that was triaged.
+  The integration ignores the purplelab_triage group so verdicts are never re-triaged.
+  IDs 100900-100909.
+-->
+<group name="purplelab,purplelab_triage,">
+
+  <rule id="100900" level="0">
+    <decoded_as>json</decoded_as>
+    <field name="purplelab_triage.verdict" type="pcre2">.+</field>
+    <description>AI triage verdict</description>
+  </rule>
+
+  <rule id="100901" level="10">
+    <if_sid>100900</if_sid>
+    <field name="purplelab_triage.verdict">^true_positive$</field>
+    <description>AI triage: TRUE POSITIVE for rule $(purplelab_triage.alert.rule) on $(purplelab_triage.alert.agent): $(purplelab_triage.summary)</description>
+  </rule>
+
+  <rule id="100902" level="8">
+    <if_sid>100900</if_sid>
+    <field name="purplelab_triage.verdict">^needs_escalation$</field>
+    <description>AI triage: needs escalation for rule $(purplelab_triage.alert.rule) on $(purplelab_triage.alert.agent): $(purplelab_triage.summary)</description>
+  </rule>
+
+  <rule id="100903" level="3">
+    <if_sid>100900</if_sid>
+    <field name="purplelab_triage.verdict">^benign$</field>
+    <description>AI triage: benign for rule $(purplelab_triage.alert.rule) on $(purplelab_triage.alert.agent): $(purplelab_triage.summary)</description>
+  </rule>
+
+</group>
