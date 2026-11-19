@@ -1,0 +1,15 @@
+{
+  "deepseek/deepseek-v4.1-flash": {
+    "alerts": 3,
+    "recall_pct": 100.0,
+    "strict_tp_pct": 100.0,
+    "specificity_pct": null,
+    "fp_rate_pct": null,
+    "technique_pct": 66.7,
+    "avg_tool_calls": 5.3,
+    "median_latency_s": 15.2,
+    "cost_usd": 0.0078,
+    "cost_per_alert_usd": 0.00259,
+    "invalid_responses": 0
+  }
+}

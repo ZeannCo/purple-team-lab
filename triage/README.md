@@ -41,17 +41,24 @@ wazuh_mcp_server.py ── read-only indexer account: wazuh-alerts-* only
 - **Bounded:** 8 tool calls per alert, tool output truncated, one retry if the answer isn't valid JSON;
   anything unparseable becomes `needs_escalation`, never `benign`.
 - **The AI can't silence alerts:** verdicts are added next to the original alert; nothing is suppressed.
+- **Alert-storm protection:** the vulnerability detector once raised ~740 CVE findings at level 10+
+  in one burst and they all queued for triage. Now the integration skips inventory-style groups
+  (vulnerability detector, SCA, FIM). The worker triages the same rule on the same host once per
+  15 minutes and at most 60 alerts an hour; anything beyond that is set aside in `duplicate/` or
+  `deferred/`, never dropped silently.
+- **Sees the host as of the alert:** every MCP query is anchored to the alert time (`TRIAGE_AS_OF`),
+  with no look-ahead and a 2-hour look-back.
 - **Secrets:** the OpenRouter key lives in `/etc/purplelab/triage.env` (root:purplelab-triage, 0640),
-  is piped over SSH from `D:\Labs\keys\openrouter.key`, and never touches the repo or a command line.
+  is piped over SSH from the repo's gitignored `.env`, and never touches git or a command line.
 - **Data:** only synthetic lab telemetry is sent to OpenRouter.
 
 ## Run it
 
 ```powershell
-# Deploy (worker starts once D:\Labs\keys\openrouter.key exists)
-.\lab\build\deploy-triage.ps1 -Model anthropic/claude-haiku-5.5
+# Deploy: model and key come from .env (copy .env.example); the worker starts once the key is set
+.\lab\build\deploy-triage.ps1
 
 # Eval: benign activity -> labelled dataset -> model comparison
 .\lab\build\Invoke-TriageEval.ps1 -GenerateBenign -BuildDataset
-.\lab\build\Invoke-TriageEval.ps1 -Model google/gemma-4-31b-it:free, deepseek/deepseek-v4.1-flash-1017, anthropic/claude-haiku-5.5, anthropic/claude-sonnet-5.5
+.\lab\build\Invoke-TriageEval.ps1 -Model deepseek/deepseek-v4.1-flash, qwen/qwen3.8-27b, z-ai/glm-5.3-flash, anthropic/claude-haiku-5.5
 ```

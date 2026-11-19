@@ -1,0 +1,54 @@
+{
+  "deepseek/deepseek-v4.1-flash": {
+    "alerts": 43,
+    "recall_pct": 100.0,
+    "strict_tp_pct": 100.0,
+    "specificity_pct": 5.9,
+    "fp_rate_pct": 94.1,
+    "technique_pct": 92.3,
+    "avg_tool_calls": 5.8,
+    "median_latency_s": 17.0,
+    "cost_usd": 0.1383,
+    "cost_per_alert_usd": 0.00322,
+    "invalid_responses": 0
+  },
+  "qwen/qwen3.8-27b": {
+    "alerts": 43,
+    "recall_pct": 100.0,
+    "strict_tp_pct": 100.0,
+    "specificity_pct": 5.9,
+    "fp_rate_pct": 94.1,
+    "technique_pct": 92.3,
+    "avg_tool_calls": 4.8,
+    "median_latency_s": 34.2,
+    "cost_usd": 0.7737,
+    "cost_per_alert_usd": 0.01799,
+    "invalid_responses": 0
+  },
+  "z-ai/glm-5.3-flash": {
+    "alerts": 43,
+    "recall_pct": 100.0,
+    "strict_tp_pct": 100.0,
+    "specificity_pct": 29.4,
+    "fp_rate_pct": 70.6,
+    "technique_pct": 92.3,
+    "avg_tool_calls": 4.7,
+    "median_latency_s": 24.6,
+    "cost_usd": 0.0993,
+    "cost_per_alert_usd": 0.00231,
+    "invalid_responses": 0
+  },
+  "anthropic/claude-haiku-5.5": {
+    "alerts": 43,
+    "recall_pct": 100.0,
+    "strict_tp_pct": 100.0,
+    "specificity_pct": 0.0,
+    "fp_rate_pct": 100.0,
+    "technique_pct": 96.2,
+    "avg_tool_calls": 4.4,
+    "median_latency_s": 14.9,
+    "cost_usd": 0.1648,
+    "cost_per_alert_usd": 0.00383,
+    "invalid_responses": 0
+  }
+}

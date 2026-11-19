@@ -2,7 +2,7 @@
 """Tier-1 triage of one Wazuh alert by an LLM (via OpenRouter) that investigates through the
 read-only Wazuh MCP server.
 
-    OPENROUTER_API_KEY=... INDEXER_PASSWORD=... python3 agent.py alert.json --model anthropic/claude-haiku-5.5
+    OPENROUTER_API_KEY=... INDEXER_PASSWORD=... python3 agent.py alert.json --model deepseek/deepseek-v4.1-flash
 
 Prints a JSON report: verdict, ATT&CK technique, confidence, evidence, recommended actions,
 plus the model, tool calls, tokens, cost and latency.
@@ -21,7 +21,7 @@ from mcp.client.stdio import stdio_client
 from openai import OpenAI
 
 HERE = Path(__file__).resolve().parent
-DEFAULT_MODEL = "anthropic/claude-haiku-5.5"
+DEFAULT_MODEL = "deepseek/deepseek-v4.1-flash"
 MAX_TOOL_CALLS = 8
 MAX_TOOL_OUTPUT = 6000
 VERDICTS = ("true_positive", "benign", "needs_escalation")
@@ -38,8 +38,11 @@ how common the rule is, and pivot on suspicious names, paths or tools. You have 
 tool calls. Base the verdict on the activity itself, not on who or what launched it.
 
 Verdicts:
-- true_positive: the activity matches a malicious technique (even if it was blocked).
-- benign: routine or administrative activity with a credible legitimate explanation.
+- true_positive: the activity matches a malicious technique (even if it was blocked). This includes
+  red-team or adversary-emulation tooling: a real attacker can use the same tools, and deconfliction
+  with any authorized test happens after triage, not by you.
+- benign: routine business or administrative activity with a credible legitimate explanation and
+  no attack technique behind it.
 - needs_escalation: suspicious but you cannot tell either way from the available data.
 
 Answer with only this JSON object, no other text:
@@ -87,9 +90,10 @@ def _usage(resp) -> tuple[int, int, float]:
 
 
 async def triage(alert: dict, model: str, client: OpenAI) -> dict:
-    server = StdioServerParameters(command=sys.executable, args=[str(HERE / "wazuh_mcp_server.py")],
-                                   env={k: os.environ[k] for k in ("INDEXER_PASSWORD", "INDEXER_URL", "INDEXER_USER", "PATH")
-                                        if k in os.environ})
+    env = {k: os.environ[k] for k in ("INDEXER_PASSWORD", "INDEXER_URL", "INDEXER_USER", "PATH") if k in os.environ}
+    if alert.get("timestamp"):
+        env["TRIAGE_AS_OF"] = alert["timestamp"]  # tools see the host as of the alert, never later
+    server = StdioServerParameters(command=sys.executable, args=[str(HERE / "wazuh_mcp_server.py")], env=env)
     started = time.monotonic()
     totals = {"prompt_tokens": 0, "completion_tokens": 0, "cost_usd": 0.0}
     tool_log: list[dict] = []
