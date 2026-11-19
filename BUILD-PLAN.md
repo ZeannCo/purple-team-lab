@@ -55,40 +55,31 @@ sits on VMnet2 alone. Never run atomics on the laptop itself.
 - [x] `lab/wazuh/install-wazuh.sh`: Wazuh 4.14 all-in-one install (`wazuh-install.sh -a`), which installed v4.14.10
 - [x] Snapshots: **`base-os`**, **`wazuh-installed`**
 
-### 0.2 win11-ep (automated next)
-- [ ] Download the **Windows 11 Enterprise Evaluation** ISO yourself from Microsoft's Evaluation
-      Center (it asks for your details) and save it to `D:\Labs\ISOs`
-- [ ] `lab\build\new-win11-vm.ps1` + `autounattend.xml`: unattended install, local admin, TPM and
-      Secure Boot checks bypassed for the lab, VMware Tools
-- [ ] Logging the detections need:
-  ```powershell
-  auditpol /set /subcategory:"Process Creation" /success:enable
-  reg add "HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\System\Audit" /v ProcessCreationIncludeCmdLine_Enabled /t REG_DWORD /d 1 /f
-  reg add "HKLM\Software\Policies\Microsoft\Windows\PowerShell\ScriptBlockLogging" /v EnableScriptBlockLogging /t REG_DWORD /d 1 /f
-  ```
-- [ ] Sysmon with a community config (`olafhartong/sysmon-modular`)
-- [ ] Wazuh agent pointing at `10.10.10.10`, collecting Sysmon + PowerShell/Operational:
-  ```xml
-  <localfile>
-    <location>Microsoft-Windows-Sysmon/Operational</location>
-    <log_format>eventchannel</log_format>
-  </localfile>
-  <localfile>
-    <location>Microsoft-Windows-PowerShell/Operational</location>
-    <log_format>eventchannel</log_format>
-  </localfile>
-  ```
-- [ ] `Enable-PSRemoting -Force` (WinRM firewall rule limited to 10.10.10.0/24)
-- [ ] Snapshot: **`clean-baseline`**
+### 0.2 win11-ep (automated)
+- [x] Windows 11 Enterprise Evaluation 26H2 ISO in `D:\Labs\ISOs`
+- [x] Payloads in `D:\Labs\ISOs\payloads`, each checked: Sysmon 15.22 (Microsoft-signed),
+      Wazuh agent 4.14.10 (Wazuh-signed), sysmon-modular `sysmonconfig.xml` (matches the release SHA256)
+- [x] `lab\build\new-win11-vm.ps1` + `lab\windows\autounattend.xml`: unattended install
+      (BIOS/MBR so it boots without a keypress, TPM and Secure Boot checks bypassed for the lab)
+      from a setup disc built with Windows' own IMAPI2 API, so no extra tools are needed
+- [x] `lab\windows\bootstrap.ps1` at first logon: NICs by MAC (lab0 = 10.10.10.20), audit policy +
+      command-line logging + script block logging, Sysmon, Wazuh agent (group `windows`), WinRM
+      limited to 10.10.10.0/24, no sleep or auto-updates, VMware Tools
+- [x] Agent config for the `windows` group (`lab\wazuh\shared\windows\agent.conf`: Sysmon,
+      PowerShell, Defender channels) deployed with `lab\build\push-wazuh-config.ps1`
+- [x] Verified: agent Active; Security, Sysmon and PowerShell events indexed; WinRM from wazuh01
+      works through `validation/lab_winrm.py` (pywinrm ≥ 0.5 in `/opt/purplelab/venv`)
+- [x] Snapshot: **`clean-baseline`**
+- Note: built with 4 GB RAM instead of 5 GB because the host was short on free memory
 
 ---
 
 ## Phase 1 — Wazuh + Atomic Red Team
 
 ### 1.1 Confirm telemetry
-- [ ] Agent shows **Active** in the dashboard
-- [ ] Sysmon events arrive: Threat Hunting → filter `data.win.system.channel: Microsoft-Windows-Sysmon/Operational`
-- [ ] Save the agent's `ossec.conf` snippet and the Sysmon config into `lab/`
+- [x] Agent shows **Active**
+- [x] Sysmon events arrive (filter `data.win.system.channel: Microsoft-Windows-Sysmon/Operational`)
+- [x] Agent config kept in `lab/wazuh/shared/`; the Sysmon config comes from a pinned sysmon-modular release
 
 ### 1.2 Atomic Red Team
 - [ ] On win11-ep (with internet), add a Defender exclusion for `C:\AtomicRedTeam` inside the VM only, then:
