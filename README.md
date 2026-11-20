@@ -101,6 +101,14 @@ Invoke-LabWindows -Script (Get-Content .\lab\windows\install-atomics.ps1 -Raw)
 .\lab\build\Invoke-AtlasAttacks.ps1    # attack suite
 ```
 
+## Remote access
+
+[`lab/wazuh/install-tailscale.sh`](lab/wazuh/install-tailscale.sh) puts the Wazuh VM on a private
+Tailscale network so the dashboard can be opened from a phone or another laptop signed in to the
+same account. Nothing is exposed to the public internet. Only the dashboard (443) is allowed in over
+the tunnel; SSH, the indexer, the Wazuh API and the agent ports are dropped on `tailscale0`.
+`sudo tailscale down` on the VM turns it off.
+
 The Windows build expects the Windows 11 Enterprise Evaluation ISO and a `payloads` folder
 (Sysmon, the sysmon-modular config, the Wazuh agent MSI) under `D:\Labs\ISOs`. Secrets (SSH key,
 lab passwords) live in `D:\Labs\keys`; the OpenRouter key lives in the gitignored `.env`. None of
